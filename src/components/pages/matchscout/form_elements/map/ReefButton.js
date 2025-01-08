@@ -1,7 +1,7 @@
 import { Button } from "@mui/material";
 import { IntakeElement, IntakeLocations} from "../../../../MatchConstants";
 
-export default function GroundButton({ 
+export default function ReefButton({ 
     x, 
     y, 
     selectedIntakeElement, 
@@ -12,24 +12,25 @@ export default function GroundButton({
     stopStopwatch,
     timeElapsed  
 }) {
-    const isSelected = selectedIntakeLocation == IntakeLocations.GROUND;
+    const isSelected = selectedIntakeLocation == IntakeLocations.REEF;
 
     return (
         <Button
             onClick={() => {
-                setSelectedIntakeLocation(IntakeLocations.GROUND);
+                setSelectedIntakeLocation(IntakeLocations.REEF);
                 startStopwatch();
             }}
             variant={"outlined"}
-            color="inherit"
+            color={isSelected ? "primary" : "inherit"}
             sx={{
                 position: "absolute",
-                width: "40px",
-                height: "160px",
+                width: "100px",
+                height: "100px",
                 top: `${y}%`,
                 left: `${x}%`,
+                borderRadius: "50%",
             }}
-            disabled={selectedIntakeElement == 0 || selectedIntakeLocation != 0}
+            disabled={selectedIntakeElement == 0 || selectedIntakeElement == IntakeElement.CORAL || selectedIntakeLocation != 0}
         >
         </Button>
     );

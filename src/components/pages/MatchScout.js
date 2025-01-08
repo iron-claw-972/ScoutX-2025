@@ -1,53 +1,54 @@
-import {Alert, Button, Collapse, Divider, IconButton, Stack, Typography,} from "@mui/material";
+import { Alert, Button, Collapse, Divider, IconButton, Stack, Typography } from "@mui/material";
 import Page from "../Page";
-import {useEffect, useMemo, useState} from "react";
+import { useEffect, useMemo, useState } from "react";
 import MatchScoutData from "../MatchScoutData";
-import {MatchStage} from "../MatchConstants";
+import { MatchStage } from "../MatchConstants";
 import MSAuto from "./matchscout/MSAuto";
 import MSPrematch from "./matchscout/MSPrematch";
 import MSPostmatch from "./matchscout/MSPostmatch";
 import MSTeleop from "./matchscout/MSTeleop";
 import CloseIcon from "@mui/icons-material/Close";
-import {useCookies} from "react-cookie";
 
 export default function MatchScout() {
-
-    const [counter, setCounter] = useState(0);
-    const update = () => {
-        setCounter(counter + 1);
-    };
-
+    // Memoize the `data` object to avoid re-creating it on each render
     let data = useMemo(() => new MatchScoutData(), []);
 
-    const [currentComponent, setCurrentComponent] = useState(
-        <MSPrematch data={data}/>
-    );
+    // Add a `useState` hook to manage the stage
+    const [stage, setStage] = useState(data.stage);
+
+    // Add a `useState` for the current component
+    const [currentComponent, setCurrentComponent] = useState(<MSPrematch data={data} />);
+
+    // Define a function to handle stage changes
+    const handleStageChange = (newStage) => {
+        data.stage = newStage; // Synchronize the data object
+        setStage(newStage); // Update the state to trigger re-render
+    };
 
     useEffect(() => {
-        // eslint-disable-next-line default-case
-        switch (data.stage) {
+        switch (stage) {
             case MatchStage.PRE_MATCH:
-                setCurrentComponent(<MSPrematch data={data}/>);
+                setCurrentComponent(<MSPrematch data={data} />);
                 break;
             case MatchStage.AUTO:
-                setCurrentComponent(<MSAuto data={data}/>);
+                setCurrentComponent(<MSAuto data={data} handleStageChange={handleStageChange}/>);
                 break;
             case MatchStage.TELEOP:
-                setCurrentComponent(<MSTeleop data={data}/>);
+                setCurrentComponent(<MSTeleop data={data} handleStageChange={handleStageChange} />);
                 break;
             case MatchStage.POST_MATCH:
-                setCurrentComponent(<MSPostmatch data={data}/>);
+                setCurrentComponent(<MSPostmatch data={data} handleStageChange={handleStageChange}/>);
                 break;
         }
-    }, [counter]);
+    }, [stage]);
 
     return (
         <Page>
-            <Typography color={"white"} variant={"h3"}>
+            <Typography color={"white"} variant={"h4"}>
                 Match Scout
             </Typography>
-            <Typography variant={"h5"}>
-                {Object.keys(MatchStage)[data.stage].replace("_", " ")}
+            <Typography variant={"h6"}>
+                {Object.keys(MatchStage)[stage].replace("_", " ")}
             </Typography>
             <Divider
                 sx={{
@@ -66,10 +67,10 @@ export default function MatchScout() {
                             size="small"
                             onClick={() => {
                                 data.alert.open = false;
-                                update();
+                                setStage(stage); // Trigger re-render
                             }}
                         >
-                            <CloseIcon fontSize="inherit"/>
+                            <CloseIcon fontSize="inherit" />
                         </IconButton>
                     }
                     severity={data.alert.severity}
@@ -82,43 +83,38 @@ export default function MatchScout() {
                 direction={"row"}
                 spacing={2}
                 sx={{
-                    my: 2,
+                    my: stage == MatchStage.AUTO || stage == MatchStage.TELEOP ? 0.5 : 2,
                 }}
             >
-                {data.stage !== MatchStage.PRE_MATCH && (
+                {stage == MatchStage.POST_MATCH && (
                     <Button
                         fullWidth
                         variant={"outlined"}
-                        onClick={() => {
-                            data.stage--;
-                            update();
-                        }}
+                        onClick={() => handleStageChange(stage - 1)}
                     >
                         Previous
                     </Button>
                 )}
-                {data.stage !== MatchStage.POST_MATCH && (
+                {stage == MatchStage.PRE_MATCH && (
                     <Button
                         fullWidth
                         variant={"outlined"}
                         onClick={() => {
                             if (data.validate().valid) {
-                                data.stage++;
+                                handleStageChange(stage + 1);
                             }
-                            update();
                         }}
                     >
                         Next
                     </Button>
                 )}
-                {data.stage === MatchStage.POST_MATCH && (
+                {stage === MatchStage.POST_MATCH && (
                     <Button
                         fullWidth
                         color={"success"}
                         variant={"outlined"}
                         onClick={() => {
                             data.submit();
-                            update();
                         }}
                     >
                         Submit

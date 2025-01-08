@@ -1,7 +1,7 @@
 import { Button } from "@mui/material";
-import { IntakeElement, IntakeLocations} from "../../../../MatchConstants";
+import { IntakeElement, IntakeLocations } from "../../../../MatchConstants";
 
-export default function GroundButton({ 
+export default function CoralStationButton({
     x, 
     y, 
     selectedIntakeElement, 
@@ -10,27 +10,26 @@ export default function GroundButton({
     setSelectedIntakeLocation,
     startStopwatch,
     stopStopwatch,
-    timeElapsed  
+    timeElapsed 
 }) {
-    const isSelected = selectedIntakeLocation == IntakeLocations.GROUND;
-
+    const isSelected = selectedIntakeLocation == IntakeLocations.STATION;
     return (
         <Button
             onClick={() => {
-                setSelectedIntakeLocation(IntakeLocations.GROUND);
+                setSelectedIntakeLocation(IntakeLocations.STATION);
                 startStopwatch();
             }}
             variant={"outlined"}
-            color="inherit"
+            color={isSelected ? "primary" : "inherit"}
             sx={{
                 position: "absolute",
-                width: "40px",
-                height: "160px",
+                width: "60px",
+                height: "60px",
                 top: `${y}%`,
                 left: `${x}%`,
             }}
-            disabled={selectedIntakeElement == 0 || selectedIntakeLocation != 0}
+            disabled={selectedIntakeElement == 0 || selectedIntakeElement == IntakeElement.ALGAE}
         >
         </Button>
-    );
+    )
 }

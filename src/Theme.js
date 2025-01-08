@@ -9,6 +9,7 @@ export const theme = createTheme({
         secondary: yellow,
 
         white: {main: '#ffffff',},
+        red: red,
 
         success: lightGreen,
         error: red,

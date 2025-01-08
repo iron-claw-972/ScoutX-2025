@@ -1,41 +1,26 @@
-import {Box, Button} from "@mui/material";
+import { Box, Button } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 
-export default function CustomToggleButton(props) {
-
-    const label = props.label
-    const onClick = props.onClick
-    const value = props.value
-    const showCheckbox = props.showCheckbox
-
+export default function CustomToggleButton({ label, onClick, value, showCheckbox, sx }) {
     return (
-        <Grid2 xs={12} sx={{
-            ...props.sx
-        }}>
+        <Grid2 xs={12} sx={sx}>
             <Button
                 variant={value ? "contained" : "outlined"}
-                color={!showCheckbox ? (value ? "primary" : "inherit") : "inherit"}
+                color={!showCheckbox ? "error" : "inherit"}
                 onClick={() => {
-                    onClick(!value)
+                    onClick(!value);
                 }}
                 fullWidth
+                sx={{height: '30px'}}
             >
-                {
-                    showCheckbox ?
-                        (value ?
-                            <CheckBoxIcon/> :
-                            <CheckBoxOutlineBlankIcon/>)
-                        : null
-
-                }
-                <Box sx={{
-                    mx: 1
-                }}/>
+                {showCheckbox ? (
+                    value ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />
+                ) : null}
+                <Box sx={{ mx: 1 }} />
                 {label}
             </Button>
         </Grid2>
-    )
-
+    );
 }

@@ -1,19 +1,30 @@
 import { Button } from "@mui/material";
+import { IntakeElement } from "../../../../MatchConstants";
 
-export default function IntakeButton({label, width, height, x, y, element}) {
+export default function IntakeButton({
+    width, 
+    height, 
+    element,
+    selectedIntakeElement,
+    setSelectedIntakeElement,
+    selectedIntakeLocation,
+    setSelectedIntakeLocation,
+}) {
+    const label = `${element}`
     return (
-        <Button 
-            onClick={() => setSelectedRow(rowNumber)}
+        <Button
+            onClick={
+                () => setSelectedIntakeElement(element == "Coral" ? IntakeElement.CORAL : IntakeElement.ALGAE
+            )}
             variant= "outlined"
             color= "white"
             sx={{
-                position: "absolute",
                 width: `${width}px`,
                 height: `${height}px`,
-                fontSize: "1.2rem",
-                top: `${y}%`,
-                left: `${x}%`,
-            }}>{label}
+                fontSize: "0.8rem",
+            }}
+            disabled={selectedIntakeLocation != 0}
+        >{"Intake " + label}
         </Button>
     )
 }

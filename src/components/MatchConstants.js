@@ -6,6 +6,25 @@ export const MatchStage = Object.freeze({
     "METADATA": 4,
 });
 
+export const IntakeElement = Object.freeze({
+    "CORAL": 1,
+    "ALGAE": 2
+})
+
+export const IntakeLocations = Object.freeze({
+    "GROUND": 1,
+    "STATION": 2,
+    "REEF": 3
+})
+
+export const OuttakeLocations = Object.freeze({
+    "GROUND": 1,
+    "REEF": 2,
+    "PROCESSOR": 3,
+    "NET": 4,
+    "MISSED": 5
+})
+
 export const CoralIntakePosition = Object.freeze({
     STATION: 0,
     GROUND: 1

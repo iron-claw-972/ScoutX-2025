@@ -90,9 +90,6 @@ export default function MSPrematch(props) {
             <Box sx={{
                 my: 4
             }}/>
-            <Button fullWidth color={"secondary"} variant={"outlined"}>
-                Skip
-            </Button>
         </>
     );
 }
