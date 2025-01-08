@@ -11,18 +11,18 @@ export default function Home() {
             flexDirection: "column",
             alignItems: "center",
         }}>
-            <Typography component={"h3"} variant={"h3"} color={"primary"} sx={{
+            <Typography component={"h3"} variant={"h4"} color={"primary"} sx={{
                 mb: 2,
             }}>
                 972 Scouting
             </Typography>
-            <Stack direction={"column"} spacing={2}>
+            <Stack direction={"column"} spacing={1}>
                 {Constants.pages.map((page) => (
                     (page.path !== "/" ?
                             <>
                                 <Box
                                     sx={{
-                                        py: 3,
+                                        py: 2,
                                         width: "60vw",
                                         maxWidth: "200px",
                                         display: "flex",
@@ -37,7 +37,7 @@ export default function Home() {
                                             window.location.pathname = page.path;
                                         }
                                     }>
-                                    <Typography variant={"h5"} sx={{
+                                    <Typography variant={"h6"} sx={{
                                         mb: -2.75,
                                     }}>{page.title}</Typography>
                                     <Divider/>
