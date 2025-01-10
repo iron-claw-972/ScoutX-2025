@@ -11,10 +11,13 @@ export default function ReefOuttakeTable({
     y,
     startStopwatch,
     stopStopwatch,
-    timeElapsed 
+    elapsedTime,
+    data,
+    stage,
+    boxDimensions
 }) {
 
-    const buttonHeight = "56.5px";
+    const buttonHeight = `${(16.4 / 100) * boxDimensions.height}px`;
 
     return (
         <Grid
@@ -22,12 +25,13 @@ export default function ReefOuttakeTable({
                 top: `${y}%`,
                 left: `${x}%`,
                 position: "absolute",
-                width: "155px"
+                width: `${(45 / 100) * boxDimensions.height}px`
             }}
         >
             <Stack direction={"column"} spacing={"5px"}>
                 <Button
                     onClick={()=> {
+                        data.addOuttakeEntry(stage, selectedIntakeElement, selectedIntakeLocation, elapsedTime, "L4")
                         setSelectedIntakeElement(0);
                         setSelectedIntakeLocation(0);
                         stopStopwatch();
@@ -45,6 +49,7 @@ export default function ReefOuttakeTable({
 
                 <Button
                     onClick={()=> {
+                        data.addOuttakeEntry(stage, selectedIntakeElement, selectedIntakeLocation, elapsedTime, "L3")
                         setSelectedIntakeElement(0);
                         setSelectedIntakeLocation(0);
                         stopStopwatch();
@@ -62,6 +67,7 @@ export default function ReefOuttakeTable({
 
                 <Button
                     onClick={()=> {
+                        data.addOuttakeEntry(stage, selectedIntakeElement, selectedIntakeLocation, elapsedTime, "L2")
                         setSelectedIntakeElement(0);
                         setSelectedIntakeLocation(0);
                         stopStopwatch();
@@ -79,6 +85,7 @@ export default function ReefOuttakeTable({
 
                 <Button
                     onClick={()=> {
+                        data.addOuttakeEntry(stage, selectedIntakeElement, selectedIntakeLocation, elapsedTime, "L1")
                         setSelectedIntakeElement(0);
                         setSelectedIntakeLocation(0);
                         stopStopwatch();

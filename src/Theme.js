@@ -7,9 +7,11 @@ export const theme = createTheme({
 
         primary: orange,
         secondary: yellow,
+        blue: {main: '#03628f'},
 
         white: {main: '#ffffff',},
         red: red,
+        grey: {main: '#545453'},
 
         success: lightGreen,
         error: red,

@@ -10,11 +10,15 @@ export default function ProcessorButton({
     setSelectedIntakeLocation,
     startStopwatch,
     stopStopwatch,
-    timeElapsed 
+    elapsedTime,
+    data,
+    stage,
+    boxDimensions
 }) {
     return (
         <Button
             onClick={() => {
+                data.addOuttakeEntry(stage, selectedIntakeElement, selectedIntakeLocation, elapsedTime, "PROCESSOR")
                 setSelectedIntakeElement(0);
                 setSelectedIntakeLocation(0);
                 stopStopwatch();
@@ -23,8 +27,8 @@ export default function ProcessorButton({
             color={"inherit"}
             sx={{
                 position: "absolute",
-                width: "60px",
-                height: "40px",
+                width: `${(24 / 100) * boxDimensions.height}px`,
+                height: `${(15 / 100) * boxDimensions.height}px`,
                 top: `${y}%`,
                 left: `${x}%`,
             }}

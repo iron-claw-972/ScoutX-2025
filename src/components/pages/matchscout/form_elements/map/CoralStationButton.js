@@ -10,7 +10,8 @@ export default function CoralStationButton({
     setSelectedIntakeLocation,
     startStopwatch,
     stopStopwatch,
-    timeElapsed 
+    timeElapsed,
+    boxDimensions
 }) {
     const isSelected = selectedIntakeLocation == IntakeLocations.STATION;
     return (
@@ -23,8 +24,8 @@ export default function CoralStationButton({
             color={isSelected ? "primary" : "inherit"}
             sx={{
                 position: "absolute",
-                width: "60px",
-                height: "60px",
+                width: `${(18.5 / 100) * boxDimensions.height}px`,
+                height: `${(16.5 / 100) * boxDimensions.height}px`,
                 top: `${y}%`,
                 left: `${x}%`,
             }}

@@ -21,7 +21,8 @@ export default function IntakeTable ({
     isRunning,
     startStopwatch,
     stopStopwatch,
-    setElapsedTime
+    setElapsedTime,
+    boxDimensions
 }) {
 
     const [cookies, setCookie] = useCookies(); 
@@ -39,8 +40,8 @@ export default function IntakeTable ({
                 <Stack direction={'row'} spacing={'5px'}>
 
                     <IntakeButton 
-                        width={130} 
-                        height={150} 
+                        width={(40 / 100) * boxDimensions.height} 
+                        height={(43 / 100) * boxDimensions.height} 
                         element={"Coral"}
                         selectedIntakeElement={selectedIntakeElement}
                         setSelectedIntakeElement={setSelectedIntakeElement}
@@ -48,8 +49,8 @@ export default function IntakeTable ({
                         setSelectedIntakeLocation={setSelectedIntakeLocation}
                     />
                     <IntakeButton 
-                        width={130} 
-                        height={150} 
+                        width={(40 / 100) * boxDimensions.height} 
+                        height={(43 / 100) * boxDimensions.height} 
                         element={"Algae"}
                         selectedIntakeElement={selectedIntakeElement}
                         setSelectedIntakeElement={setSelectedIntakeElement}
@@ -104,6 +105,7 @@ export default function IntakeTable ({
                                 handleStageChange(data.stage - 1);
                                 update();
                                 setSelectedIntakeElement(0);
+                                setSelectedIntakeLocation(0);
                             }}
                         >
                             Previous
@@ -117,6 +119,7 @@ export default function IntakeTable ({
                                 handleStageChange(data.stage + 1);
                                 update();
                                 setSelectedIntakeElement(0);
+                                setSelectedIntakeLocation(0);
                             }}
                         >
                             Next

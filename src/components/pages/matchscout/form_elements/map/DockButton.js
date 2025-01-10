@@ -1,27 +1,33 @@
 import { Button } from "@mui/material";
 import { useState } from "react";
 
-export default function DockButton({ x, y, data, stage }) {
-    const [dockState, setDockState] = useState(data.get(stage, "dock"));
+export default function DockButton({ x, y, data, stage, boxDimensions }) {
+    const [climbState, setClimbState] = useState(() => {
+        if (data && stage !== undefined && data.get(stage, "climb") !== undefined) {
+            return data.get(stage, "climb");
+        }
+        return "Neither"; // Default state if data isn't ready
+    });
 
     const handleChange = () => {
-        let nextState = "No Dock";
-        if (dockState === "No Dock") {
-            nextState = "Dock";
-        } 
-        else if (dockState === "Dock") {
-            nextState = "Dock and Engaged";
+        let nextState = "Neither";
+        if (climbState === "Neither") {
+            nextState = "Climbed";
+        } else if (climbState === "Climbed") {
+            nextState = "Parked";
         }
-        setDockState(nextState);
-        const dockValue = nextState === "No Dock" ? 0 : nextState === "Dock" ? 1 : 2;
-        data.setDock(stage, dockValue);
+        setClimbState(nextState);
+        const climbValue = nextState === "Neither" ? 0 : nextState === "Climbed" ? 1 : 2;
+        if (data && stage !== undefined) {
+            data.setClimb(stage, climbValue);
+        }
     };
 
     const getColor = () => {
-        return dockState === "No Dock"
-            ? "inherit"
-            : dockState === "Dock"
-            ? "secondary"
+        return climbState === "Neither"
+            ? "grey"
+            : climbState === "Climbed"
+            ? "blue"
             : "primary";
     };
 
@@ -32,15 +38,16 @@ export default function DockButton({ x, y, data, stage }) {
             color={getColor()}
             sx={{
                 position: "absolute",
-                width: "100px",
-                height: "100px",
-                borderRadius: "50%",
+                width: `${(11.7 / 100) * boxDimensions.height}px`,
+                height: `${(39.5 / 100) * boxDimensions.height}px`,
                 top: `${y}%`,
                 left: `${x}%`,
-                fontSize: ".9rem",
+                fontSize: ".6rem",
+                minWidth: "unset", // Override default minWidth
+                minHeight: "unset", // Override default minHeight
             }}
         >
-            {dockState}
+            {climbState}
         </Button>
     );
 }

@@ -19,8 +19,6 @@ import ReefOuttakeTable from "./ReefOuttakeTable";
 
 export default function MapSim(
     {
-        selectedRow, 
-        setSelectedRow, 
         selectedIntakeElement,
         setSelectedIntakeElement,
         selectedIntakeLocation,
@@ -56,8 +54,8 @@ export default function MapSim(
         setIsRunning(true); // Set running state to true
         const startTime = Date.now();
         timerRef.current = setInterval(() => {
-            setElapsedTime(Date.now() - startTime); // Update elapsed time
-        }, 10); // Update every 10ms for milliseconds precision
+            setElapsedTime(Date.now() - startTime);
+        }, 10);
     };
     
     // Stop the stopwatch
@@ -81,16 +79,35 @@ export default function MapSim(
         return `${String(seconds).padStart(2, "0")}:${String(milliseconds).padStart(2, "0")}`;
     };
 
-
-
+    const boxRef = useRef(null); // Reference to the Box container
+    const [boxDimensions, setBoxDimensions] = useState({ width: 0, height: 0 });
 
     useEffect(() => {
-        const handleResize = () => {
-            setIsPortrait(window.innerHeight > window.innerWidth);
+        const boxElement = boxRef.current;
+
+        if (!boxElement) return;
+
+        // Function to update box dimensions
+        const updateBoxDimensions = () => {
+            setBoxDimensions({
+                width: boxElement.offsetWidth,
+                height: boxElement.offsetHeight,
+            });
         };
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
+
+        // Create a ResizeObserver to observe changes in the box's size
+        const resizeObserver = new ResizeObserver(updateBoxDimensions);
+        resizeObserver.observe(boxElement); // Start observing
+
+        // Update dimensions immediately after the initial render
+        updateBoxDimensions();
+
+        return () => resizeObserver.disconnect(); // Clean up observer on unmount
     }, []);
+
+
+
+
 
     const AutoMarkers = [
         <GroundButton
@@ -103,6 +120,7 @@ export default function MapSim(
             startStopwatch={startStopwatch}
             stopStopwatch={stopStopwatch}
             elapsedTime={elapsedTime}
+            boxDimensions={boxDimensions}
         />,
         <ProcessorButton
             x={60}
@@ -114,9 +132,12 @@ export default function MapSim(
             startStopwatch={startStopwatch}
             stopStopwatch={stopStopwatch}
             elapsedTime={elapsedTime}
+            data={data}
+            stage={stage}
+            boxDimensions={boxDimensions}
         />,
         <NetButton
-            x={48.5}
+            x={49.4}
             y={10}
             selectedIntakeElement={selectedIntakeElement}
             setSelectedIntakeElement={setSelectedIntakeElement}
@@ -125,6 +146,9 @@ export default function MapSim(
             startStopwatch={startStopwatch}
             stopStopwatch={stopStopwatch}
             elapsedTime={elapsedTime}
+            data={data}
+            stage={stage}
+            boxDimensions={boxDimensions}
         />,
         <ReefButton
             x={64.5}
@@ -136,6 +160,7 @@ export default function MapSim(
             startStopwatch={startStopwatch}
             stopStopwatch={stopStopwatch}
             elapsedTime={elapsedTime}
+            boxDimensions={boxDimensions}
         />,
         <CoralStationButton
             x={86.5}
@@ -147,10 +172,11 @@ export default function MapSim(
             startStopwatch={startStopwatch}
             stopStopwatch={stopStopwatch}
             elapsedTime={elapsedTime}
+            boxDimensions={boxDimensions}
         />,
         <CoralStationButton
             x={86.5}
-            y={73.5}
+            y={74.3}
             selectedIntakeElement={selectedIntakeElement}
             setSelectedIntakeElement={setSelectedIntakeElement}
             selectedIntakeLocation={selectedIntakeLocation}
@@ -158,12 +184,14 @@ export default function MapSim(
             startStopwatch={startStopwatch}
             stopStopwatch={stopStopwatch}
             elapsedTime={elapsedTime}
+            boxDimensions={boxDimensions}
         />,
         <Button
             variant={"contained"}
             color={"error"}
             onClick={() => {
                 data.incrementMissedCount(stage, 7);
+                data.addOuttakeEntry(stage, selectedIntakeElement, selectedIntakeLocation, elapsedTime, "MISSED")
                 setSelectedIntakeLocation(0);
                 setSelectedIntakeElement(0); 
                 stopStopwatch();
@@ -173,40 +201,36 @@ export default function MapSim(
                 position: 'absolute',
                 top: '75%',
                 right: '22%',
-                width: '100px',
-                height: '40px',
+                width: `${(34 / 100) * boxDimensions.height}px`,
+                height: `${(13 / 100) * boxDimensions.height}px`,
             }}
         >
         Missed
         </Button>
     ]
-    const AutoMarkersFlipped = [
-    
-    ]
-    const TeleopMarkers = [
-        
-    ]
-    const TeleopMarkersFlipped = [
-        
-    ]
-    const ReefMarkers = [
-        <ReefOuttakeTable
-            selectedIntakeElement={selectedIntakeElement}
-            setSelectedIntakeElement={setSelectedIntakeElement}
-            selectedIntakeLocation={selectedIntakeLocation}
-            setSelectedIntakeLocation={setSelectedIntakeLocation}
-            x={73.2}
-            y={8}
-            startStopwatch={startStopwatch}
-            stopStopwatch={stopStopwatch}
-            elapsedTime={elapsedTime}
-        />,
 
+    const AutoMarkersFlipped = [
+
+    ]
+
+    const TeleopMarkers = [...AutoMarkers];
+    TeleopMarkers.push(
+        <DockButton
+            x={50.3}
+            y={50.8}
+            stage={stage}
+            data={data}
+            boxDimensions={boxDimensions}
+        />,
+    );
+    
+    const TeleopMarkersFlipped = [
         <Button
             variant={"contained"}
             color={"error"}
             onClick={() => {
                 data.incrementMissedCount(stage, 7);
+                data.addOuttakeEntry(stage, selectedIntakeElement, selectedIntakeLocation, elapsedTime, "MISSED")
                 setSelectedIntakeLocation(0);
                 setSelectedIntakeElement(0); 
                 stopStopwatch();
@@ -218,6 +242,46 @@ export default function MapSim(
                 right: '1.8%',
                 width: '298px',
                 height: '38px',
+            }}
+        >
+        Missed
+        </Button>
+    ]
+
+
+    const ReefMarkers = [
+        <ReefOuttakeTable
+            selectedIntakeElement={selectedIntakeElement}
+            setSelectedIntakeElement={setSelectedIntakeElement}
+            selectedIntakeLocation={selectedIntakeLocation}
+            setSelectedIntakeLocation={setSelectedIntakeLocation}
+            x={73.2}
+            y={8}
+            startStopwatch={startStopwatch}
+            stopStopwatch={stopStopwatch}
+            elapsedTime={elapsedTime}
+            data={data}
+            stage={stage}
+            boxDimensions={boxDimensions}
+        />,
+
+        <Button
+            variant={"contained"}
+            color={"error"}
+            onClick={() => {
+                data.incrementMissedCount(stage, 7);
+                data.addOuttakeEntry(stage, selectedIntakeElement, selectedIntakeLocation, elapsedTime, "MISSED")
+                setSelectedIntakeLocation(0);
+                setSelectedIntakeElement(0); 
+                stopStopwatch();
+            }}
+            disabled={selectedIntakeElement == 0 || selectedIntakeLocation == 0}
+            sx={{
+                position: 'absolute',
+                top: '81%',
+                right: '1.8%',
+                width: `${(86 / 100) * boxDimensions.height}px`,
+                height: `${(11 / 100) * boxDimensions.height}px`,
             }}
         >
         Missed
@@ -239,6 +303,8 @@ export default function MapSim(
             <Stack direction={"column"} spacing={2}>
                 <Stack>
                     <Box
+                        draggable={"false"}
+                        ref={boxRef}
                         component={"img"}
                         src={!outtakeCoral ? (cookies.flipMap ? Constants.fieldFlipped : Constants.field) : Constants.fieldReef}
                         sx={{
@@ -267,6 +333,7 @@ export default function MapSim(
                     startStopwatch={startStopwatch}
                     stopStopwatch={stopStopwatch}
                     setElapsedTime={setElapsedTime}
+                    boxDimensions={boxDimensions}
                     />
 
                     <Stack direction={"column"}>

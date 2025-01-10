@@ -10,7 +10,8 @@ export default function GroundButton({
     setSelectedIntakeLocation,
     startStopwatch,
     stopStopwatch,
-    timeElapsed  
+    timeElapsed,
+    boxDimensions
 }) {
     const isSelected = selectedIntakeLocation == IntakeLocations.GROUND;
 
@@ -24,8 +25,8 @@ export default function GroundButton({
             color="inherit"
             sx={{
                 position: "absolute",
-                width: "40px",
-                height: "160px",
+                width: `${(18 / 100) * boxDimensions.height}px`,
+                height: `${(46.5 / 100) * boxDimensions.height}px`,
                 top: `${y}%`,
                 left: `${x}%`,
             }}

@@ -10,7 +10,8 @@ export default function ReefButton({
     setSelectedIntakeLocation,
     startStopwatch,
     stopStopwatch,
-    timeElapsed  
+    timeElapsed,
+    boxDimensions
 }) {
     const isSelected = selectedIntakeLocation == IntakeLocations.REEF;
 
@@ -24,8 +25,8 @@ export default function ReefButton({
             color={isSelected ? "primary" : "inherit"}
             sx={{
                 position: "absolute",
-                width: "100px",
-                height: "100px",
+                width: `${(29 / 100) * boxDimensions.height}px`,
+                height: `${(29 / 100) * boxDimensions.height}px`,
                 top: `${y}%`,
                 left: `${x}%`,
                 borderRadius: "50%",

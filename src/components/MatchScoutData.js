@@ -1,22 +1,12 @@
-import {MatchStage, StartPosition} from "./MatchConstants";
+import {MatchStage, StartPosition, IntakeElement, IntakeLocations} from "./MatchConstants";
 import {Scouters} from "./Scouters";
 import {doc, getFirestore, setDoc} from "firebase/firestore";
+import MatchScout from "./pages/MatchScout";
 
-const intakeLocations = [
-    "NO INTAKES", 
-    "CENTER 1",
-    "CENTER 2",
-    "CENTER 3",
-    "CENTER 4",
-    "GROUND",
-    "SUBSTATION",
-    "MISSED"
-]
-
-const dock = [
-    "Not Docked",
-    "Docked and Not Engaged",
-    "Docked and Engaged"
+const climb = [
+    "Neither",
+    "Climbed",
+    "Parked"
 ]
 
 const defaultData = [
@@ -32,36 +22,18 @@ const defaultData = [
     {
         autostage: MatchStage.AUTO,
         leave: false,
-        dock: dock[0], 
+        climb: climb[0], 
         io: [
             {intake: "PRELOAD"},
         ],
-        cubeCounts: {
-            top: [],
-            middle: [],
-            bottom: [],
-        },
-        coneCounts: {
-            top: [],
-            middle: [],
-            bottom: [],
-        },
+
+        outtakeCounts: [],
         missedCounts: []
     },
     {
         telestage: MatchStage.TELEOP,
-        dock: dock[0], 
-        cubeCounts: {
-            top: [],
-            middle: [],
-            bottom: [],
-        },
-        coneCounts: {
-            top: [],
-            middle: [],
-            bottom: [],
-        },
-        missedCounts: []
+        climb: climb[0], 
+        outtakeCounts: [],
     },
     {
         postmatchstage: MatchStage.POST_MATCH,
@@ -101,19 +73,29 @@ export default class MatchScoutData {
     setCount(stage, path, key, value, selectedRow) {
         const target = this.data[stage][path][key];
         if (value > this.getCount(stage, path, key)) {
-            target.push(`${value}-${intakeLocations[selectedRow]}`);
+            target.push(`${value}-${IntakeLocations[selectedRow]}`);
         } else {
             target.pop();
         }
-        
     }
 
-    setDock(stage, value) {
-        this.data[stage]["dock"] = dock[value]; 
+    addOuttakeEntry(stage, selectedIntakeElement, selectedIntakeLocation, timeElapsed, outtakeLocation) {
+        const target = this.data[stage]["outtakeCounts"];
+        target.push({
+            element: Object.keys(IntakeElement).find(k => IntakeElement[k] === selectedIntakeElement),
+            intakeLocation: Object.keys(IntakeLocations).find(k => IntakeLocations[k] === selectedIntakeLocation),
+            outtakeLocation: outtakeLocation,
+            cycleTime: timeElapsed/1000,
+        });
     }
 
+    setClimb(stage, value) {
+        this.data[stage]["climb"] = climb[value]; 
+    }
+
+    //do later
     incrementMissedCount(stage, selectedRow) {
-        this.data[stage]["missedCounts"].push(intakeLocations[selectedRow]); 
+         
     }
 
     set(stage, path, value) {
@@ -166,38 +148,15 @@ export default class MatchScoutData {
 
         this.set(MatchStage.METADATA, "timestamp", Date.now());
         const db = getFirestore();
-        let autoioCount = 0;
-        let teleioCount = 0;
 
-        const autoCubeCounts = [
-            ...defaultData[1].cubeCounts.top.map(item => `${item}-TOP`),
-            ...defaultData[1].cubeCounts.middle.map(item => `${item}-MIDDLE`),
-            ...defaultData[1].cubeCounts.bottom.map(item => `${item}-BOTTOM`)
-        ];
-        
-        const autoConeCounts = [
-            ...defaultData[1].coneCounts.top.map(item => `${item}-TOP`),
-            ...defaultData[1].coneCounts.middle.map(item => `${item}-MIDDLE`),
-            ...defaultData[1].coneCounts.bottom.map(item => `${item}-BOTTOM`)
-        ];
+        const autoOuttakeCounts = defaultData[1].outtakeCounts;
+        const teleOuttakeCounts = defaultData[2].outtakeCounts;
 
-        const teleCubeCounts = [
-            ...defaultData[1].cubeCounts.top.map(item => `${item}-TOP`),
-            ...defaultData[1].cubeCounts.middle.map(item => `${item}-MIDDLE`),
-            ...defaultData[1].cubeCounts.bottom.map(item => `${item}-BOTTOM`)
-        ];
-        
-        const teleConeCounts = [
-            ...defaultData[1].coneCounts.top.map(item => `${item}-TOP`),
-            ...defaultData[1].coneCounts.middle.map(item => `${item}-MIDDLE`),
-            ...defaultData[1].coneCounts.bottom.map(item => `${item}-BOTTOM`)
-        ];
+        const autoioCount = defaultData[1].outtakeCounts.length;
+        const teleioCount = defaultData[2].outtakeCounts.length;
 
-        autoioCount += autoCubeCounts.length + autoCubeCounts.length;
-        teleioCount += teleCubeCounts.length + teleCubeCounts.length;
-
-        const autoDockPosition = defaultData[1].dock;
-        const teleDockPosition = defaultData[2].dock;
+        const autoClimbPosition = defaultData[1].climb;
+        const teleClimbPosition = defaultData[2].climb;
 
         const autoMissedCounts = defaultData[1].missedCounts;
         const teleMissedCounts = defaultData[2].missedCounts;
@@ -205,12 +164,9 @@ export default class MatchScoutData {
         let firebaseData = {
             autoioCount: autoioCount,
             teleioCount: teleioCount,
-            autoCubeCounts: autoCubeCounts,
-            autoConeCounts: autoConeCounts,
-            autoDockPosition: autoDockPosition,
-            teleCubeCounts: teleCubeCounts,
-            teleConeCounts: teleConeCounts,
-            teleDockPosition: teleDockPosition,
+            autoOuttakeCounts: autoOuttakeCounts,
+            teleOuttakeCounts: teleOuttakeCounts,
+            ClimbPosition: teleClimbPosition,
             autoMissedCounts: autoMissedCounts,
             teleMissedCounts: teleMissedCounts
         };

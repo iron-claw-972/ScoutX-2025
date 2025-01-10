@@ -9,7 +9,6 @@ import MapSim from "./form_elements/map/MapSim";
 export default function MSTeleop({ data, handleStageChange }) {
     const [counter, setCounter] = useState(0);
     const [selectedRow, setSelectedRow] = useState(0);
-    const [dockPosition, setDockPosition] = useState(0);
     const [selectedIntakeElement, setSelectedIntakeElement] = useState(IntakeElement.CORAL);
     const [selectedIntakeLocation, setSelectedIntakeLocation] = useState(0);
 
@@ -28,7 +27,7 @@ export default function MSTeleop({ data, handleStageChange }) {
                     selectedIntakeLocation={selectedIntakeLocation}
                     setSelectedIntakeLocation={setSelectedIntakeLocation}
                     update={update}
-                    stage={MatchStage.AUTO}
+                    stage={MatchStage.TELEOP}
                     data={data}
                     handleStageChange={handleStageChange} // Pass the function correctly
                 />

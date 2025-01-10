@@ -10,11 +10,17 @@ export default function NetButton({
     setSelectedIntakeLocation,
     startStopwatch,
     stopStopwatch,
-    timeElapsed 
+    elapsedTime,
+    data,
+    stage,
+    boxDimensions
 }) {
     return (
         <Button
             onClick={() => {
+                if(selectedIntakeElement == IntakeElement.CORAL) {
+                    data.addOuttakeEntry(stage, selectedIntakeElement, selectedIntakeLocation, elapsedTime, "NET")
+                }
                 setSelectedIntakeElement(0);
                 setSelectedIntakeLocation(0);
                 stopStopwatch();
@@ -23,8 +29,8 @@ export default function NetButton({
             color={"inherit"}
             sx={{
                 position: "absolute",
-                width: "30px",
-                height: "137px",
+                width: `${(8.3 / 100) * boxDimensions.width}px`,
+                height: `${(39 / 100) * boxDimensions.height}px`,
                 top: `${y}%`,
                 left: `${x}%`,
             }}
