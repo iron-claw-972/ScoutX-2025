@@ -34,6 +34,7 @@ const defaultData = [
         telestage: MatchStage.TELEOP,
         climb: climb[0], 
         outtakeCounts: [],
+        missedCounts: []
     },
     {
         postmatchstage: MatchStage.POST_MATCH,
