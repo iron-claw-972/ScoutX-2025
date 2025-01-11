@@ -15,13 +15,10 @@ export default function App() {
                 <Header/>
                 <BrowserRouter>
                     <Routes>
-                        <Route element={<Outlet/>}>
-                            <Route path="*" element={<NotFound/>}/>
-                            {Constants.pages.map((page) => (
-                                <Route key={page.path} path={page.path} element={<page.component/>}/>
-                            ))}
-                        </Route>
-                        <Route></Route>
+                        {Constants.pages.map((page) => (
+                            <Route key={page.path} path={page.path} element={<page.component />} />
+                        ))}
+                        <Route path="*" element={<NotFound />} />
                     </Routes>
                 </BrowserRouter>
             </ThemeProvider>

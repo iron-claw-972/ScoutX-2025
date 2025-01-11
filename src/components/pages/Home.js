@@ -23,7 +23,7 @@ export default function Home() {
                                 <Box
                                     sx={{
                                         py: 2,
-                                        width: "60vw",
+                                        width: "80vw",
                                         maxWidth: "200px",
                                         display: "flex",
                                         flexDirection: "column",
