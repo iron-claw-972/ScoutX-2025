@@ -1,5 +1,6 @@
 {
-    "name": "scoutingapp2024",
+    "name": "scoutingapp2025",
+    "homepage": "https://scouting-app-fall-project-2024.web.app",
     "version": "0.1.0",
     "private": true,
     "dependencies": {

@@ -13,12 +13,14 @@ export default function CustomToggleButton({ label, onClick, value, showCheckbox
                     onClick(!value);
                 }}
                 fullWidth
-                sx={{height: '30px'}}
+                sx={{
+                    height: '30px'
+                }}
             >
                 {showCheckbox ? (
                     value ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />
                 ) : null}
-                <Box sx={{ mx: 1 }} />
+                <Box  />
                 {label}
             </Button>
         </Grid2>

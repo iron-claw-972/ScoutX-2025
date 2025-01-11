@@ -60,7 +60,7 @@ export default function IntakeTable ({
 
                 </Stack>
 
-                <Stack direction={"row"} spacing={"10px"} justifyContent={"space-between"}>
+                <Stack direction={"row"} spacing={"2px"} justifyContent={"space-between"}>
                     <CustomToggleButton
                         label={"cancel"}
                         onClick={() => {
@@ -69,30 +69,26 @@ export default function IntakeTable ({
                             stopStopwatch();
                             setElapsedTime(0);
                         }}
-                        sx={{ flexGrow: 1 }}
+                        sx={{width: `${(25 / 100) * boxDimensions.height}px`}}
                     />
-                    
+
                     <Typography variant="h6">
-                        {formatTime(elapsedTime)}
+                        {"⏰: " + formatTime(elapsedTime)}
                     </Typography>
 
-                </Stack>
-                <Stack direction={'row'} spacing={'15px'}>
-                    {data.stage !== MatchStage.POST_MATCH && (
-                        <Button
-                            variant={"outlined"}
-                            fullWidth
-                            onClick={() => {
-                                data.deletePrevious(stage); 
-                                update(); 
-                            }}
-                        >
-                            Delete Previous Outtake
-                        </Button>
-                    )}
+                    <CustomToggleButton
+                        label={"Delete Prev."}
+                        onClick={() => {
+                            data.deletePrevious(stage); 
+                            update(); 
+                        }}
+                    />
+
                     <Typography variant="h6">
                         {data.getOuttakeCount(stage)}
                     </Typography>
+                    
+
                 </Stack>
 
                 <Stack direction={'column'} spacing={'8px'}>
@@ -105,6 +101,7 @@ export default function IntakeTable ({
                             update();
                         }}
                         showCheckbox
+                        sx={{mx: 1}}
                     />
 
                     <Stack
