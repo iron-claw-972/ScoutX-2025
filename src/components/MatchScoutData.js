@@ -51,7 +51,8 @@ const defaultData = [
         slowIntakes: false, 
         disabled: false, 
         goodDefenseFromOpponents: false,
-        playedMajorityDefense: false
+        playedMajorityDefense: false,
+        touchItOwnIt: false,
     },
     {
         metadatastage: MatchStage.METADATA,
