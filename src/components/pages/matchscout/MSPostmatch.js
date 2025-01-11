@@ -2,7 +2,8 @@ import Grid2 from "@mui/material/Unstable_Grid2";
 import {useState} from "react";
 import {MatchStage} from "../../MatchConstants";
 import CustomInput from "./form_elements/CustomInput";
-import {Box} from "@mui/material";
+import {Box, Typography, Stack} from "@mui/material";
+import CustomToggleButton from "./form_elements/CustomToggleButton";
 
 export default function MSPostmatch(props) {
     const [data, _] = useState(props.data);
@@ -46,6 +47,20 @@ export default function MSPostmatch(props) {
                         update();
                     }}
                 />
+                <Typography variant={"h6"}>
+                        Check All That Apply
+                    </Typography>
+                <Stack direction={"row"} spacing={0.5}> 
+                    {/* <CustomToggleButton
+                        label={"Intake Broken"}
+                        value={data.getPostMData("intakeBroken")}
+                        onClick={(newValue) => {
+                            data.setPostMData("intakeBroken", newValue);
+                            update();
+                    }}
+                    showCheckbox={false}
+                    /> */}
+                </Stack>
             </Grid2>
             <Box sx={{
                 mt: 3,

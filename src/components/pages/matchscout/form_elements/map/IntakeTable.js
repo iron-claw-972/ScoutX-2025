@@ -77,6 +77,23 @@ export default function IntakeTable ({
                     </Typography>
 
                 </Stack>
+                <Stack direction={'row'} spacing={'15px'}>
+                    {data.stage !== MatchStage.POST_MATCH && (
+                        <Button
+                            variant={"outlined"}
+                            fullWidth
+                            onClick={() => {
+                                data.deletePrevious(stage); 
+                                update(); 
+                            }}
+                        >
+                            Delete Previous Outtake
+                        </Button>
+                    )}
+                    <Typography variant="h6">
+                        {data.getOuttakeCount(stage)}
+                    </Typography>
+                </Stack>
 
                 <Stack direction={'column'} spacing={'8px'}>
 
@@ -139,23 +156,6 @@ export default function IntakeTable ({
                             Submit
                         </Button>
                     )}
-                </Stack>
-                <Stack direction={'row'} spacing={'15px'}>
-                    {data.stage !== MatchStage.POST_MATCH && (
-                        <Button
-                            fullWidth
-                            variant={"outlined"}
-                            onClick={() => {
-                                data.deletePrevious(stage); 
-                                update(); 
-                            }}
-                        >
-                            Delete Previous
-                        </Button>
-                    )}
-                    <Typography variant="h6">
-                        {data.getOuttakeCount(stage)}
-                    </Typography>
                 </Stack>
                 </Stack>
                 

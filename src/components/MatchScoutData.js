@@ -41,6 +41,17 @@ const defaultData = [
         comments: "",
         player: false,
         highNotes: 0,
+        intakeBroken: false, 
+        outtakeBroken: false,
+        elevatorBroken: false,
+        armBroken: false,
+        brownsOut: false,
+        wobbly: false,
+        missesOuttakesConsistently: false, 
+        slowIntakes: false, 
+        disabled: false, 
+        goodDefenseFromOpponents: false,
+        playedMajorityDefense: false
     },
     {
         metadatastage: MatchStage.METADATA,
@@ -97,6 +108,7 @@ export default class MatchScoutData {
     incrementMissedCount(stage, selectedRow) {
          
     }
+
     deletePrevious(stage) {
         this.data[stage]['outtakeCounts'].pop();  //TODO: fix dis
     }
@@ -105,6 +117,13 @@ export default class MatchScoutData {
         return this.data[stage]['outtakeCounts'].length; 
     }
 
+    setPostData(type, value) {
+        this.data[MatchStage.POST_MATCH][type] = value; 
+    }
+
+    getPostData(type) {
+        return this.data[MatchStage.POST_MATCH][type]; 
+    }
     set(stage, path, value) {
         this.history.push({
             id: ++this.historyCounter,
