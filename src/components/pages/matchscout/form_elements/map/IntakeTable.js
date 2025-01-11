@@ -41,7 +41,7 @@ export default function IntakeTable ({
 
                     <IntakeButton 
                         width={(40 / 100) * boxDimensions.height} 
-                        height={(43 / 100) * boxDimensions.height} 
+                        height={(52.3 / 100) * boxDimensions.height} 
                         element={"Coral"}
                         selectedIntakeElement={selectedIntakeElement}
                         setSelectedIntakeElement={setSelectedIntakeElement}
@@ -50,7 +50,7 @@ export default function IntakeTable ({
                     />
                     <IntakeButton 
                         width={(40 / 100) * boxDimensions.height} 
-                        height={(43 / 100) * boxDimensions.height} 
+                        height={(52.3 / 100) * boxDimensions.height} 
                         element={"Algae"}
                         selectedIntakeElement={selectedIntakeElement}
                         setSelectedIntakeElement={setSelectedIntakeElement}
