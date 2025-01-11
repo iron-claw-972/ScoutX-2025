@@ -10,21 +10,29 @@ export default function IntakeButton({
     selectedIntakeLocation,
     setSelectedIntakeLocation,
 }) {
-    const label = `${element}`
+    const label = `${element}`;
+    const isSelected = 
+        selectedIntakeElement === (element === "Coral" ? IntakeElement.CORAL : IntakeElement.ALGAE);
+
     return (
         <Button
-            onClick={
-                () => setSelectedIntakeElement(element == "Coral" ? IntakeElement.CORAL : IntakeElement.ALGAE
-            )}
-            variant= "outlined"
-            color= "white"
+            onClick={() =>
+                setSelectedIntakeElement(
+                    element === "Coral" ? IntakeElement.CORAL : IntakeElement.ALGAE
+                )
+            }
+            variant={isSelected ? "contained" : "outlined"} 
+            color={isSelected ? "primary" : "inherit"} 
             sx={{
                 width: `${width}px`,
                 height: `${height}px`,
                 fontSize: "0.8rem",
+                backgroundColor: isSelected ? "primary.main" : "inherit", 
+                color: isSelected ? "white" : "inherit", 
             }}
-            disabled={selectedIntakeLocation != 0}
-        >{"Intake " + label}
+            disabled={selectedIntakeLocation !== 0}
+        >
+            {"Intake " + label}
         </Button>
-    )
+    );
 }

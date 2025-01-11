@@ -125,6 +125,7 @@ export default function IntakeTable ({
                             Next
                         </Button>
                     )}
+                    
                     {data.stage === MatchStage.POST_MATCH && (
                         <Button
                             fullWidth
@@ -138,6 +139,23 @@ export default function IntakeTable ({
                             Submit
                         </Button>
                     )}
+                </Stack>
+                <Stack direction={'row'} spacing={'15px'}>
+                    {data.stage !== MatchStage.POST_MATCH && (
+                        <Button
+                            fullWidth
+                            variant={"outlined"}
+                            onClick={() => {
+                                data.deletePrevious(stage); 
+                                update(); 
+                            }}
+                        >
+                            Delete Previous
+                        </Button>
+                    )}
+                    <Typography variant="h6">
+                        {data.getOuttakeCount(stage)}
+                    </Typography>
                 </Stack>
                 </Stack>
                 

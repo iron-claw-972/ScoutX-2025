@@ -1,7 +1,6 @@
 import Grid2 from "@mui/material/Unstable_Grid2";
 import {useState} from "react";
 import {MatchStage} from "../../MatchConstants";
-import Undo from "./form_elements/Undo";
 import CustomInput from "./form_elements/CustomInput";
 import {Box} from "@mui/material";
 
@@ -51,7 +50,6 @@ export default function MSPostmatch(props) {
             <Box sx={{
                 mt: 3,
             }}/>
-            <Undo data={data} update={() => update()}/>
         </>
     );
 }

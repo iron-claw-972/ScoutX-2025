@@ -97,6 +97,13 @@ export default class MatchScoutData {
     incrementMissedCount(stage, selectedRow) {
          
     }
+    deletePrevious(stage) {
+        this.data[stage]['outtakeCounts'].pop();  //TODO: fix dis
+    }
+    
+    getOuttakeCount(stage) {
+        return this.data[stage]['outtakeCounts'].length; 
+    }
 
     set(stage, path, value) {
         this.history.push({
