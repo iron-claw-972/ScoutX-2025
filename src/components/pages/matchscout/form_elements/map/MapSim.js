@@ -175,7 +175,7 @@ export default function MapSim(
             boxDimensions={boxDimensions}
         />,
         <CoralStationButton
-            x={86.5}
+            x={(86.5)}
             y={74.3}
             selectedIntakeElement={selectedIntakeElement}
             setSelectedIntakeElement={setSelectedIntakeElement}
@@ -210,7 +210,103 @@ export default function MapSim(
     ]
 
     const AutoMarkersFlipped = [
-
+        <GroundButton
+            x={53}
+            y={23.8}
+            selectedIntakeElement={selectedIntakeElement}
+            setSelectedIntakeElement={setSelectedIntakeElement}
+            selectedIntakeLocation={selectedIntakeLocation}
+            setSelectedIntakeLocation={setSelectedIntakeLocation}
+            startStopwatch={startStopwatch}
+            stopStopwatch={stopStopwatch}
+            elapsedTime={elapsedTime}
+            boxDimensions={boxDimensions}
+        />,
+        <ProcessorButton
+            x={60}
+            y={10}
+            selectedIntakeElement={selectedIntakeElement}
+            setSelectedIntakeElement={setSelectedIntakeElement}
+            selectedIntakeLocation={selectedIntakeLocation}
+            setSelectedIntakeLocation={setSelectedIntakeLocation}
+            startStopwatch={startStopwatch}
+            stopStopwatch={stopStopwatch}
+            elapsedTime={elapsedTime}
+            data={data}
+            stage={stage}
+            boxDimensions={boxDimensions}
+        />,
+        <NetButton
+            x={49.4}
+            y={10}
+            selectedIntakeElement={selectedIntakeElement}
+            setSelectedIntakeElement={setSelectedIntakeElement}
+            selectedIntakeLocation={selectedIntakeLocation}
+            setSelectedIntakeLocation={setSelectedIntakeLocation}
+            startStopwatch={startStopwatch}
+            stopStopwatch={stopStopwatch}
+            elapsedTime={elapsedTime}
+            data={data}
+            stage={stage}
+            boxDimensions={boxDimensions}
+        />,
+        <ReefButton
+            x={64.5}
+            y={35.5}
+            selectedIntakeElement={selectedIntakeElement}
+            setSelectedIntakeElement={setSelectedIntakeElement}
+            selectedIntakeLocation={selectedIntakeLocation}
+            setSelectedIntakeLocation={setSelectedIntakeLocation}
+            startStopwatch={startStopwatch}
+            stopStopwatch={stopStopwatch}
+            elapsedTime={elapsedTime}
+            boxDimensions={boxDimensions}
+        />,
+        <CoralStationButton
+            x={86.5}
+            y={9}
+            selectedIntakeElement={selectedIntakeElement}
+            setSelectedIntakeElement={setSelectedIntakeElement}
+            selectedIntakeLocation={selectedIntakeLocation}
+            setSelectedIntakeLocation={setSelectedIntakeLocation}
+            startStopwatch={startStopwatch}
+            stopStopwatch={stopStopwatch}
+            elapsedTime={elapsedTime}
+            boxDimensions={boxDimensions}
+        />,
+        <CoralStationButton
+            x={(86.5)}
+            y={74.3}
+            selectedIntakeElement={selectedIntakeElement}
+            setSelectedIntakeElement={setSelectedIntakeElement}
+            selectedIntakeLocation={selectedIntakeLocation}
+            setSelectedIntakeLocation={setSelectedIntakeLocation}
+            startStopwatch={startStopwatch}
+            stopStopwatch={stopStopwatch}
+            elapsedTime={elapsedTime}
+            boxDimensions={boxDimensions}
+        />,
+        <Button
+            variant={"contained"}
+            color={"error"}
+            onClick={() => {
+                data.incrementMissedCount(stage, 7);
+                data.addOuttakeEntry(stage, selectedIntakeElement, selectedIntakeLocation, elapsedTime, "MISSED")
+                setSelectedIntakeLocation(0);
+                setSelectedIntakeElement(0); 
+                stopStopwatch();
+            }}
+            disabled={selectedIntakeElement == 0 || selectedIntakeLocation == 0}
+            sx={{
+                position: 'absolute',
+                top: '75%',
+                right: '22%',
+                width: `${(34 / 100) * boxDimensions.height}px`,
+                height: `${(13 / 100) * boxDimensions.height}px`,
+            }}
+        >
+        Missed
+        </Button>
     ]
 
     const TeleopMarkers = [...AutoMarkers];

@@ -42,18 +42,22 @@ const defaultData = [
         comments: "",
         player: false,
         highNotes: 0,
-        intakeBroken: false, 
+        intakeBroken: false,
         outtakeBroken: false,
         elevatorBroken: false,
         armBroken: false,
         brownsOut: false,
         wobbly: false,
-        missesOuttakesConsistently: false, 
-        slowIntakes: false, 
-        disabled: false, 
+        missesOuttakesConsistently: false,
+        slowIntakes: false,
+        disabled: false,
         goodDefenseFromOpponents: false,
         playedMajorityDefense: false,
         touchItOwnIt: false,
+        aStopped: false, // Added
+        eStopped: false, // Added
+        knockedCage: false, // Added
+        failedClimb: false, // Added
     },
     {
         metadatastage: MatchStage.METADATA,
@@ -183,7 +187,6 @@ export default class MatchScoutData {
         const autoioCount = defaultData[1].outtakeCounts.length;
         const teleioCount = defaultData[2].outtakeCounts.length;
 
-        const autoClimbPosition = defaultData[1].climb;
         const teleClimbPosition = defaultData[2].climb;
 
         const autoMissedCounts = defaultData[1].missedCounts;
