@@ -3,8 +3,8 @@ import IntakeButton from "./IntakeButton";
 import { Stack } from "@mui/system";
 import CustomToggleButton from "../CustomToggleButton";
 import {useCookies} from "react-cookie";
-import { useState } from "react";
 import { MatchStage } from "../../../../MatchConstants";
+import { Constants } from "../../../../../Constants";
 
 export default function IntakeTable ({
     sx,
@@ -28,6 +28,7 @@ export default function IntakeTable ({
     const [cookies, setCookie] = useCookies(); 
 
     return (
+        
         <Grid
         container
         sx={{
@@ -38,6 +39,32 @@ export default function IntakeTable ({
             <Stack direction={'column'} spacing={'15px'}>
 
                 <Stack direction={'row'} spacing={'5px'}>
+                 <Box
+                        draggable={"false"}
+                        component={"img"}
+                        src={Constants.coralGamepiece}
+                        sx={{
+                            position: "absolute",
+                            width: "30px",
+                            height: "40px",
+                            top: "30%",
+                            left: "10%",
+                            pointerEvents: "none", // Ensure the image does not interact with button methods
+                        }}
+                    />
+                    <Box
+                        draggable={"false"}
+                        component={"img"}
+                        src={Constants.algaeGamepiece}
+                        sx={{
+                            position: "absolute",
+                            width: "40px",
+                            height: "40px",
+                            top: "30%",
+                            left: "32%",
+                            pointerEvents: "none", // Ensure the image does not interact with button methods
+                        }}
+                    />
 
                     <IntakeButton 
                         width={(40 / 100) * boxDimensions.height} 
