@@ -21,13 +21,13 @@ export default function IntakeButton({
                     element === "Coral" ? IntakeElement.CORAL : IntakeElement.ALGAE
                 )
             }
-            variant={isSelected ? "contained" : "outlined"} 
+            variant={isSelected ? "outlined" : "outlined"} 
             color={isSelected ? "primary" : "inherit"} 
             sx={{
                 width: `${width}px`,
                 height: `${height}px`,
                 fontSize: "0.8rem",
-                backgroundColor: isSelected ? "primary.main" : "inherit", 
+                borderColor: isSelected ? "primary.main" : "inherit", 
                 color: isSelected ? "white" : "inherit", 
             }}
             disabled={selectedIntakeLocation !== 0}

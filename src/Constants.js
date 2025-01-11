@@ -38,6 +38,8 @@ export const Constants = {
     field: require("./assets/field.png"),
     fieldFlipped: require("./assets/fieldFlipped.png"),
     fieldReef: require("./assets/fieldReef.png"),
+    coralGamepiece: require ("./assets/CoralGamepiece.png"),
+    algaeGamepiece: require ("./assets/AlgaeGamepiece.png"),
 
     // TODO: Images!
     developers: [
