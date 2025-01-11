@@ -41,7 +41,7 @@ export default function IntakeTable ({
 
                     <IntakeButton 
                         width={(40 / 100) * boxDimensions.height} 
-                        height={(52.3 / 100) * boxDimensions.height} 
+                        height={(47.3 / 100) * boxDimensions.height} 
                         element={"Coral"}
                         selectedIntakeElement={selectedIntakeElement}
                         setSelectedIntakeElement={setSelectedIntakeElement}
@@ -50,7 +50,7 @@ export default function IntakeTable ({
                     />
                     <IntakeButton 
                         width={(40 / 100) * boxDimensions.height} 
-                        height={(52.3 / 100) * boxDimensions.height} 
+                        height={(47.3 / 100) * boxDimensions.height} 
                         element={"Algae"}
                         selectedIntakeElement={selectedIntakeElement}
                         setSelectedIntakeElement={setSelectedIntakeElement}
@@ -69,7 +69,7 @@ export default function IntakeTable ({
                             stopStopwatch();
                             setElapsedTime(0);
                         }}
-                        sx={{width: `${(25 / 100) * boxDimensions.height}px`}}
+                        sx={{width: `${(20 / 100) * boxDimensions.height}px`}}
                     />
 
                     <Typography variant="h6">
