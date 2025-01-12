@@ -47,7 +47,7 @@ export default function IntakeTable ({
                             position: "absolute",
                             width: "30px",
                             height: "40px",
-                            top: "30%",
+                            top: "32%",
                             left: "10%",
                             pointerEvents: "none", // Ensure the image does not interact with button methods
                         }}
@@ -60,7 +60,7 @@ export default function IntakeTable ({
                             position: "absolute",
                             width: "40px",
                             height: "40px",
-                            top: "30%",
+                            top: "32%",
                             left: "32%",
                             pointerEvents: "none", // Ensure the image does not interact with button methods
                         }}

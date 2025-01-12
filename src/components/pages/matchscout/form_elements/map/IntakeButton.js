@@ -29,6 +29,7 @@ export default function IntakeButton({
                 fontSize: "0.8rem",
                 borderColor: isSelected ? "primary.main" : "inherit", 
                 color: isSelected ? "white" : "inherit", 
+                paddingBottom: "35px"
             }}
             disabled={selectedIntakeLocation !== 0}
         >
