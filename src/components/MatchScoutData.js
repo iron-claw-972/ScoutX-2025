@@ -1,7 +1,6 @@
 import {MatchStage, StartPosition, IntakeElement, IntakeLocations} from "./MatchConstants";
 import {Scouters} from "./Scouters";
 import {doc, getFirestore, setDoc} from "firebase/firestore";
-import MatchScout from "./pages/MatchScout";
 
 const climb = [
     "Neither",

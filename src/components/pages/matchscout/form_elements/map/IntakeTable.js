@@ -109,6 +109,7 @@ export default function IntakeTable ({
                             data.deletePrevious(stage); 
                             update(); 
                         }}
+                        
                     />
 
                     <Typography variant="h6">
