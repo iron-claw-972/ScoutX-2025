@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Typography, TextField, Button, CircularProgress } from '@mui/material';
 import firebase from '../../firebase';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 import Page from '../Page';
 
 const Analytics = () => {
@@ -21,15 +21,19 @@ const Analytics = () => {
     setError(null);    // Reset error state
 
     try {
-      // Query the Firestore collection where the 'team' field matches the entered value
-      const q = query(matchScoutDataRef, where('team', '==', team));
-      const querySnapshot = await getDocs(q);
+      // Get all documents from the collection
+      const querySnapshot = await getDocs(matchScoutDataRef);
 
-      if (querySnapshot.empty) {
+      // Filter documents where the ID starts with the entered team number, I could also do this in the doc
+      const filteredDocs = querySnapshot.docs.filter((doc) =>
+        doc.id.startsWith(team)  // Check if the document ID starts with the entered team number
+      );
+
+      if (filteredDocs.length === 0) {
         setError('No team found with that number!');
       } else {
-        // Assuming only one document matches the team number, get the first doc
-        const teamDoc = querySnapshot.docs[0];
+        // Assuming the team number is unique to the document ID, get the first match
+        const teamDoc = filteredDocs[0];
         setTeamData(teamDoc.data());  // Set the team data in state
       }
     } catch (err) {
@@ -86,4 +90,4 @@ const Analytics = () => {
   );
 };
 
-export default Analytics; 
+export default Analytics;
