@@ -3,6 +3,7 @@ import MatchScout from "./components/pages/MatchScout";
 import Credits from "./components/pages/Credits";
 import PitScout from "./components/pages/PitScout";
 import Gambling from "./components/pages/Gambling";
+import Analytics from "./components/pages/Analytics";
 
 
 export const Constants = {
@@ -32,6 +33,11 @@ export const Constants = {
             title: "Gambling",
             path: "/gambling",
             component: Gambling,
+        },
+        {
+            title: "Analytics",
+            path: "/analytics",
+            component: Analytics,
         }
     ],
 
