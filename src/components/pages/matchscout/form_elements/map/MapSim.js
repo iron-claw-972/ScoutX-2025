@@ -211,7 +211,7 @@ export default function MapSim(
 
     const AutoMarkersFlipped = [
         <GroundButton
-            x={53}
+            x={53.9}
             y={23.8}
             selectedIntakeElement={selectedIntakeElement}
             setSelectedIntakeElement={setSelectedIntakeElement}
@@ -223,8 +223,8 @@ export default function MapSim(
             boxDimensions={boxDimensions}
         />,
         <ProcessorButton
-            x={60}
-            y={10}
+            x={73.3}
+            y={71.7}
             selectedIntakeElement={selectedIntakeElement}
             setSelectedIntakeElement={setSelectedIntakeElement}
             selectedIntakeLocation={selectedIntakeLocation}
@@ -237,8 +237,8 @@ export default function MapSim(
             boxDimensions={boxDimensions}
         />,
         <NetButton
-            x={49.4}
-            y={10}
+            x={89.2}
+            y={48}
             selectedIntakeElement={selectedIntakeElement}
             setSelectedIntakeElement={setSelectedIntakeElement}
             selectedIntakeLocation={selectedIntakeLocation}
@@ -251,8 +251,8 @@ export default function MapSim(
             boxDimensions={boxDimensions}
         />,
         <ReefButton
-            x={64.5}
-            y={35.5}
+            x={66.2}
+            y={32.5}
             selectedIntakeElement={selectedIntakeElement}
             setSelectedIntakeElement={setSelectedIntakeElement}
             selectedIntakeLocation={selectedIntakeLocation}
@@ -263,8 +263,8 @@ export default function MapSim(
             boxDimensions={boxDimensions}
         />,
         <CoralStationButton
-            x={86.5}
-            y={9}
+            x={50}
+            y={6.5}
             selectedIntakeElement={selectedIntakeElement}
             setSelectedIntakeElement={setSelectedIntakeElement}
             selectedIntakeLocation={selectedIntakeLocation}
@@ -275,8 +275,8 @@ export default function MapSim(
             boxDimensions={boxDimensions}
         />,
         <CoralStationButton
-            x={(86.5)}
-            y={74.3}
+            x={(50)}
+            y={71.3}
             selectedIntakeElement={selectedIntakeElement}
             setSelectedIntakeElement={setSelectedIntakeElement}
             selectedIntakeLocation={selectedIntakeLocation}
@@ -299,8 +299,8 @@ export default function MapSim(
             disabled={selectedIntakeElement == 0 || selectedIntakeLocation == 0}
             sx={{
                 position: 'absolute',
-                top: '75%',
-                right: '22%',
+                top: '9%',
+                right: '12%',
                 width: `${(34 / 100) * boxDimensions.height}px`,
                 height: `${(13 / 100) * boxDimensions.height}px`,
             }}
@@ -321,6 +321,82 @@ export default function MapSim(
     );
     
     const TeleopMarkersFlipped = [
+        <GroundButton
+            x={53.9}
+            y={23.8}
+            selectedIntakeElement={selectedIntakeElement}
+            setSelectedIntakeElement={setSelectedIntakeElement}
+            selectedIntakeLocation={selectedIntakeLocation}
+            setSelectedIntakeLocation={setSelectedIntakeLocation}
+            startStopwatch={startStopwatch}
+            stopStopwatch={stopStopwatch}
+            elapsedTime={elapsedTime}
+            boxDimensions={boxDimensions}
+        />,
+        <ProcessorButton
+            x={73.3}
+            y={71.7}
+            selectedIntakeElement={selectedIntakeElement}
+            setSelectedIntakeElement={setSelectedIntakeElement}
+            selectedIntakeLocation={selectedIntakeLocation}
+            setSelectedIntakeLocation={setSelectedIntakeLocation}
+            startStopwatch={startStopwatch}
+            stopStopwatch={stopStopwatch}
+            elapsedTime={elapsedTime}
+            data={data}
+            stage={stage}
+            boxDimensions={boxDimensions}
+        />,
+        <NetButton
+            x={89.2}
+            y={48}
+            selectedIntakeElement={selectedIntakeElement}
+            setSelectedIntakeElement={setSelectedIntakeElement}
+            selectedIntakeLocation={selectedIntakeLocation}
+            setSelectedIntakeLocation={setSelectedIntakeLocation}
+            startStopwatch={startStopwatch}
+            stopStopwatch={stopStopwatch}
+            elapsedTime={elapsedTime}
+            data={data}
+            stage={stage}
+            boxDimensions={boxDimensions}
+        />,
+        <ReefButton
+            x={66.2}
+            y={32.5}
+            selectedIntakeElement={selectedIntakeElement}
+            setSelectedIntakeElement={setSelectedIntakeElement}
+            selectedIntakeLocation={selectedIntakeLocation}
+            setSelectedIntakeLocation={setSelectedIntakeLocation}
+            startStopwatch={startStopwatch}
+            stopStopwatch={stopStopwatch}
+            elapsedTime={elapsedTime}
+            boxDimensions={boxDimensions}
+        />,
+        <CoralStationButton
+            x={50}
+            y={6.5}
+            selectedIntakeElement={selectedIntakeElement}
+            setSelectedIntakeElement={setSelectedIntakeElement}
+            selectedIntakeLocation={selectedIntakeLocation}
+            setSelectedIntakeLocation={setSelectedIntakeLocation}
+            startStopwatch={startStopwatch}
+            stopStopwatch={stopStopwatch}
+            elapsedTime={elapsedTime}
+            boxDimensions={boxDimensions}
+        />,
+        <CoralStationButton
+            x={(50)}
+            y={71.3}
+            selectedIntakeElement={selectedIntakeElement}
+            setSelectedIntakeElement={setSelectedIntakeElement}
+            selectedIntakeLocation={selectedIntakeLocation}
+            setSelectedIntakeLocation={setSelectedIntakeLocation}
+            startStopwatch={startStopwatch}
+            stopStopwatch={stopStopwatch}
+            elapsedTime={elapsedTime}
+            boxDimensions={boxDimensions}
+        />,
         <Button
             variant={"contained"}
             color={"error"}
@@ -334,14 +410,21 @@ export default function MapSim(
             disabled={selectedIntakeElement == 0 || selectedIntakeLocation == 0}
             sx={{
                 position: 'absolute',
-                top: '81%',
-                right: '1.8%',
-                width: '298px',
-                height: '38px',
+                top: '9%',
+                right: '12%',
+                width: `${(34 / 100) * boxDimensions.height}px`,
+                height: `${(13 / 100) * boxDimensions.height}px`,
             }}
         >
         Missed
-        </Button>
+        </Button>,
+         <DockButton
+            x={89.95}
+            y={6.7}
+            stage={stage}
+            data={data}
+            boxDimensions={boxDimensions}
+        />
     ]
 
 
