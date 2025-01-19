@@ -115,6 +115,7 @@ export default function MatchScout() {
                         variant={"outlined"}
                         onClick={() => {
                             data.submit();
+                            
                         }}
                     >
                         Submit
