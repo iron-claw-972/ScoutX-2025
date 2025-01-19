@@ -2,7 +2,7 @@ import { Alert, Button, Collapse, Divider, IconButton, Stack, Typography } from 
 import Page from "../Page";
 import { useEffect, useMemo, useState } from "react";
 import MatchScoutData from "../MatchScoutData";
-import { MatchStage } from "../MatchConstants";
+import { MatchStage, IntakeElement, IntakeLocations } from "../MatchConstants";
 import MSAuto from "./matchscout/MSAuto";
 import MSPrematch from "./matchscout/MSPrematch";
 import MSPostmatch from "./matchscout/MSPostmatch";

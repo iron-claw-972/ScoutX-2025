@@ -3,7 +3,7 @@ import IntakeButton from "./IntakeButton";
 import { Stack } from "@mui/system";
 import CustomToggleButton from "../CustomToggleButton";
 import {useCookies} from "react-cookie";
-import { MatchStage } from "../../../../MatchConstants";
+import { IntakeElement, IntakeLocations, MatchStage } from "../../../../MatchConstants";
 import { Constants } from "../../../../../Constants";
 
 export default function IntakeTable ({
@@ -160,8 +160,8 @@ export default function IntakeTable ({
                             onClick={() => {
                                 handleStageChange(data.stage + 1);
                                 update();
-                                setSelectedIntakeElement(0);
-                                setSelectedIntakeLocation(0);
+                                setSelectedIntakeElement(IntakeElement.CORAL);
+                                setSelectedIntakeLocation(IntakeLocations.PRELOAD);
                             }}
                         >
                             Next

@@ -170,6 +170,125 @@ export default class MatchScoutData {
         return this.data[stage]["io"][index][type];
     }
 
+    deriveAutoOuttakeMetrics() {
+        const autoOuttakeCounts = this.data[MatchStage.AUTO]["outtakeCounts"];
+        
+        const metrics = {
+            AutoMissed: 0,
+            AutoMissedCoral: 0,
+            AutoMissedAlgae: 0,
+            AutoCoralScored: 0,
+            AutoCoralL1: 0,
+            AutoCoralL2: 0,
+            AutoCoralL3: 0,
+            AutoCoralL4: 0,
+            AutoAlgaeScored: 0,
+            AutoAlgaeProcessor: 0,
+            AutoAlgaeNet: 0,
+            AutoAvgCoralCycle: 0,
+            AutoAvgAlgaeCycle: 0,
+        };
+    
+        let totalCoralCycleTime = 0;
+        let coralCount = 0;
+        let totalAlgaeCycleTime = 0;
+        let algaeCount = 0;
+    
+        autoOuttakeCounts.forEach(entry => {
+            const { element, outtakeLocation, cycleTime } = entry;
+    
+            if (outtakeLocation === "MISSED") {
+                metrics.AutoMissed++;
+                if (element === "CORAL") metrics.AutoMissedCoral++;
+                if (element === "ALGAE") metrics.AutoMissedAlgae++;
+            } else {
+                if (element === "CORAL") {
+                    metrics.AutoCoralScored++;
+                    if (outtakeLocation === "L1") metrics.AutoCoralL1++;
+                    if (outtakeLocation === "L2") metrics.AutoCoralL2++;
+                    if (outtakeLocation === "L3") metrics.AutoCoralL3++;
+                    if (outtakeLocation === "L4") metrics.AutoCoralL4++;
+                    totalCoralCycleTime += cycleTime;
+                    coralCount++;
+                }
+    
+                if (element === "ALGAE") {
+                    metrics.AutoAlgaeScored++;
+                    if (outtakeLocation === "PROCESSOR") metrics.AutoAlgaeProcessor++;
+                    if (outtakeLocation === "NET") metrics.AutoAlgaeNet++;
+                    totalAlgaeCycleTime += cycleTime;
+                    algaeCount++;
+                }
+            }
+        });
+    
+        // Calculate averages
+        metrics.AutoAvgCoralCycle = coralCount > 0 ? (totalCoralCycleTime / coralCount).toFixed(3) : 0;
+        metrics.AutoAvgAlgaeCycle = algaeCount > 0 ? (totalAlgaeCycleTime / algaeCount).toFixed(3) : 0;
+    
+        return metrics;
+    }
+
+    deriveTeleOuttakeMetrics() {
+        const teleOuttakeCounts = this.data[MatchStage.AUTO]["outtakeCounts"];
+        
+        const metrics = {
+            TeleMissed: 0,
+            TeleMissedCoral: 0,
+            TeleMissedAlgae: 0,
+            TeleCoralScored: 0,
+            TeleCoralL1: 0,
+            TeleCoralL2: 0,
+            TeleCoralL3: 0,
+            TeleCoralL4: 0,
+            TeleAlgaeScored: 0,
+            TeleAlgaeProcessor: 0,
+            TeleAlgaeNet: 0,
+            TeleAvgCoralCycle: 0,
+            TeleAvgAlgaeCycle: 0,
+        };
+    
+        let totalCoralCycleTime = 0;
+        let coralCount = 0;
+        let totalAlgaeCycleTime = 0;
+        let algaeCount = 0;
+    
+        teleOuttakeCounts.forEach(entry => {
+            const { element, outtakeLocation, cycleTime } = entry;
+    
+            if (outtakeLocation === "MISSED") {
+                metrics.AutoMissed++;
+                if (element === "CORAL") metrics.TeleMissedCoral++;
+                if (element === "ALGAE") metrics.TeleMissedAlgae++;
+            } else {
+                if (element === "CORAL") {
+                    metrics.TeleCoralScored++;
+                    if (outtakeLocation === "L1") metrics.TeleCoralL1++;
+                    if (outtakeLocation === "L2") metrics.TeleCoralL2++;
+                    if (outtakeLocation === "L3") metrics.TeleCoralL3++;
+                    if (outtakeLocation === "L4") metrics.TeleCoralL4++;
+                    totalCoralCycleTime += cycleTime;
+                    coralCount++;
+                }
+    
+                if (element === "ALGAE") {
+                    metrics.TeleAlgaeScored++;
+                    if (outtakeLocation === "PROCESSOR") metrics.TeleAlgaeProcessor++;
+                    if (outtakeLocation === "NET") metrics.AutoAlgaeNet++;
+                    totalAlgaeCycleTime += cycleTime;
+                    algaeCount++;
+                }
+            }
+        });
+    
+        // Calculate averages
+        metrics.TeleAvgCoralCycle = coralCount > 0 ? (totalCoralCycleTime / coralCount).toFixed(3) : 0;
+        metrics.TeleAvgAlgaeCycle = algaeCount > 0 ? (totalAlgaeCycleTime / algaeCount).toFixed(3) : 0;
+    
+        return metrics;
+    }
+    
+
     async submit() {
         const validation = this.validate(true);
         if (!validation.valid) {
@@ -191,15 +310,18 @@ export default class MatchScoutData {
         const autoMissedCounts = defaultData[1].missedCounts;
         const teleMissedCounts = defaultData[2].missedCounts;
 
+        const autoMetrics = this.deriveAutoOuttakeMetrics();
+        const teleMetrics = this.deriveTeleOuttakeMetrics();
+
         let firebaseData = {
             autoioCount: autoioCount,
             teleioCount: teleioCount,
             autoOuttakeCounts: autoOuttakeCounts,
             teleOuttakeCounts: teleOuttakeCounts,
             ClimbPosition: teleClimbPosition,
-            autoMissedCounts: autoMissedCounts,
-            teleMissedCounts: teleMissedCounts
         };
+
+        firebaseData = { ...firebaseData, ...autoMetrics, ...teleMetrics };
 
         for (const key in defaultData) {
             for (const inner in defaultData[key]) {

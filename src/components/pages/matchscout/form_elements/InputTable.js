@@ -3,7 +3,7 @@ import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import { Stack } from "@mui/system";
 import { Typography } from "@mui/material";
 import IncrementCounter from "./IncrementCounter";
-import {AutoIntakePosition, MatchStage, getMarkerLabel} from "../../../MatchConstants";
+import {MatchStage} from "../../../MatchConstants";
 
 export default function InputTable({ stage, selectedRow, setSelectedRow, data }) {
     const [counter, setCounter] = useState(0);  
