@@ -22,10 +22,11 @@ export default function MSPostmatch(props) {
                     required={false}
                     label={"Extra Comments"}
                     helperText={
-                        "Anything else you would like to add? For example, did the robot break down (and for how long!), or did the drive team do something exceptional?"
+                        "Anything else you would like to add? For example, what were some potential sources of error?"
                     }
                     type={"text"}
                     multiline={true}
+                    fullWidth={true}
                     value={data.get(MatchStage.POST_MATCH, "comments")}
                     onChange={(newValue) => {
                         data.set(MatchStage.POST_MATCH, "comments", newValue);
@@ -33,20 +34,6 @@ export default function MSPostmatch(props) {
                     }}
                 />
 
-                <CustomInput
-                    label={"Comments on Defense"}
-                    helperText={
-                        "If this team played defense, how did they do? Describe in great detail."
-                    }
-                    type={"text"}
-                    multiline={true}
-                    fullWidth={true}
-                    value={data.get(MatchStage.POST_MATCH, "defense")}
-                    onChange={(newValue) => {
-                        data.set(MatchStage.POST_MATCH, "defense", newValue);
-                        update();
-                    }}
-                />
                 <Typography variant={"h6"}>Check All That Apply</Typography>
 
 {/* Wrap CustomToggleButtons in Grid2 */}
