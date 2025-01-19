@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MatchStage, IntakeElement } from "../../MatchConstants";
+import { MatchStage, IntakeElement, IntakeLocations } from "../../MatchConstants";
 import CustomToggleButton from "./form_elements/CustomToggleButton";
 import CustomRating from "./form_elements/CustomRating";
 import { Collapse, Stack } from "@mui/material";
@@ -9,8 +9,8 @@ import MapSim from "./form_elements/map/MapSim";
 export default function MSTeleop({ data, handleStageChange }) {
     const [counter, setCounter] = useState(0);
     const [selectedRow, setSelectedRow] = useState(0);
-    const [selectedIntakeElement, setSelectedIntakeElement] = useState(0);
-    const [selectedIntakeLocation, setSelectedIntakeLocation] = useState(0);
+    const [selectedIntakeElement, setSelectedIntakeElement] = useState(IntakeElement.CORAL);
+    const [selectedIntakeLocation, setSelectedIntakeLocation] = useState(IntakeLocations.PRELOAD);
 
     const update = () => {
         setCounter(counter + 1);

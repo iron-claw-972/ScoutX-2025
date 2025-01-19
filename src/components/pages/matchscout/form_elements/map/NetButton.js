@@ -29,6 +29,8 @@ export default function NetButton({
             color={"inherit"}
             sx={{
                 position: "absolute",
+                minWidth: "unset",
+                minHeight: "unset",
                 width: `${(8.3 / 100) * boxDimensions.width}px`,
                 height: `${(39 / 100) * boxDimensions.height}px`,
                 top: `${y}%`,
