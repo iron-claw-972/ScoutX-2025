@@ -3,87 +3,96 @@ import { Typography, TextField, Button, CircularProgress } from '@mui/material';
 import firebase from '../../firebase';
 import { collection, getDocs } from 'firebase/firestore';
 import Page from '../Page';
+import axios from 'axios'; // For calling the Firebase function
 
 const Analytics = () => {
-  const [team, setTeam] = useState('');  // To store the input team number
-  const [teamData, setTeamData] = useState(null);    // To store the fetched team data
-  const [loading, setLoading] = useState(false);     // To handle loading state
-  const [error, setError] = useState(null);          // To handle error messages
+  const [team, setTeam] = useState('');
+  const [teamData, setTeamData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [analysis, setAnalysis] = useState(null); // For GPT response
 
-  // Firestore reference to matchScoutData collection
   const matchScoutDataRef = collection(firebase, 'matchScoutData');
 
-  // Fetch the team data based on the entered team number
   const getTeamData = async () => {
-    if (!team) return; // Don't fetch if the team number is empty
+    if (!team) return;
 
-    setLoading(true);  // Set loading to true when starting to fetch data
-    setError(null);    // Reset error state
+    setLoading(true);
+    setError(null);
+    setAnalysis(null);
 
     try {
-      // Get all documents from the collection
       const querySnapshot = await getDocs(matchScoutDataRef);
 
-      // Filter documents where the ID starts with the entered team number, I could also do this in the doc
       const filteredDocs = querySnapshot.docs.filter((doc) =>
-        doc.id.startsWith(team)  // Check if the document ID starts with the entered team number
+        doc.id.startsWith(team)
       );
 
       if (filteredDocs.length === 0) {
         setError('No team found with that number!');
       } else {
-        // Assuming the team number is unique to the document ID, get the first match
         const teamDoc = filteredDocs[0];
-        setTeamData(teamDoc.data());  // Set the team data in state
+        const teamData = teamDoc.data();
+        setTeamData(teamData);
+
+        // Send team data to Firebase Cloud Function for GPT analysis
+        const response = await axios.post(
+          'https://analyzeteamdata-rage5hpe6a-uc.a.run.app',
+          { teamData }
+        );
+
+        setAnalysis(response.data.analysis); // Display GPT-4 response
       }
     } catch (err) {
-      setError('Error fetching document: ' + err.message);  // Handle any errors
+      setError('Error fetching document or GPT analysis: ' + err.message);
     } finally {
-      setLoading(false);  // Set loading to false when the fetch is done
+      setLoading(false);
     }
   };
 
-  // Handle the form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    getTeamData();  // Trigger data fetch
+    getTeamData();
   };
 
   return (
     <Page>
       <Typography variant="h4" gutterBottom>Team Scouting</Typography>
 
-      {/* Input form to enter team number */}
       <form onSubmit={handleSubmit}>
         <TextField
           label="Enter Team Number"
           variant="outlined"
           value={team}
-          onChange={(e) => setTeam(e.target.value)} // Update state as user types
+          onChange={(e) => setTeam(e.target.value)}
           fullWidth
           margin="normal"
-          type="text"
         />
 
         <Button
           variant="contained"
           color="primary"
           type="submit"
-          disabled={loading}  // Disable the button while loading
+          disabled={loading}
           fullWidth
         >
-          {loading ? <CircularProgress size={24} /> : 'Fetch Team Data'}
+          {loading ? <CircularProgress size={24} /> : 'Analyze'}
         </Button>
       </form>
 
-      {/* Error message */}
       {error && <Typography color="error">{error}</Typography>}
 
-      {/* Display team data if fetched successfully */}
       {teamData && (
         <>
           <Typography variant="h6" gutterBottom>Team Data:</Typography>
           <pre>{JSON.stringify(teamData, null, 2)}</pre>
+        </>
+      )}
+
+      {analysis && (
+        <>
+          <Typography variant="h6" gutterBottom>GPT Analysis:</Typography>
+          <pre>{analysis}</pre>
         </>
       )}
     </Page>
