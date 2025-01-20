@@ -40,7 +40,7 @@ export default function MSPostmatch(props) {
 <Grid2 container spacing={1}> {/* Reduced spacing between rows */}
     {/* General Group */}
     <Grid2 xs={12}>
-        <Typography variant={"h6"}>General</Typography>
+        <Typography variant={"h5"}>General</Typography>
     </Grid2>
     <Grid2 xs={6}>
         <CustomToggleButton
@@ -51,6 +51,9 @@ export default function MSPostmatch(props) {
                 update();
             }}
             showCheckbox={false}
+            style={{
+                height: '50px'
+            }}
         />
     </Grid2>
     <Grid2 xs={6}>
