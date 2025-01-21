@@ -14,7 +14,7 @@ export default function CustomToggleButton({ label, onClick, value, showCheckbox
                 }}
                 fullWidth
                 sx={{
-                    height: '30px'
+                    height: '50px'
                 }}
             >
                 {showCheckbox ? (

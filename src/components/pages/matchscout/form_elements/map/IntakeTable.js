@@ -39,6 +39,22 @@ export default function IntakeTable ({
             <Stack direction={'column'} spacing={'15px'}>
 
                 <Stack direction={'row'} spacing={'5px'}>
+
+                <Typography 
+                    variant="h6" 
+                    style={{
+                    fontSize: '18px', 
+                    color: 'white', 
+                    margin: '-40px', 
+                    position: 'relative', 
+                    top: '-2px', 
+                    left: '165%', 
+                    }}
+                >
+                {"⏰: " + formatTime(elapsedTime)}
+                </Typography>
+
+
                  <Box
                         draggable={"false"}
                         component={"img"}
@@ -84,53 +100,78 @@ export default function IntakeTable ({
                         selectedIntakeLocation={selectedIntakeLocation}
                         setSelectedIntakeLocation={setSelectedIntakeLocation}
                     />
-
+                    
                 </Stack>
 
-                <Stack direction={"row"} spacing={"2px"} justifyContent={"space-between"}>
-                    <CustomToggleButton
-                        label={"cancel"}
+                <Stack direction={"row"} spacing={"-10%"} justifyContent={"space-between"} alignItems={"center"}>
+                    <Button
+                        variant={"outlined"}
+                        color="error"
                         onClick={() => {
                             setSelectedIntakeElement(0);
                             setSelectedIntakeLocation(0);
                             stopStopwatch();
                             setElapsedTime(0);
                         }}
-                        sx={{width: `${(20 / 100) * boxDimensions.height}px`}}
-                    />
+                        sx={{
+                            height: "105%",
+                            width: "35%",
+                        }}>
+                    <Typography sx={{ fontSize: '14px', fontWeight: 'bold', color: 'error', }}>
+                    Cancel
+                    </Typography> </Button>
+                    
+                <Button
+                variant={"outlined"}
+                color="error"
+                onClick={() => {
+                    data.deletePrevious(stage);
+                 update();}}
+                 sx={{
+                   height: "105%",
+                   width: "34%",
+                    }}>
+                        <Typography sx={{ fontSize: '12px', fontWeight: 'bold' }}>
+                            Delete Previous
+                            </Typography> </Button>
 
-                    <Typography variant="h6">
-                        {"⏰: " + formatTime(elapsedTime)}
-                    </Typography>
 
-                    <CustomToggleButton
-                        label={"Delete Prev."}
-                        onClick={() => {
-                            data.deletePrevious(stage); 
-                            update(); 
-                        }}
-                        
-                    />
-
-                    <Typography variant="h6">
+                    <Typography 
+                    variant="h7"
+                    style={{
+                    fontSize: '15px', 
+                    color: 'white', 
+                    margin: '-8%', 
+                    position: 'relative',  
+                    left: '-11%', 
+                    }}
+                    >
                         {data.getOuttakeCount(stage)}
                     </Typography>
                     
 
+                <Button
+                variant="outlined"
+                onClick={() => {
+                setCookie('flipMap', !cookies.flipMap);
+                update();
+                }}
+                sx={{
+                height: "105%",
+                width: "20%",
+                mx: 1,
+                color: cookies.flipMap ? "lightBlue" : "pink", 
+                
+                borderColor: cookies.flipMap ? "lightBlue" : "pink", 
+                
+                }}      
+>
+    
+                {cookies.flipMap ? "Flip" : "Flip"}
+                </Button>
+
                 </Stack>
 
-                <Stack direction={'column'} spacing={'8px'}>
-
-                    <CustomToggleButton
-                        label={"Flip Map"}
-                        value={cookies.flipMap}
-                        onClick={(newValue) => {
-                            setCookie('flipMap', newValue);
-                            update();
-                        }}
-                        showCheckbox
-                        sx={{mx: 1}}
-                    />
 
                     <Stack
                         direction={"row"}
@@ -184,7 +225,6 @@ export default function IntakeTable ({
                 </Stack>
                 </Stack>
                 
-            </Stack>
         </Grid>
     )
 }
