@@ -1,8 +1,18 @@
 const functions = require('firebase-functions');
 const axios = require('axios');
 const cors = require('cors')({ origin: true });
+// const {SecretManagerServiceClient} = require('@google-cloud/secret-manager');
+// const client = new SecretManagerServiceClient();
+// const projectId = 'scouting-app-fall-project-2024'; 
+// const secretName = 'projects/' + projectId + '/secrets/openai-api-key/versions/latest'; 
 
-exports.analyzeTeamData = functions.https.onRequest((req, res) => {
+// async function getOpenAIKey(){
+//     const [version] = await client.accessSecretVersion({name: secretName});
+//     const openAIKey = version.payload.data.toString();
+//     return openAIKey;
+// }
+
+exports.analyzeTeamData = functions.https.onRequest(async (req, res) => {
   cors(req, res, async () => {
     try {
       const teamData = req.body.teamData;
@@ -12,42 +22,57 @@ exports.analyzeTeamData = functions.https.onRequest((req, res) => {
         return res.status(400).send({ error: 'No team data provided' });
       }
 
-      // Directly hard-code your OpenAI API key here
-      const openaiApiKey = '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'; // Replace with your actual key
+      // Retrieve OpenAI API key from Secret Manager (does not work but most secure)
+      // const openaiApiKey = await getOpenAIKey();
+      // if (!openaiApiKey) {
+      //   console.error('Failed to retrieve OpenAI API key from Secret Manager.');
+      //   return res.status(500).send({ error: 'Failed to retrieve API key.' });
+      // }
+
+      // Retrieve API KEY using environment variable (resets every time function is deployed, but works when manually set in cloud run)
+      // const openaiApiKey = process.env.OPENAI_API_KEY; 
+
+      // Hard-coded not secure but works everytime
+      const openaiApiKey = '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';
+
       const openaiUrl = 'https://api.openai.com/v1/chat/completions';
 
-      console.log('Sending request to GPT-4 API with data:', teamData);
+      const prompt = 'You are an expert in FRC robotics scouting. Analyze the provided team data and generate statistics, performance insights, and strategic feedback for a team that is deciding on whether or not to pick this person as their alliance partner. Provide a CONCISE and EFFECTIVE analysis.';
 
       const response = await axios.post(
         openaiUrl,
         {
-          model: 'gpt-4',
+          model: 'gpt-4o-mini-2024-07-18',
           messages: [
             {
               role: 'system',
-              content:
-                'You are an expert in FRC robotics scouting. Analyze the provided team data and generate statistics, performance insights, and strategic feedback for the team.',
+              content: prompt,
             },
             {
               role: 'user',
               content: `Here is the team data: ${JSON.stringify(teamData)}`,
             },
           ],
+          // max_tokens: 350,
         },
         {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${openaiApiKey}`, // Pass the API key here
+            Authorization: `Bearer ${openaiApiKey}`,
           },
         }
       );
-
-      console.log('GPT-4 response:', response.data);
 
       const analysis = response.data.choices[0].message.content;
       return res.status(200).send({ analysis });
     } catch (error) {
       console.error('Error in analyzeTeamData function:', error);
+
+      // Log error response from GPT (if available)
+      if (error.response) {
+        console.error('Error response from GPT:', error.response.data);
+      }
+
       return res.status(500).send({ error: error.message });
     }
   });

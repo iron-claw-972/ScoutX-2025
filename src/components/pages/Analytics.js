@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Typography, TextField, Button, CircularProgress } from '@mui/material';
+import React, { useState } from 'react'; 
+import { Typography, TextField, Button, CircularProgress, Card, CardContent, Box } from '@mui/material';
 import firebase from '../../firebase';
 import { collection, getDocs } from 'firebase/firestore';
 import Page from '../Page';
@@ -55,6 +55,15 @@ const Analytics = () => {
     getTeamData();
   };
 
+  // Function to split GPT analysis text into paragraphs based on double new lines
+  const formatAnalysis = (analysisText) => {
+    return analysisText.split("\n\n").map((paragraph, index) => (
+      <Typography key={index} variant="body1" paragraph>
+        {paragraph}
+      </Typography>
+    ));
+  };
+
   return (
     <Page>
       <Typography variant="h4" gutterBottom>Team Scouting</Typography>
@@ -80,19 +89,17 @@ const Analytics = () => {
         </Button>
       </form>
 
-      {error && <Typography color="error">{error}</Typography>}
-
-      {teamData && (
-        <>
-          <Typography variant="h6" gutterBottom>Team Data:</Typography>
-          <pre>{JSON.stringify(teamData, null, 2)}</pre>
-        </>
-      )}
+      {error && <Typography color="error" variant="body1" sx={{ mt: 2 }}>{error}</Typography>}
 
       {analysis && (
         <>
-          <Typography variant="h6" gutterBottom>GPT Analysis:</Typography>
-          <pre>{analysis}</pre>
+          <Card sx={{ mt: 4, mb: 4, maxWidth: '100%', boxShadow: 3 }}>
+            <CardContent>
+              <Box sx={{ maxWidth: '100%', overflowWrap: 'break-word' }}>
+                {formatAnalysis(analysis)} {/* Format the analysis here */}
+              </Box>
+            </CardContent>
+          </Card>
         </>
       )}
     </Page>
