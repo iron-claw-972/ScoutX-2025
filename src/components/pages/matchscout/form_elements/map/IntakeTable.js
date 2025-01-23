@@ -114,10 +114,12 @@ export default function IntakeTable ({
                             setElapsedTime(0);
                         }}
                         sx={{
-                            height: "105%",
-                            width: "35%",
+                            height: "320%",
+                            width: "50%",
+                            position: 'relative', 
+                            top: '100%', 
                         }}>
-                    <Typography sx={{ fontSize: '14px', fontWeight: 'bold', color: 'error', }}>
+                    <Typography sx={{ fontSize: '18px', fontWeight: 'bold', color: 'error', }}>
                     Cancel
                     </Typography> </Button>
                     
@@ -128,10 +130,12 @@ export default function IntakeTable ({
                     data.deletePrevious(stage);
                  update();}}
                  sx={{
-                   height: "105%",
-                   width: "34%",
+                   height: "320%",
+                   width: "50%",
+                   position: 'relative', 
+                   top: '100%', 
                     }}>
-                        <Typography sx={{ fontSize: '12px', fontWeight: 'bold' }}>
+                        <Typography sx={{ fontSize: '18px', fontWeight: 'bold' }}>
                             Delete Previous
                             </Typography> </Button>
 
@@ -150,32 +154,14 @@ export default function IntakeTable ({
                     </Typography>
                     
 
-                <Button
-                variant="outlined"
-                onClick={() => {
-                setCookie('flipMap', !cookies.flipMap);
-                update();
-                }}
-                sx={{
-                height: "105%",
-                width: "20%",
-                mx: 1,
-                color: cookies.flipMap ? "lightBlue" : "pink", 
-                
-                borderColor: cookies.flipMap ? "lightBlue" : "pink", 
-                
-                }}      
->
-    
-                {cookies.flipMap ? "Flip" : "Flip"}
-                </Button>
+
 
                 </Stack>
 
 
                     <Stack
                         direction={"row"}
-                        spacing={2}
+                        spacing={1}
                         sx={{
                             my: 2,
                         }}
@@ -190,6 +176,12 @@ export default function IntakeTable ({
                                 setSelectedIntakeElement(0);
                                 setSelectedIntakeLocation(0);
                             }}
+                            sx={{
+                                position: 'relative', 
+                              top: '200%',
+                              left: '1%',
+                              width: '145%'
+                            }}
                         >
                             Previous
                         </Button>
@@ -203,6 +195,12 @@ export default function IntakeTable ({
                                 update();
                                 setSelectedIntakeElement(IntakeElement.CORAL);
                                 setSelectedIntakeLocation(IntakeLocations.PRELOAD);
+                            }}
+                            sx={{
+                                position: 'relative', 
+                              top: '200%',
+                              left: '1%',
+                              width: '145%'
                             }}
                         >
                             Next
@@ -224,6 +222,29 @@ export default function IntakeTable ({
                     )}
                 </Stack>
                 </Stack>
+
+                <Button
+                variant="outlined"
+                onClick={() => {
+                setCookie('flipMap', !cookies.flipMap);
+                update();
+                }}
+                sx={{
+                height: "20px",
+                width: "10%",
+                mx: 1,
+                position: 'relative', 
+                top: '-45px', 
+                left: '39%', 
+                color: cookies.flipMap ? "lightBlue" : "pink", 
+                
+                borderColor: cookies.flipMap ? "lightBlue" : "pink", 
+                
+                }}      
+>
+    
+                {cookies.flipMap ? "Flip" : "Flip"}
+                </Button>
                 
         </Grid>
     )
