@@ -38,6 +38,7 @@ exports.analyzeTeamData = functions.https.onRequest(async (req, res) => {
       const openaiUrl = 'https://api.openai.com/v1/chat/completions';
 
       const prompt = 'You are an expert in FRC robotics scouting. Analyze the provided team data and generate statistics, performance insights, and strategic feedback for a team that is deciding on whether or not to pick this person as their alliance partner. Provide a CONCISE and EFFECTIVE analysis.';
+      const prompt2 = "You are an expert in 2025 FRC Robotics Scouting. Analyze this team's match data so that I can decide to pick them as my alliance partner. Provide TWO to THREE sentences for auto scoring, tele scoring, and ovreall robot functionality and performance each. Provide THREE sentences on their weaknesses. Provide THREE sentences on their strengths. Finally, provide FOUR sentences with your own insights and opinions on whether or not to choose this team. Please be CONCISE and EFFECTIVE."; 
 
       const response = await axios.post(
         openaiUrl,
@@ -46,7 +47,7 @@ exports.analyzeTeamData = functions.https.onRequest(async (req, res) => {
           messages: [
             {
               role: 'system',
-              content: prompt,
+              content: prompt2,
             },
             {
               role: 'user',
