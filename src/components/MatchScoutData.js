@@ -4,7 +4,7 @@ import {doc, getFirestore, setDoc} from "firebase/firestore";
 
 const climb = [
     "Neither",
-    "Climbed",
+    "Climb",
     "Parked"
 ]
 
