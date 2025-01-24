@@ -224,27 +224,30 @@ export default function IntakeTable ({
                 </Stack>
 
                 <Button
-                variant="outlined"
-                onClick={() => {
-                setCookie('flipMap', !cookies.flipMap);
-                update();
-                }}
-                sx={{
-                height: "20px",
-                width: "10%",
-                mx: 1,
-                position: 'relative', 
-                top: '-45px', 
-                left: '39%', 
-                color: cookies.flipMap ? "lightBlue" : "pink", 
-                
-                borderColor: cookies.flipMap ? "lightBlue" : "pink", 
-                
-                }}      
+    variant="outlined"
+    onClick={() => {
+        setCookie('flipMap', !cookies.flipMap);
+        update();
+    }}
+    sx={{
+        height: "20px",
+        width: "10%",
+        mx: 1,
+        position: 'relative',
+        top: '-45px',
+        left: '39%',
+        color: cookies.flipMap ? "rgba(73, 133, 230)" : "rgba(251, 0, 0)",
+        borderColor: cookies.flipMap ? "rgba(73, 133, 230)" : "rgba(251, 0, 0)",
+        '&:hover': {
+            color: cookies.flipMap ? "rgba(73, 133, 230)" : "rgba(251, 0, 0)", // Ensures the color doesn't change
+            borderColor: cookies.flipMap ? "rgba(73, 133, 230)" : "rgba(251, 0, 0)", // Ensures border color doesn't change
+            backgroundColor: 'transparent', // Avoid any hover background changes
+        },
+    }}
 >
-    
-                {cookies.flipMap ? "Flip" : "Flip"}
-                </Button>
+    {cookies.flipMap ? "Flip" : "Flip"}
+</Button>
+
                 
         </Grid>
     )
