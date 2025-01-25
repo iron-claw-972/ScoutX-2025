@@ -25,6 +25,11 @@ export const Constants = {
             component: PitScout,
         },
         {
+            title: "Analytics",
+            path: "/analytics",
+            component: Analytics,
+        },
+        {
             title: "Credits",
             path: "/credits",
             component: Credits,
@@ -34,11 +39,6 @@ export const Constants = {
             path: "/gambling",
             component: Gambling,
         },
-        {
-            title: "Analytics",
-            path: "/analytics",
-            component: Analytics,
-        }
     ],
 
     field: require("./assets/field.png"),
