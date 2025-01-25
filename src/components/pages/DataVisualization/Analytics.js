@@ -1,8 +1,8 @@
 import React, { useState } from 'react'; 
 import { Typography, TextField, Button, CircularProgress, Card, CardContent, Box } from '@mui/material';
-import firebase from '../../firebase';
+import firebase from '../../../firebase';
 import { collection, getDocs } from 'firebase/firestore';
-import Page from '../Page';
+import Page from '../../Page';
 import axios from 'axios'; // For calling the Firebase function
 
 const Analytics = () => {
@@ -66,8 +66,6 @@ const Analytics = () => {
 
   return (
     <Page>
-      <Typography variant="h4" gutterBottom>Team Scouting</Typography>
-
       <form onSubmit={handleSubmit}>
         <TextField
           label="Enter Team Number"
