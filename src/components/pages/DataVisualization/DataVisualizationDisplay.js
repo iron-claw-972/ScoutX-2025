@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { Button, ButtonGroup, Box, Typography, Divider } from '@mui/material';
 import Analytics from './Analytics';
 import DataTable from './DataTable';
+import TeamMatches from './TeamMatches';
 
 const ToggleComponent = () => {
-  const [selectedOption, setSelectedOption] = useState('Data Visualization');
+  const [selectedOption, setSelectedOption] = useState('Match Data Visualization');
 
   const handleSelection = (option) => {
     setSelectedOption(option);
@@ -27,14 +28,21 @@ const ToggleComponent = () => {
         variant="outlined"
         color="primary"
         aria-label="option selector"
-        sx={{ width: '100%', maxWidth: 600 }}
+        sx={{ width: '100%', maxWidth: 1000 }}
       >
         <Button
-          onClick={() => handleSelection('Data Visualization')}
-          variant={selectedOption === 'Data Visualization' ? 'contained' : 'outlined'}
+          onClick={() => handleSelection('Match Data Visualization')}
+          variant={selectedOption === 'Match Data Visualization' ? 'contained' : 'outlined'}
           sx={{ flex: 1 }}
         >
-          Data Visualization
+          Match Data Visualization
+        </Button>
+        <Button
+          onClick={() => handleSelection('Team Data Visualization')}
+          variant={selectedOption === 'Team Data Visualization' ? 'contained' : 'outlined'}
+          sx={{ flex: 1 }}
+        >
+          Team Data Visualization
         </Button>
         <Button
           onClick={() => handleSelection('AI Analysis')}
@@ -46,7 +54,7 @@ const ToggleComponent = () => {
       </ButtonGroup>
 
       <Box mt={4} sx={{ width: '100%', maxWidth: 800 }}>
-        {selectedOption === 'AI Analysis' ? <Analytics /> : <DataTable />}
+        {selectedOption === 'AI Analysis' ? <Analytics /> : selectedOption === 'Team Data Visualization' ? <TeamMatches /> : <DataTable />}
       </Box>
     </Box>
   );
