@@ -30,18 +30,18 @@ const ToggleComponent = () => {
         sx={{ width: '100%', maxWidth: 600 }}
       >
         <Button
-          onClick={() => handleSelection('AI Analysis')}
-          variant={selectedOption === 'AI Analysis' ? 'contained' : 'outlined'}
-          sx={{ flex: 1 }}
-        >
-          AI Analysis
-        </Button>
-        <Button
           onClick={() => handleSelection('Data Visualization')}
           variant={selectedOption === 'Data Visualization' ? 'contained' : 'outlined'}
           sx={{ flex: 1 }}
         >
           Data Visualization
+        </Button>
+        <Button
+          onClick={() => handleSelection('AI Analysis')}
+          variant={selectedOption === 'AI Analysis' ? 'contained' : 'outlined'}
+          sx={{ flex: 1 }}
+        >
+          AI Analysis
         </Button>
       </ButtonGroup>
 

@@ -11,6 +11,28 @@ export const IntakeElement = Object.freeze({
     "ALGAE": 2
 })
 
+export const ElementPointsAuto = Object.freeze({
+    "LEAVE": 3, 
+    "ALGAENET": 4, 
+    "ALGAEPROCESSOR": 2, 
+    "CORALL1": 3,
+    "CORALL2": 4, 
+    "CORALL3": 6,
+    "CORALL4": 7,
+})
+
+export const ElementPointsTele = Object.freeze({
+    "ALGAENET": 4, 
+    "ALGAEPROCESSOR": 2, 
+    "CORALL1": 2,
+    "CORALL2": 3, 
+    "CORALL3": 4,
+    "CORALL4": 5,
+    "PARK": 2,
+    "SHALLOW": 6,
+    "DEEP": 12,
+})
+
 export const IntakeLocations = Object.freeze({
     "GROUND": 1,
     "STATION": 2,
