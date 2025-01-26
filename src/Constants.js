@@ -35,10 +35,10 @@ export const Constants = {
             component: Gambling,
         },
         {
-            title: "Analytics",
-            path: "/analytics",
-            component: Analytics,
-        }
+            title: "Data Visualization",
+            path: "/DataVisualizationDisplay",
+            component: DataVisualizationDisplay,
+        },
     ],
 
     field: require("./assets/field.png"),

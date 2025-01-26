@@ -1,202 +1,220 @@
-import React, { useState } from 'react';
-import firebase from '../../../firebase';
-import { Typography, TextField, Button, Box } from '@mui/material';
-import Page from '../../Page';
+import React, { useEffect, useState } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
+import firebase from '../../../firebase';
+import {
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  TableSortLabel,
+  Typography,
+  Box,
+} from '@mui/material';
+import Page from '../../Page';
 import { ElementPointsTele, ElementPointsAuto } from '../../MatchConstants';
 
 const DataTable = () => {
-  const [teamData, setTeamData] = useState(null); // Stores field totals
-  const [team, setTeam] = useState(''); // Stores user input for team number
-  const [error, setError] = useState(null); // Error state
-  const [averageData, setAverageData] = useState(null); 
+  const [teamData, setTeamData] = useState([]);
+  const [sortBy, setSortBy] = useState('Average Points'); // Default sort column
+  const [sortDirection, setSortDirection] = useState('asc'); // Default sort direction
 
   const matchScoutDataRef = collection(firebase, 'matchScoutData');
 
-  const getTeamDataTotals = async (teamNumber) => {
-    if (!teamNumber) return;
+  const calculateAverages = (teamDocs) => {
+    const totals = teamDocs.reduce((acc, doc) => {
+      const data = doc.data();
+      const fields = [
+        'leave', 
+        'AutoAlgaeNet', 
+        'AutoAlgaeProcessor', 
+        'AutoCoralL1',
+        'AutoCoralL2', 
+        'AutoCoralL3', 
+        'AutoCoralL4', 
+        'TeleAlgaeNet',
+        'TeleAlgaeProcessor', 
+        'TeleCoralL1', 
+        'TeleCoralL2', 
+        'TeleCoralL3',
+        'TeleCoralL4', 
+        'ClimbPosition',
+      ];
+      fields.forEach((field) => {
+        if (!acc[field]) acc[field] = 0;
+        if (field === 'leave') {
+          if (data[field] === 'true') acc[field]++;
+        } else if (field === 'ClimbPosition') {
+          if (data[field] === 'Deep') acc[field] += ElementPointsTele.DEEP;
+          else if (data[field] === 'Shallow') acc[field] += ElementPointsTele.SHALLOW;
+          else if (data[field] === 'Parked') acc[field] += ElementPointsTele.PARK;
+        } else if (data[field] !== undefined) {
+          acc[field] += data[field];
+        }
+      });
+      return acc;
+    }, {});
 
-    setError(null);
+    const matchCount = teamDocs.length;
+    const statsConfig = {
+      "Average Points": {
+        fields: [
+          { field: 'leave', multiplier: ElementPointsAuto.LEAVE },
+          { field: 'AutoAlgaeNet', multiplier: ElementPointsAuto.ALGAENET },
+          { field: 'AutoAlgaeProcessor', multiplier: ElementPointsAuto.ALGAEPROCESSOR },
+          { field: 'AutoCoralL1', multiplier: ElementPointsAuto.CORALL1 },
+          { field: 'AutoCoralL2', multiplier: ElementPointsAuto.CORALL2 },
+          { field: 'AutoCoralL3', multiplier: ElementPointsAuto.CORALL3 },
+          { field: 'AutoCoralL4', multiplier: ElementPointsAuto.CORALL4 },
+          { field: 'TeleAlgaeNet', multiplier: ElementPointsTele.ALGAENET },
+          { field: 'TeleAlgaeProcessor', multiplier: ElementPointsTele.ALGAEPROCESSOR },
+          { field: 'TeleCoralL1', multiplier: ElementPointsTele.CORALL1 },
+          { field: 'TeleCoralL2', multiplier: ElementPointsTele.CORALL2 },
+          { field: 'TeleCoralL3', multiplier: ElementPointsTele.CORALL3 },
+          { field: 'TeleCoralL4', multiplier: ElementPointsTele.CORALL4 },
+          { field: 'ClimbPosition', multiplier: 1 },
+        ],
+      },
+      "Average Cycles": {
+        fields: [
+          'AutoAlgaeNet', 'AutoAlgaeProcessor', 'AutoCoralL1', 'AutoCoralL2',
+          'AutoCoralL3', 'AutoCoralL4', 'TeleAlgaeNet', 'TeleAlgaeProcessor',
+          'TeleCoralL1', 'TeleCoralL2', 'TeleCoralL3', 'TeleCoralL4',
+        ],
+      },
+      "Average Auto Points": {
+        fields: [
+          { field: 'leave', multiplier: ElementPointsAuto.LEAVE },
+          { field: 'AutoAlgaeNet', multiplier: ElementPointsAuto.ALGAENET },
+          { field: 'AutoAlgaeProcessor', multiplier: ElementPointsAuto.ALGAEPROCESSOR },
+          { field: 'AutoCoralL1', multiplier: ElementPointsAuto.CORALL1 },
+          { field: 'AutoCoralL2', multiplier: ElementPointsAuto.CORALL2 },
+          { field: 'AutoCoralL3', multiplier: ElementPointsAuto.CORALL3 },
+          { field: 'AutoCoralL4', multiplier: ElementPointsAuto.CORALL4 },
+        ],
+      },
+      "Average Endgame Points": {
+        fields: [{ field: 'ClimbPosition', multiplier: 1 }],
+      },
+    };
 
-    try {
-      const querySnapshot = await getDocs(matchScoutDataRef);
-
-      const filteredDocs = querySnapshot.docs.filter((doc) =>
-        doc.id.startsWith(String(teamNumber))
-      );
-
-      if (filteredDocs.length === 0) {
-        setError('No team found with that number');
-        setTeamData(null);
+    return Object.keys(statsConfig).reduce((acc, statName) => {
+      const { fields } = statsConfig[statName];
+      if (statName === 'Average Cycles') {
+        acc[statName] = Math.round(
+          (fields.reduce((sum, field) => sum + (totals[field] || 0), 0) / matchCount) * 10
+        ) / 10;
       } else {
-        // Initialize totals for specified fields
-        const fields = [
-          'leave',
-          'AutoAlgaeNet',
-          'AutoAlgaeProcessor',
-          'AutoCoralL1',
-          'AutoCoralL2',
-          'AutoCoralL3',
-          'AutoCoralL4',
-          'TeleAlgaeNet',
-          'TeleAlgaeProcessor',
-          'TeleCoralL1',
-          'TeleCoralL2',
-          'TeleCoralL3',
-          'TeleCoralL4',
-          'ClimbPosition' // Just gives sum of points from endgame, not position 
-        ];
-        const totals = fields.reduce((acc, field) => {
-            acc[field] = 0;
-            return acc;
-        }, {});
-
-        // Calculate totals for each field
-        filteredDocs.forEach((doc) => {
-          const data = doc.data();
-          fields.forEach((field) => {
-            if (field === 'leave') {
-              console.log(data[field]); 
-              if (data[field] === 'true') {
-                totals[field]++;
-              }
-            } else if (field === 'ClimbPosition') {
-                if (data[field] === 'Deep') {
-                  totals[field] += ElementPointsTele.DEEP; 
-                } else if (data[field] === 'Shallow') {
-                  totals[field] += ElementPointsTele.SHALLOW; 
-                } else if (data[field] === 'Parked') {
-                  totals[field] += ElementPointsTele.PARK; 
-                }
-            } else if (data[field] !== undefined) {
-              totals[field] += data[field];
-            }
-          });
-        });
-        
-        const stats = [
-          "Average Points Per Match",
-          "Average Cycles Per Match", 
-          "Average Auto Points", 
-          "Average Tele Points",
-        ];
-        const data = stats.reduce((acc, stats) => {
-          acc[stats] = 0;
-          return acc;
-        }, {});
-        stats.forEach((count) => {
-            if (count === 'Average Points Per Match') {
-              data[count] = (totals.leave * ElementPointsAuto.LEAVE + 
-                            totals.AutoAlgaeNet * ElementPointsAuto.ALGAENET + 
-                            totals.AutoAlgaeProcessor * ElementPointsAuto.ALGAEPROCESSOR +
-                            totals.AutoCoralL1 * ElementPointsAuto.CORALL1 +
-                            totals.AutoCoralL2 * ElementPointsAuto.CORALL2 +
-                            totals.AutoCoralL3 * ElementPointsAuto.CORALL3 + 
-                            totals.AutoCoralL4 * ElementPointsAuto.CORALL4 +
-                            totals.TeleAlgaeNet * ElementPointsTele.ALGAENET +
-                            totals.TeleAlgaeProcessor * ElementPointsTele.ALGAEPROCESSOR + 
-                            totals.TeleCoralL1 * ElementPointsTele.CORALL1 +
-                            totals.TeleCoralL2 * ElementPointsTele.CORALL2 +
-                            totals.TeleCoralL3 * ElementPointsTele.CORALL3 +
-                            totals.TeleCoralL4 * ElementPointsTele.CORALL4 +
-                            totals.ClimbPosition) / filteredDocs.length;
-            }
-            if (count === 'Average Cycles Per Match') {
-                data[count] = (totals.AutoAlgaeNet +
-                              totals.AutoAlgaeProcessor +
-                              totals.AutoCoralL1 +
-                              totals.AutoCoralL2 +
-                              totals.AutoCoralL3 +
-                              totals.AutoCoralL4 +
-                              totals.TeleAlgaeNet +
-                              totals.TeleAlgaeProcessor +
-                              totals.TeleCoralL1 +
-                              totals.TeleCoralL2 +
-                              totals.TeleCoralL3 +
-                              totals.TeleCoralL4) / filteredDocs.length; 
-            }
-            if (count === 'Average Auto Points') {
-              data[count] = (totals.leave * ElementPointsAuto.LEAVE + 
-                            totals.AutoAlgaeNet * ElementPointsAuto.ALGAENET + 
-                            totals.AutoAlgaeProcessor * ElementPointsAuto.ALGAEPROCESSOR +
-                            totals.AutoCoralL1 * ElementPointsAuto.CORALL1 +
-                            totals.AutoCoralL2 * ElementPointsAuto.CORALL2 +
-                            totals.AutoCoralL3 * ElementPointsAuto.CORALL3 + 
-                            totals.AutoCoralL4 * ElementPointsAuto.CORALL4) / filteredDocs.length;
-            }
-            if (count === 'Average Tele Points') {
-              data[count] = (totals.TeleAlgaeNet * ElementPointsTele.ALGAENET +
-                            totals.TeleAlgaeProcessor * ElementPointsTele.ALGAEPROCESSOR + 
-                            totals.TeleCoralL1 * ElementPointsTele.CORALL1 +
-                            totals.TeleCoralL2 * ElementPointsTele.CORALL2 +
-                            totals.TeleCoralL3 * ElementPointsTele.CORALL3 +
-                            totals.TeleCoralL4 * ElementPointsTele.CORALL4 +
-                            totals.ClimbPosition) / filteredDocs.length;
-            }
-        });
-
-        setTeamData(totals); // Set the computed totals
-        setAverageData(data); // Set average data
-
+        acc[statName] = Math.round(
+          (fields.reduce((sum, { field, multiplier }) => sum + (totals[field] || 0) * multiplier, 0) / matchCount) * 10
+        ) / 10;
       }
-    } catch (err) {
-      setError('Error fetching document: ' + err.message);
+      return acc;
+    }, {});
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const querySnapshot = await getDocs(matchScoutDataRef);
+      const groupedByTeam = querySnapshot.docs.reduce((acc, doc) => {
+        const [teamNumber] = doc.id.split('_'); // Extract team number from the document ID
+        if (!acc[teamNumber]) acc[teamNumber] = []; // Initialize an array if it's the first document for this team
+        acc[teamNumber].push(doc); // Add the current document to the team’s array
+        return acc;
+      }, {});
+
+      // Array of objects, where each object contains the teamNumber and the calculated averages for that team
+      const teamAverages = Object.entries(groupedByTeam).map(([teamNumber, teamDocs]) => ({
+        teamNumber,
+        ...calculateAverages(teamDocs), // Calls the calculateAverages function for each team
+      }));
+
+      setTeamData(teamAverages);
+    };
+
+    fetchData();
+  }, []);
+
+  const handleSort = (column) => {
+    if (sortBy === column) {
+      // Toggle sort direction if the same column is clicked
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      // Default to 'asc' when a new column is clicked (to sort the largest first)
+      setSortBy(column);
+      setSortDirection('asc');
     }
   };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    getTeamDataTotals(team);
-  };
+  
+  // The .sort() function works by comparing two values at a time (in this case, the values of a[sortBy] and b[sortBy]) 
+  // Negative (e.g., valueB - valueA): The value of b comes before a in the sorted array.
+  // Positive (e.g., valueA - valueB): The value of a comes before b in the sorted array.
+  // Zero: a and b remain unchanged relative to each other.
+  const sortedData = [...teamData].sort((a, b) => {
+    // Values of the columns currently being sorted by (ex: 'Average Points')  
+    const valueA = a[sortBy]; 
+    const valueB = b[sortBy];
+  
+    // When sortDirection is 'asc', we sort by descending values (largest at the top)
+    if (sortDirection === 'asc') {
+      // valueB - valueA is used, ensuring the highest values come first
+      return valueB - valueA;
+    } else {
+      // valueA - valueB is used, ensuring the smallest values come first
+      return valueA - valueB;
+    }
+  });
+  
+  
 
   return (
     <Page>
-        <form onSubmit={handleSubmit}>
-          <TextField
-            label="Enter Team Number"
-            variant="outlined"
-            value={team}
-            onChange={(e) => setTeam(e.target.value)}
-            fullWidth
-            margin="normal"
-          />
-          <Button variant="contained" color="primary" type="submit" fullWidth>
-            Get Team Data
-          </Button>
-        </form>
-
-        {/* Error Message */}
-        {error && (
-          <Typography color="error" variant="body1" sx={{ mt: 2 }}>
-            {error}
-          </Typography>
-        )}
-
-        {/* Display Field Totals */}
-        {teamData && (
-          <Box sx={{ mt: 4 }}>
-            <Typography variant="h6" gutterBottom>
-              Totals for Team {team}:
-            </Typography>
-            <Box>
-              {Object.entries(teamData).map(([field, value]) => (
-                <Typography key={field}>
-                  {field}: {value}
-                </Typography>
-              ))}
-            </Box>
-            <Box>
-            <Typography variant="h6" gutterBottom mt={1}>
-              Average Data for Team {team}:
-            </Typography>
-              {Object.entries(averageData).map(([field, value]) => (
-                <Typography key={field}>
-                  {field}: {value}
-                </Typography>
-              ))}
-            </Box>
-          </Box>
-        )}
+      <Table sx={{ width: '100%', borderCollapse: 'collapse', backgroundColor: '#f57c00', mt: 2}}>
+        <TableHead sx={{ backgroundColor: '#222', color: 'white' }}>
+          <TableRow>
+            <TableCell sx={{ color: '#f57c00', fontWeight: 'bold' }}>Team Number</TableCell>
+            {['Average Points', 'Average Cycles', 'Average Auto Points', 'Average Endgame Points'].map((column) => (
+              <TableCell key={column} sx={{ color: 'white' }}>
+                <TableSortLabel
+                  active={sortBy === column}
+                  direction={sortDirection}
+                  onClick={() => handleSort(column)}
+                  sx={{
+                    color: 'white',
+                    '&.MuiTableSortLabel-active': {
+                      color: '#f57c00', // Orange for active column
+                    },
+                    '&:hover': {
+                      color: '#f57c00', // Orange on hover
+                    },
+                  }}
+                >
+                  {column}
+                </TableSortLabel>
+              </TableCell>
+            ))}
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {sortedData.map((team, index) => (
+            <TableRow 
+              key={team.teamNumber}
+              sx={{
+                backgroundColor: index % 2 === 0 ? '#333' : '#444', // Dark grey and black alternating rows
+                '&:hover': {
+                  backgroundColor: '#555', // Slightly lighter grey for hover effect
+                },
+              }}
+            >
+              <TableCell sx={{ color: '#f57c00' }}>{team.teamNumber}</TableCell>
+              <TableCell sx={{ color: 'white' }}>{team['Average Points']}</TableCell>
+              <TableCell sx={{ color: 'white' }}>{team['Average Cycles']}</TableCell>
+              <TableCell sx={{ color: 'white' }}>{team['Average Auto Points']}</TableCell>
+              <TableCell sx={{ color: 'white' }}>{team['Average Endgame Points']}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </Page>
   );
 };
