@@ -4,7 +4,7 @@ import {doc, getFirestore, setDoc} from "firebase/firestore";
 
 const climb = [
     "Neither",
-    "Climbed",
+    "Climb",
     "Parked"
 ]
 
@@ -170,6 +170,8 @@ export default class MatchScoutData {
         return this.data[stage]["io"][index][type];
     }
 
+    // TODO: AutoAlgaeNet updates the number but displays NaN because there is one null, TeleAlgaeNet does not get actually updated but just has value of AutoAlgaeNet
+    
     deriveAutoOuttakeMetrics() {
         const autoOuttakeCounts = this.data[MatchStage.AUTO]["outtakeCounts"];
         
@@ -274,7 +276,7 @@ export default class MatchScoutData {
                 if (element === "ALGAE") {
                     metrics.TeleAlgaeScored++;
                     if (outtakeLocation === "PROCESSOR") metrics.TeleAlgaeProcessor++;
-                    if (outtakeLocation === "NET") metrics.AutoAlgaeNet++;
+                    if (outtakeLocation === "NET") metrics.TeleAlgaeNet++;
                     totalAlgaeCycleTime += cycleTime;
                     algaeCount++;
                 }

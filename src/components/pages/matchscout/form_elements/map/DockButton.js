@@ -12,9 +12,13 @@ export default function DockButton({ x, y, data, stage, boxDimensions }) {
     const handleChange = () => {
         let nextState = "Neither";
         if (climbState === "Neither") {
-            nextState = "Climbed";
-        } else if (climbState === "Climbed") {
+            nextState = "Shallow";
+        } else if (climbState === "Shallow") {
+            nextState = "Deep";
+        } else if (climbState === "Deep") {
             nextState = "Parked";
+        } else if (climbState === "Parked") {
+            
         }
         setClimbState(nextState);
         const climbValue = nextState === "Neither" ? 0 : nextState === "Climbed" ? 1 : 2;
@@ -26,7 +30,7 @@ export default function DockButton({ x, y, data, stage, boxDimensions }) {
     const getColor = () => {
         return climbState === "Neither"
             ? "grey"
-            : climbState === "Climbed"
+            : climbState === "Deep"
             ? "blue"
             : "primary";
     };

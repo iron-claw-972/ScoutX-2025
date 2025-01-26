@@ -202,7 +202,7 @@ export default function MapSim(
                 top: '75%',
                 right: '22%',
                 width: `${(34 / 100) * boxDimensions.height}px`,
-                height: `${(13 / 100) * boxDimensions.height}px`,
+                height: `${(10 / 100) * boxDimensions.height}px`,
             }}
         >
         Missed

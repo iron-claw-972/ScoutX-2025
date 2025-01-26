@@ -3,8 +3,8 @@ import MatchScout from "./components/pages/MatchScout";
 import Credits from "./components/pages/Credits";
 import PitScout from "./components/pages/PitScout";
 import Gambling from "./components/pages/Gambling";
-import Analytics from "./components/pages/Analytics";
-
+import Analytics from "./components/pages/DataVisualization/Analytics";
+import DataVisualizationDisplay from "./components/pages/DataVisualization/DataVisualizationDisplay"
 
 export const Constants = {
 
