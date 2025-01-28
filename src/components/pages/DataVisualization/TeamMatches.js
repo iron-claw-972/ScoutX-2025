@@ -5,7 +5,7 @@ const TeamMatches = () => {
     return (
         <Page> 
             <Typography> 
-                Hello World
+                Coming soon...
             </Typography>
         </Page>
     )
