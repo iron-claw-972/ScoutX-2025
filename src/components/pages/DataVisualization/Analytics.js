@@ -29,7 +29,7 @@ const Analytics = () => {
       );
 
       if (filteredDocs.length === 0) {
-        setError('No team found with that number!');
+        setError('No team found with that number');
       } else {
         const teamDoc = filteredDocs[0];
         const teamData = teamDoc.data();

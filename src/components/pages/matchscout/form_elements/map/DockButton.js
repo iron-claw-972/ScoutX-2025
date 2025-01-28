@@ -21,7 +21,7 @@ export default function DockButton({ x, y, data, stage, boxDimensions }) {
             
         }
         setClimbState(nextState);
-        const climbValue = nextState === "Neither" ? 0 : nextState === "Climbed" ? 1 : 2;
+        const climbValue = nextState === "Neither" ? 0 : nextState === "Parked" ? 1 : nextState === "Shallow" ? 2 : 3;
         if (data && stage !== undefined) {
             data.setClimb(stage, climbValue);
         }

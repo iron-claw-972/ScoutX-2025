@@ -18,7 +18,7 @@ export default function NetButton({
     return (
         <Button
             onClick={() => {
-                if(selectedIntakeElement == IntakeElement.CORAL) {
+                if(selectedIntakeElement == IntakeElement.ALGAE) {
                     data.addOuttakeEntry(stage, selectedIntakeElement, selectedIntakeLocation, elapsedTime, "NET")
                 }
                 setSelectedIntakeElement(0);

@@ -42,9 +42,9 @@ export const Constants = {
         },
         {
             title: "Data Visualization",
-            path: "/DataVisualization",
+            path: "/DataVisualizationDisplay",
             component: DataVisualizationDisplay,
-        }
+        },
     ],
 
     field: require("./assets/field.png"),
