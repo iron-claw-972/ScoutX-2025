@@ -5,6 +5,7 @@ import CustomToggleButton from "../CustomToggleButton";
 import {useCookies} from "react-cookie";
 import { IntakeElement, IntakeLocations, MatchStage } from "../../../../MatchConstants";
 import { Constants } from "../../../../../Constants";
+import { useNavigate } from "react-router-dom";
 
 export default function IntakeTable ({
     sx,
@@ -65,7 +66,7 @@ export default function IntakeTable ({
                             height: "40px",
                             top: "32%",
                             left: "10%",
-                            pointerEvents: "none", // Ensure the image does not interact with button methods
+                            pointerEvents: "none",
                         }}
                     />
                     <Box
@@ -214,6 +215,7 @@ export default function IntakeTable ({
                             variant={"outlined"}
                             onClick={() => {
                                 data.submit();
+                                handleStageChange(data.stage + 1);
                                 update();
                             }}
                         >

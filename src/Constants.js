@@ -5,6 +5,7 @@ import PitScout from "./components/pages/PitScout";
 import Gambling from "./components/pages/Gambling";
 import Analytics from "./components/pages/DataVisualization/Analytics";
 import DataVisualizationDisplay from "./components/pages/DataVisualization/DataVisualizationDisplay"
+import HumanPlayerScout from "./components/pages/HumanPlayerScout";
 
 export const Constants = {
 
@@ -18,6 +19,11 @@ export const Constants = {
             title: "Match Scout",
             path: "/matchscout",
             component: MatchScout,
+        },
+        {
+            title: "Human Player Scout",
+            path: "/HumanPlayerScout", 
+            component: HumanPlayerScout,
         },
         {
             title: "Pit Scout",

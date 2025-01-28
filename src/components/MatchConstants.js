@@ -4,6 +4,7 @@ export const MatchStage = Object.freeze({
     "TELEOP": 2,
     "POST_MATCH": 3,
     "METADATA": 4,
+    "GAMBLING": 5,
 });
 
 export const IntakeElement = Object.freeze({

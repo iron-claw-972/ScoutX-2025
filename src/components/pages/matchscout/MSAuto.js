@@ -18,6 +18,15 @@ export default function MSAuto({ data, handleStageChange}) {
 
     return (
         <Stack direction={"column"} spacing={2}>
+            <CustomToggleButton
+                label={"Leave?"}
+                value={data.get(MatchStage.AUTO, "leave")}
+                onClick={(newValue) => {
+                    data.set(MatchStage.AUTO, "leave", newValue);
+                    update();
+                }}
+                showCheckbox={false}
+            />
             <Stack alignItems="center" spacing={6}>
                 <MapSim
                     selectedRow={selectedRow}

@@ -8,6 +8,7 @@ import MSPrematch from "./matchscout/MSPrematch";
 import MSPostmatch from "./matchscout/MSPostmatch";
 import MSTeleop from "./matchscout/MSTeleop";
 import CloseIcon from "@mui/icons-material/Close";
+import Gambling from "./Gambling";
 
 export default function MatchScout() {
     // Memoize the `data` object to avoid re-creating it on each render
@@ -38,6 +39,9 @@ export default function MatchScout() {
                 break;
             case MatchStage.POST_MATCH:
                 setCurrentComponent(<MSPostmatch data={data} handleStageChange={handleStageChange}/>);
+                break;
+            case MatchStage.GAMBLING:
+                setCurrentComponent(<Gambling data={data} handleStageChange={handleStageChange}/>);
                 break;
         }
     }, [stage]);

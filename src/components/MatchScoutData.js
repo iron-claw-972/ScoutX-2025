@@ -289,7 +289,7 @@ export default class MatchScoutData {
     }
     
 
-    async submit() {
+    async submit(navigate) {
         const validation = this.validate(true);
         if (!validation.valid) {
             this.sendAlert(validation.message, "error");
@@ -334,7 +334,7 @@ export default class MatchScoutData {
             firebaseData
         );
 
-        window.location.reload();
+       this.set(MatchStage.GAMBLING);
 
         return true;
     }
