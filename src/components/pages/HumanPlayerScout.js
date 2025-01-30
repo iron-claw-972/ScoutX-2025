@@ -7,7 +7,7 @@ import {doc, getFirestore, setDoc} from 'firebase/firestore';
 
 const HumanPlayerScout = () => {
     const [teamNumber, setTeamNumber] = useState('');
-    const [matchNumber, setMatchNumber, handleMatchNumberChange] = useState('');
+    const [matchNumber, setMatchNumber] = useState('');
     const [hits, setHits] = useState(0);
     const [misses, setMisses] = useState(0);
 
@@ -17,6 +17,10 @@ const HumanPlayerScout = () => {
 
     const handleTeamNumberChange = (event) => {
         setTeamNumber(event.target.value);
+    };
+
+    const handleMatchNumberChange = (event) => {
+        setMatchNumber(event.target.value);
     };
 
     const handleSubmit = async () => {
