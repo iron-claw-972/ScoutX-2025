@@ -118,8 +118,8 @@ export default function MatchScout() {
                         color={"success"}
                         variant={"outlined"}
                         onClick={() => {
-                            data.submit();
-                            
+                            data.submit(); 
+                            handleStageChange(stage + 2);
                         }}
                     >
                         Submit

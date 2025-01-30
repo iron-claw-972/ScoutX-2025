@@ -62,7 +62,7 @@ const defaultData = [
     {
         metadatastage: MatchStage.METADATA,
         timestamp: new Date(),
-    },
+    }
 ];
 export default class MatchScoutData {
     constructor() {
@@ -334,9 +334,7 @@ export default class MatchScoutData {
             doc(db, "matchScoutData", defaultData[0].team + "_" + defaultData[0].match),
             firebaseData
         );
-
-       this.set(MatchStage.GAMBLING);
-
+    
         return true;
     }
 
