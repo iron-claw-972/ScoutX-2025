@@ -168,7 +168,14 @@ const DataTable = () => {
   
 
   return (
-    <Page>
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        overflowX: 'auto',
+        width: '100%',
+      }}
+    >
       <Table sx={{ width: '100%', borderCollapse: 'collapse', backgroundColor: '#f57c00', mt: 2}}>
         <TableHead sx={{ backgroundColor: '#222', color: 'white' }}>
           <TableRow>
@@ -215,7 +222,7 @@ const DataTable = () => {
           ))}
         </TableBody>
       </Table>
-    </Page>
+    </Box>
   );
 };
 

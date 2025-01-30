@@ -199,9 +199,9 @@ const PitScout = (props) => {
                     onChange={handleBatteryNumber}
                 /> */}
                 <Button
-                    color={"success"}
-                    variant={"outlined"}
+                    sx={{ backgroundColor: "#ff9800", color: "white", '&:hover': { backgroundColor: "#e65100" } }}
                     fullWidth
+                    variant='contained'
                     onClick={handleSubmit}>
                     Submit Pit Scout
                 </Button>

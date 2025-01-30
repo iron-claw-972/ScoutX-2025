@@ -139,7 +139,7 @@ export default class MatchScoutData {
             time: new Date(),
         });
         this.data[stage][path] = value;
-    }
+    }   
 
     clearIO(stage, index) {
         this.history.push({
@@ -170,8 +170,6 @@ export default class MatchScoutData {
         }
         return this.data[stage]["io"][index][type];
     }
-
-    // TODO: AutoAlgaeNet updates the number but TeleAlgaeNet does not get actually updated but just has value of AutoAlgaeNet
     
     deriveAutoOuttakeMetrics() {
         const autoOuttakeCounts = this.data[MatchStage.AUTO]["outtakeCounts"];

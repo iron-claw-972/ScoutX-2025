@@ -3,8 +3,9 @@ import { Button, ButtonGroup, Box, Typography, Divider } from '@mui/material';
 import Analytics from './Analytics';
 import DataTable from './DataTable';
 import TeamMatches from './TeamMatches';
+import { Stack } from '@mui/system';
 
-const ToggleComponent = () => {
+const DataVisualizationDisplay = () => {
   const [selectedOption, setSelectedOption] = useState('Match Data Visualization');
 
   const handleSelection = (option) => {
@@ -20,10 +21,10 @@ const ToggleComponent = () => {
         padding: 4,
       }}
     >
-      <Typography variant="h4" mb={0}>
+      <Typography variant="h4">
         Team Data
       </Typography>
-      <Divider sx={{ width: '100%', maxWidth: 400, backgroundColor: 'grey.800', marginY: 2 }} />
+      <Divider sx={{ width: '100%', maxWidth: 1000, backgroundColor: 'grey.800', marginY: 4 }} />
       <ButtonGroup
         variant="outlined"
         color="primary"
@@ -60,4 +61,4 @@ const ToggleComponent = () => {
   );
 };
 
-export default ToggleComponent;
+export default DataVisualizationDisplay;
