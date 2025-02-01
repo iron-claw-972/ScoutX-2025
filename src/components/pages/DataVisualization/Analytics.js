@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Typography, TextField, Button, CircularProgress, Card, CardContent, Box } from '@mui/material';
 import firebase from '../../../firebase';
 import { collection, getDocs } from 'firebase/firestore';
-import Page from '../../Page';
 import axios from 'axios'; // For calling the Firebase function
 
 const Analytics = () => {
@@ -24,9 +23,10 @@ const Analytics = () => {
     try {
       const querySnapshot = await getDocs(matchScoutDataRef);
 
-      const filteredDocs = querySnapshot.docs.filter((doc) =>
-        doc.id.startsWith(team)
-      );
+      const filteredDocs = querySnapshot.docs.filter((doc) => {
+        const docId = doc.id.split('_')[0]; // Get the team number part of the ID (before the underscore)
+        return docId === team; // Only include docs where the team number matches exactly
+      });
 
       if (filteredDocs.length === 0) {
         setError('No team found with that number');
@@ -65,7 +65,7 @@ const Analytics = () => {
   };
 
   return (
-    <Page>
+    <>
       <form onSubmit={handleSubmit}>
         <TextField
           label="Enter Team Number"
@@ -100,7 +100,7 @@ const Analytics = () => {
           </Card>
         </>
       )}
-    </Page>
+    </>
   );
 };
 

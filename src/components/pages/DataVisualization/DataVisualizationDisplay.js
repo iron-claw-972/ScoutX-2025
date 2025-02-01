@@ -24,7 +24,7 @@ const DataVisualizationDisplay = () => {
       <Typography variant="h4">
         Team Data
       </Typography>
-      <Divider sx={{ width: '100%', maxWidth: 1000, backgroundColor: 'grey.800', marginY: 4 }} />
+      <Divider sx={{ width: '50%', backgroundColor: 'grey.800', marginY: 4 }} />
       <ButtonGroup
         variant="outlined"
         color="primary"
@@ -54,7 +54,7 @@ const DataVisualizationDisplay = () => {
         </Button>
       </ButtonGroup>
 
-      <Box mt={4} sx={{ width: '100%', maxWidth: 800 }}>
+      <Box mt={4} sx={{ width: '100%' }}>
         {selectedOption === 'AI Analysis' ? <Analytics /> : selectedOption === 'Team Data Visualization' ? <TeamMatches /> : <DataTable />}
       </Box>
     </Box>

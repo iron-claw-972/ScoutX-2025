@@ -40,8 +40,6 @@ const defaultData = [
         postmatchstage: MatchStage.POST_MATCH,
         defense: "",
         comments: "",
-        player: false,
-        highNotes: 0,
         intakeBroken: false,
         outtakeBroken: false,
         elevatorBroken: false,
@@ -54,10 +52,10 @@ const defaultData = [
         goodDefenseFromOpponents: false,
         playedMajorityDefense: false,
         touchItOwnIt: false,
-        aStopped: false, // Added
-        eStopped: false, // Added
-        knockedCage: false, // Added
-        failedClimb: false, // Added
+        aStopped: false,  
+        eStopped: false, 
+        knockedCage: false,
+        failedClimb: false, 
     },
     {
         metadatastage: MatchStage.METADATA,
