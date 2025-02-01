@@ -170,9 +170,9 @@ const TeamMatches = () => {
       const valueB = b[sortBy];
   
       if (sortDirection === 'asc') {
-          return valueA - valueB;
-        } else {
           return valueB - valueA;
+        } else {
+          return valueA - valueB;
       }
     });
   
