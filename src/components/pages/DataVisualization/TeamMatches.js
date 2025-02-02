@@ -4,6 +4,8 @@ import { collection, getDocs } from "firebase/firestore";
 import firebase from "../../../firebase";
 import { ElementPointsTele, ElementPointsAuto } from "../../MatchConstants";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
+import TeamGraphs from "./TeamGraphs";
+import { Stack } from "@mui/system";
 
 const TeamMatches = () => {
   const [team, setTeam] = useState("");
@@ -203,6 +205,8 @@ const TeamMatches = () => {
       {error && <Typography color="error" variant="body1" sx={{ mt: 2 }}>{error}</Typography>}
 
       {matches.length > 0 && !error && (
+        <Stack direction={"column"} spacing={4} mt={4}>
+        <TeamGraphs matches={matches}/>
         <TableContainer sx={{ maxWidth: '100%', margin: '0 auto', mt: 4 }}>
           <Table sx={{ minWidth: 650, backgroundColor: "#f57c00" }}>
             <TableHead sx={{ backgroundColor: "#222", color: "white" }}>
@@ -267,6 +271,7 @@ const TeamMatches = () => {
             </TableBody>
           </Table>
         </TableContainer>
+        </Stack>
       )}
 
     {deletedRows.length > 0 && (
