@@ -54,7 +54,7 @@ const DataVisualizationDisplay = () => {
         </Button>
       </ButtonGroup>
 
-      <Box mt={4} sx={{ width: '100%' }}>
+      <Box mt={4} mb={7} sx={{ width: '100%' }}>
         {selectedOption === 'AI Analysis' ? <Analytics /> : selectedOption === 'Team Data Visualization' ? <TeamMatches /> : <DataTable />}
       </Box>
     </Box>

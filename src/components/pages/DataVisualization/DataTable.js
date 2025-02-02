@@ -8,16 +8,23 @@ import {
   TableCell,
   TableBody,
   TableSortLabel,
-  Typography,
+  IconButton,
   Box,
+  Button,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel
 } from '@mui/material';
-import Page from '../../Page';
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { ElementPointsTele, ElementPointsAuto } from '../../MatchConstants';
 
 const DataTable = () => {
   const [teamData, setTeamData] = useState([]);
   const [sortBy, setSortBy] = useState('Average Points'); // Default sort column
   const [sortDirection, setSortDirection] = useState('asc'); // Default sort direction
+  const [deletedRows, setDeletedRows] = useState([]); // Track deleted rows
+  const [restoreMatch, setRestoreMatch] = useState(""); // Track match to restore
 
   const matchScoutDataRef = collection(firebase, 'matchScoutData');
 
@@ -25,20 +32,8 @@ const DataTable = () => {
     const totals = teamDocs.reduce((acc, doc) => {
       const data = doc.data();
       const fields = [
-        'leave', 
-        'AutoAlgaeNet', 
-        'AutoAlgaeProcessor', 
-        'AutoCoralL1',
-        'AutoCoralL2', 
-        'AutoCoralL3', 
-        'AutoCoralL4', 
-        'TeleAlgaeNet',
-        'TeleAlgaeProcessor', 
-        'TeleCoralL1', 
-        'TeleCoralL2', 
-        'TeleCoralL3',
-        'TeleCoralL4', 
-        'ClimbPosition',
+        'leave', 'AutoAlgaeNet', 'AutoAlgaeProcessor', 'AutoCoralL1', 'AutoCoralL2', 'AutoCoralL3', 'AutoCoralL4',
+        'TeleAlgaeNet', 'TeleAlgaeProcessor', 'TeleCoralL1', 'TeleCoralL2', 'TeleCoralL3', 'TeleCoralL4', 'ClimbPosition'
       ];
       fields.forEach((field) => {
         if (!acc[field]) acc[field] = 0;
@@ -51,7 +46,7 @@ const DataTable = () => {
         } else if (data[field] !== undefined) {
           acc[field] += data[field];
         }
-      }); 
+      });
       return acc;
     }, {});
 
@@ -77,9 +72,8 @@ const DataTable = () => {
       },
       "Average Cycles": {
         fields: [
-          'AutoAlgaeNet', 'AutoAlgaeProcessor', 'AutoCoralL1', 'AutoCoralL2',
-          'AutoCoralL3', 'AutoCoralL4', 'TeleAlgaeNet', 'TeleAlgaeProcessor',
-          'TeleCoralL1', 'TeleCoralL2', 'TeleCoralL3', 'TeleCoralL4',
+          'AutoAlgaeNet', 'AutoAlgaeProcessor', 'AutoCoralL1', 'AutoCoralL2', 'AutoCoralL3', 'AutoCoralL4',
+          'TeleAlgaeNet', 'TeleAlgaeProcessor', 'TeleCoralL1', 'TeleCoralL2', 'TeleCoralL3', 'TeleCoralL4',
         ],
       },
       "Average Auto Points": {
@@ -137,41 +131,39 @@ const DataTable = () => {
 
   const handleSort = (column) => {
     if (sortBy === column) {
-      // Toggle sort direction if the same column is clicked
       setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
     } else {
-      // Default to 'asc' when a new column is clicked (to sort the largest first)
       setSortBy(column);
       setSortDirection('asc');
     }
   };
-  
-  // The .sort() function works by comparing two values at a time (in this case, the values of a[sortBy] and b[sortBy]) 
-  // Negative (e.g., valueB - valueA): The value of b comes before a in the sorted array.
-  // Positive (e.g., valueA - valueB): The value of a comes before b in the sorted array.
-  // Zero: a and b remain unchanged relative to each other.
+
+  const handleDeleteRow = (teamNumber) => {
+    const updatedTeamData = teamData.filter(team => team.teamNumber !== teamNumber);
+    const deletedTeam = teamData.find(team => team.teamNumber === teamNumber);
+    setTeamData(updatedTeamData);
+    setDeletedRows([...deletedRows, deletedTeam]);
+  };
+
+  const handleRestoreRow = () => {
+    const teamToRestore = deletedRows.find(team => team.teamNumber === restoreMatch);
+    setTeamData([...teamData, teamToRestore]);
+    setDeletedRows(deletedRows.filter(team => team.teamNumber !== restoreMatch));
+    setRestoreMatch(""); // Clear restore match to hide restore button
+  };
+
   const sortedData = [...teamData].sort((a, b) => {
-    // Values of the columns currently being sorted by (ex: 'Average Points')  
-    const valueA = a[sortBy]; 
+    const valueA = a[sortBy];
     const valueB = b[sortBy];
-  
-    // When sortDirection is 'asc', we sort by descending values (largest at the top)
-    if (sortDirection === 'asc') {
-      // valueB - valueA is used, ensuring the highest values come first
-      return valueB - valueA;
-    } else {
-      // valueA - valueB is used, ensuring the smallest values come first
-      return valueA - valueB;
-    }
+    return sortDirection === 'asc' ? valueB - valueA : valueA - valueB;
   });
-  
-  
 
   return (
     <>
-      <Table sx={{ width: '100%', borderCollapse: 'collapse', backgroundColor: '#f57c00', mt: 2}}>
+      <Table sx={{ width: '100%', borderCollapse: 'collapse', backgroundColor: '#f57c00', mt: 2 }}>
         <TableHead sx={{ backgroundColor: '#222', color: 'white' }}>
           <TableRow>
+            <TableCell sx={{ color: '#f57c00', fontWeight: 'bold' }}></TableCell>
             <TableCell sx={{ color: '#f57c00', fontWeight: 'bold' }}>Team Number</TableCell>
             {['Average Points', 'Average Cycles', 'Average Auto Points', 'Average Endgame Points'].map((column) => (
               <TableCell key={column} sx={{ color: 'white' }}>
@@ -182,10 +174,10 @@ const DataTable = () => {
                   sx={{
                     color: 'white',
                     '&.MuiTableSortLabel-active': {
-                      color: '#f57c00', // Orange for active column
+                      color: '#f57c00',
                     },
                     '&:hover': {
-                      color: '#f57c00', // Orange on hover
+                      color: '#f57c00',
                     },
                   }}
                 >
@@ -197,15 +189,23 @@ const DataTable = () => {
         </TableHead>
         <TableBody>
           {sortedData.map((team, index) => (
-            <TableRow 
+            <TableRow
               key={team.teamNumber}
               sx={{
-                backgroundColor: index % 2 === 0 ? '#333' : '#444', // Dark grey and black alternating rows
+                backgroundColor: index % 2 === 0 ? '#333' : '#444',
                 '&:hover': {
-                  backgroundColor: '#555', // Slightly lighter grey for hover effect
+                  backgroundColor: '#555',
                 },
               }}
             >
+              <TableCell>
+                <IconButton
+                  onClick={() => handleDeleteRow(team.teamNumber)}
+                  sx={{ color: 'primary' }}
+                >
+                  <RemoveCircleIcon />
+                </IconButton>
+              </TableCell>
               <TableCell sx={{ color: '#f57c00' }}>{team.teamNumber}</TableCell>
               <TableCell sx={{ color: 'white' }}>{team['Average Points']}</TableCell>
               <TableCell sx={{ color: 'white' }}>{team['Average Cycles']}</TableCell>
@@ -215,6 +215,35 @@ const DataTable = () => {
           ))}
         </TableBody>
       </Table>
+      {deletedRows.length > 0 && (
+        <Box sx={{ mt: 4 }}>
+          <FormControl fullWidth>
+            <InputLabel>Match to Restore</InputLabel>
+            <Select
+              value={restoreMatch}
+              onChange={(e) => setRestoreMatch(e.target.value)}
+              label="Match to Restore"
+            >
+              {deletedRows.map((team) => (
+                <MenuItem key={team.teamNumber} value={team.teamNumber}>
+                  {team.teamNumber}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          {restoreMatch && ( // Only show the restore button if a match is selected
+          <Button
+            variant="outlined"
+            color="white"
+            fullWidth
+            onClick={handleRestoreRow}
+            sx={{ mt: 2 }}
+          >
+            Restore Selected Match
+          </Button>
+          )}
+        </Box>
+      )}
     </>
   );
 };
