@@ -29,7 +29,7 @@ const DataVisualizationDisplay = () => {
         variant="outlined"
         color="primary"
         aria-label="option selector"
-        sx={{ width: '100%', maxWidth: 1000 }}
+        sx={{ width: '75%' }}
       >
         <Button
           onClick={() => handleSelection('Match Data Visualization')}
