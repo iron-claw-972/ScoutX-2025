@@ -44,6 +44,7 @@ const TeamGraphs = ({ matches }) => {
   if (matchCount > 0) {
     Object.keys(Averages).forEach((key) => {
       Averages[key] /= matchCount;
+      Averages[key] = Math.round(Averages[key] * 10) / 10; 
     });
   }
 

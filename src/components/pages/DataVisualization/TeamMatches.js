@@ -20,6 +20,8 @@ const TeamMatches = () => {
   const matchScoutDataRef = collection(firebase, "matchScoutData");
 
   const handleGetData = async () => {
+    setRestoreMatch(''); 
+    setDeletedRows([]); 
     setError(""); // Reset error message
 
     try {
@@ -205,7 +207,7 @@ const TeamMatches = () => {
       {error && <Typography color="error" variant="body1" sx={{ mt: 2 }}>{error}</Typography>}
 
       {matches.length > 0 && !error && (
-        <Stack direction={"column"} spacing={4} mt={4}>
+        <Stack direction={"column"} spacing={7} mt={9}>
         <TeamGraphs matches={matches}/>
         <TableContainer sx={{ maxWidth: '100%', margin: '0 auto', mt: 4 }}>
           <Table sx={{ minWidth: 650, backgroundColor: "#f57c00" }}>
