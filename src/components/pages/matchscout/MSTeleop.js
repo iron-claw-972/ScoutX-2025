@@ -18,7 +18,7 @@ export default function MSTeleop({ data, handleStageChange }) {
 
     return (
         <Stack direction={"column"} spacing={2}>
-            <Stack alignItems="center" spacing={6}>
+            <Stack cc spacing={6}>
                 <MapSim
                     selectedRow={selectedRow}
                     setSelectedRow={setSelectedRow}

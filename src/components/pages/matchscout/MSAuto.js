@@ -1,7 +1,7 @@
 import {useRef, useState} from "react";
-import {Stack} from "@mui/material";
+import {Button, Stack} from "@mui/material";
 import {MatchStage, IntakeElement, IntakeLocations} from "../../MatchConstants";
-import CustomToggleButton from "./form_elements/CustomToggleButton";
+import LeaveButton from "./form_elements/LeaveButton";
 import {useCookies} from "react-cookie";
 import InputTable from "./form_elements/InputTable";
 import MapSim from "./form_elements/map/MapSim";
@@ -14,11 +14,14 @@ export default function MSAuto({ data, handleStageChange}) {
 
     const update = () => {
         setCounter(counter + 1);
+        
+
+    
     };
 
     return (
         <Stack direction={"column"} spacing={2}>
-            <CustomToggleButton
+             <LeaveButton
                 label={"Leave?"}
                 value={data.get(MatchStage.AUTO, "leave")}
                 onClick={(newValue) => {
