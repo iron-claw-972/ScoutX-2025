@@ -37,9 +37,10 @@ export default function IntakeTable ({
             ...sx,
         }}
         >
-            <Stack direction={'column'} spacing={'15px'}>
+            <Stack 
+            alignItems="center" justifyContent="center" direction={'column'} spacing={1}>
 
-                <Stack direction={'row'} spacing={'5px'}>
+                <Stack alignContent="center" direction={'row'} spacing={1}>
 
                 <Typography 
                     variant="h6" 
@@ -79,13 +80,13 @@ export default function IntakeTable ({
                             height: "40px",
                             top: "32%",
                             left: "32%",
-                            pointerEvents: "none", // Ensure the image does not interact with button methods
+                            pointerEvents: "none", 
                         }}
                     />
 
                     <IntakeButton 
                         width={(40 / 100) * boxDimensions.height} 
-                        height={(47.3 / 100) * boxDimensions.height} 
+                        height={(55.3 / 100) * boxDimensions.height} 
                         element={"Coral"}
                         selectedIntakeElement={selectedIntakeElement}
                         setSelectedIntakeElement={setSelectedIntakeElement}
@@ -94,7 +95,7 @@ export default function IntakeTable ({
                     />
                     <IntakeButton 
                         width={(40 / 100) * boxDimensions.height} 
-                        height={(47.3 / 100) * boxDimensions.height} 
+                        height={(55.3 / 100) * boxDimensions.height}
                         element={"Algae"}
                         selectedIntakeElement={selectedIntakeElement}
                         setSelectedIntakeElement={setSelectedIntakeElement}
@@ -104,68 +105,66 @@ export default function IntakeTable ({
                     
                 </Stack>
 
-                <Stack direction={"row"} spacing={"-10%"} justifyContent={"space-between"} alignItems={"center"}>
-                    <Button
-                        variant={"outlined"}
-                        color="error"
-                        onClick={() => {
-                            setSelectedIntakeElement(0);
-                            setSelectedIntakeLocation(0);
-                            stopStopwatch();
-                            setElapsedTime(0);
-                        }}
-                        sx={{
-                            height: "320%",
-                            width: "50%",
-                            position: 'relative', 
-                            top: '100%', 
-                        }}>
-                    <Typography sx={{ fontSize: '18px', fontWeight: 'bold', color: 'error', }}>
-                    Cancel
-                    </Typography> </Button>
-                    
-                <Button
-                variant={"outlined"}
-                color="error"
-                onClick={() => {
-                    data.deletePrevious(stage);
-                 update();}}
-                 sx={{
-                   height: "320%",
-                   width: "50%",
-                   position: 'relative', 
-                   top: '100%', 
-                    }}>
-                        <Typography sx={{ fontSize: '18px', fontWeight: 'bold' }}>
-                            Delete Previous
-                            </Typography> </Button>
-
-
-                    <Typography 
-                    variant="h7"
-                    style={{
-                    fontSize: '15px', 
-                    color: 'white', 
-                    margin: '-8%', 
-                    position: 'relative',  
-                    left: '-11%', 
-                    }}
+                <Stack
+                        direction={"row"}
+                        spacing={1}
+                        alignItems="center"
+                        justifyContent="center"
+                    sx={{ width: "100%" }}
+                        
                     >
-                        {data.getOuttakeCount(stage)}
-                    </Typography>
+                <Button
+                            variant="outlined"
+                            color="error"
+                            onClick={() => {
+                                setSelectedIntakeElement(0);
+                                setSelectedIntakeLocation(0);
+                                stopStopwatch();
+                                setElapsedTime(0);
+                            }}
+                            sx={{
+                                width:(40 / 100) * boxDimensions.height,
+                                borderRadius: "8px",
+                                fontWeight: "bold",
+                                fontSize: "16px",
+                                height:(12 / 100) * boxDimensions.height,
+                            }}
+                        >
+                            Cancel
+                        </Button>
+                         
                     
+                    <Button
+                            variant="outlined"
+                            color="error"
+                            onClick={() => {
+                                data.deletePrevious(stage);
+                                update();
+                            }}
+                            sx={{
+                                width:(40 / 100) * boxDimensions.height,
+                                height:(12 / 100) * boxDimensions.height,
+                                borderRadius: "8px",
+                                fontWeight: "bold",
+                                fontSize: "15px",
+                            }}
+                        >
+                            Delete Previous   {data.getOuttakeCount(stage)}
+                        </Button>
 
 
 
                 </Stack>
 
 
+
                     <Stack
                         direction={"row"}
                         spacing={1}
-                        sx={{
-                            my: 2,
-                        }}
+                        alignItems="center"
+                        justifyContent="center"
+                    sx={{ width: "100%" }}
+                       
                     >
                     {data.stage !== MatchStage.PRE_MATCH && (
                         <Button
@@ -178,34 +177,37 @@ export default function IntakeTable ({
                                 setSelectedIntakeLocation(0);
                             }}
                             sx={{
-                                position: 'relative', 
-                              top: '200%',
-                              left: '1%',
-                              width: '145%'
+                            borderRadius: "8px",
+                            fontWeight: "bold",
+                            fontSize: "16px",
+                            height:(12 / 100) * boxDimensions.height,
+                            width:(40 / 100) * boxDimensions.height,
                             }}
                         >
                             Previous
                         </Button>
                     )}
                     {data.stage !== MatchStage.POST_MATCH && (
-                        <Button
-                            fullWidth
-                            variant={"outlined"}
-                            onClick={() => {
-                                handleStageChange(data.stage + 1);
-                                update();
-                                setSelectedIntakeElement(IntakeElement.CORAL);
-                                setSelectedIntakeLocation(IntakeLocations.PRELOAD);
-                            }}
-                            sx={{
-                                position: 'relative', 
-                              top: '200%',
-                              left: '1%',
-                              width: '145%'
-                            }}
-                        >
-                            Next
-                        </Button>
+                   <Button
+                   variant="outlined"
+                   color="primary"
+                   fullWidth
+                   onClick={() => {
+                       handleStageChange(data.stage + 1);
+                       update();
+                       setSelectedIntakeElement(IntakeElement.CORAL);
+                       setSelectedIntakeLocation(IntakeLocations.PRELOAD);
+                   }}
+                   sx={{
+                       borderRadius: "8px",
+                       fontWeight: "bold",
+                       fontSize: "16px",
+                       height:(12 / 100) * boxDimensions.height,
+                       width:(40 / 100) * boxDimensions.height,
+                   }}
+               >
+                   Next
+               </Button>
                     )}
                     
                     {data.stage === MatchStage.POST_MATCH && (

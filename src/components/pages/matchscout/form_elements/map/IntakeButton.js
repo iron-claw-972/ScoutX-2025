@@ -26,6 +26,7 @@ export default function IntakeButton({
             sx={{
                 width: `${width}px`,
                 height: `${height}px`,
+                left: "-4px",
                 fontSize: "0.8rem",
                 borderColor: isSelected ? "primary.main" : "inherit", 
                 color: isSelected ? "white" : "inherit", 
