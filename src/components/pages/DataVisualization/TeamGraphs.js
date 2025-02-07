@@ -121,7 +121,7 @@ const TeamGraphs = ({ matches }) => {
       </ResponsiveContainer>
 
       {/* Scatter Chart */}
-      <ResponsiveContainer width="30%" height={500}>
+      <ResponsiveContainer width="25%" height={500}>
         <ScatterChart>
           <CartesianGrid strokeDasharray="3 3"  />
           <XAxis
@@ -169,7 +169,7 @@ const TeamGraphs = ({ matches }) => {
       </ResponsiveContainer>
 
       {/* Radar Chart */}
-      <ResponsiveContainer width="30%" height={500}>
+      <ResponsiveContainer width="35%" height={500}>
         <RadarChart data={radarData}>
           <PolarGrid stroke="gray" strokeDasharray="3 3" />
           <PolarAngleAxis
