@@ -83,9 +83,9 @@ const TeamGraphs = ({ matches }) => {
   ];
 
   return (
-    <Stack direction={"row"} spacing={5} mt={4}>
+    <Stack direction={"row"} spacing={4} mt={4}>
       {/* Line Chart */}
-      <ResponsiveContainer width="50%" height={500}>
+      <ResponsiveContainer width="40%" height={500}>
         <LineChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="matchNumber" label={{ value: "Matches", position: "bottom", offset: 5 }} />
@@ -121,9 +121,9 @@ const TeamGraphs = ({ matches }) => {
       </ResponsiveContainer>
 
       {/* Scatter Chart */}
-      <ResponsiveContainer width="25%" height={500}>
+      <ResponsiveContainer width="30%" height={500}>
         <ScatterChart>
-          <CartesianGrid strokeDasharray="3 3" />
+          <CartesianGrid strokeDasharray="3 3"  />
           <XAxis
             dataKey="coralPoints"
             name="Coral Points"
@@ -169,7 +169,7 @@ const TeamGraphs = ({ matches }) => {
       </ResponsiveContainer>
 
       {/* Radar Chart */}
-      <ResponsiveContainer width="25%" height={500}>
+      <ResponsiveContainer width="30%" height={500}>
         <RadarChart data={radarData}>
           <PolarGrid stroke="gray" strokeDasharray="3 3" />
           <PolarAngleAxis
@@ -246,7 +246,7 @@ const TeamGraphs = ({ matches }) => {
           <Legend 
             verticalAlign="top" 
             align="center" 
-            wrapperStyle={{top: -10}}/>
+            />
         </RadarChart>
       </ResponsiveContainer>
     </Stack>
