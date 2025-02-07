@@ -63,7 +63,7 @@ export const Constants = {
         {
             name: "Jackob Ericson",
             year: "3rd Year",
-            icon: require("./assets/field.png"),
+            icon: require("./assets/jacob.jpeg"),
         },
         {
             name: "William Han",
