@@ -121,7 +121,7 @@ const TeamGraphs = ({ matches }) => {
       </ResponsiveContainer>
 
       {/* Scatter Chart */}
-      <ResponsiveContainer width="25%" height={500}>
+      <ResponsiveContainer width="30%" height={500}>
         <ScatterChart>
           <CartesianGrid strokeDasharray="3 3"  />
           <XAxis
@@ -169,7 +169,7 @@ const TeamGraphs = ({ matches }) => {
       </ResponsiveContainer>
 
       {/* Radar Chart */}
-      <ResponsiveContainer width="35%" height={500}>
+      <ResponsiveContainer width="30%" height={500}>
         <RadarChart data={radarData}>
           <PolarGrid stroke="gray" strokeDasharray="3 3" />
           <PolarAngleAxis
@@ -178,20 +178,24 @@ const TeamGraphs = ({ matches }) => {
             tickLine={false}
             radius={20}
             tick={({ payload, x, y }) => {
-              const angle = payload.angle;
+              const words = payload.value.split(" "); // Split label into words
               const offset = {
-                "Points": { x: 0, y: -8 },
-                "Climb Points": { x: 45, y: 0 },
-                "Algae Cycles": { x: 25, y: 20 },
-                "Coral Cycles": { x: -25, y: 20 },
-                "Auto Points": { x: -45, y: 0 },
+                "Points": { x: 0, y: -4 },
+                "Climb Points": { x: 25, y: 0 },
+                "Algae Cycles": { x: 25, y: 15 },
+                "Coral Cycles": { x: -25, y: 15 },
+                "Auto Points": { x: -25, y: 0 },
               };
 
               const { x: offsetX, y: offsetY } = offset[payload.value] || { x: 0, y: 0 };
 
               return (
                 <text x={x + offsetX} y={y + offsetY} textAnchor="middle" fill="white" fontSize={14}>
-                  {payload.value}
+                  {words.map((word, index) => (
+                    <tspan key={index} x={x + offsetX} dy={index === 0 ? 0 : 18}>
+                        {word}
+                    </tspan>
+                  ))}
                 </text>
               );
             }}
