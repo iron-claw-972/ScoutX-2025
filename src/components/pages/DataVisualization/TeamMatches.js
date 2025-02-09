@@ -9,7 +9,7 @@ import { Stack } from "@mui/system";
 
 const TeamMatches = () => {
   const [team, setTeam] = useState("");
-  const [matches, setMatches] = useState([]); // Stores match data
+  const [matches, setMatches] = useState([]); // Stores match data for each team
   const [deletedRows, setDeletedRows] = useState([]); // Stores deleted rows
   const [sortBy, setSortBy] = useState("matchNumber");
   const [sortDirection, setSortDirection] = useState("asc");
@@ -147,23 +147,48 @@ const TeamMatches = () => {
         return matchObject;
       });
 
-      setMatches(matchData);
+      // Update matches with the new matchData for this team
+      setMatches((prevMatches) => [
+        ...prevMatches.filter((m) => m.team !== team),  // Remove previous data for this team
+        { team, matchData }
+      ]);
+
     } catch (error) {
       console.error("Error fetching match data:", error);
       setError("Error fetching match data. Please try again.");
     }
   };
 
-  const handleDeleteRow = (matchNumber) => {
-    const updatedMatches = matches.filter(match => match.matchNumber !== matchNumber);
-    const deletedMatch = matches.find(match => match.matchNumber === matchNumber);
+  const handleDeleteRow = (team, matchNumber) => {
+    const updatedMatches = matches.map((teamData) => {
+      if (teamData.team === team) {
+        const updatedMatches = teamData.matchData.filter(match => match.matchNumber !== matchNumber);
+        return { ...teamData, matchData: updatedMatches };
+      }
+      return teamData;
+    });
+
+    const deletedMatch = matches
+      .find((teamData) => teamData.team === team)
+      .matchData.find((match) => match.matchNumber === matchNumber);
+
     setMatches(updatedMatches);
     setDeletedRows([...deletedRows, deletedMatch]);
   };
 
   const handleRestoreRow = () => {
     const matchToRestore = deletedRows.find(match => match.matchNumber === restoreMatch);
-    setMatches([...matches, matchToRestore]);
+    setMatches(
+      matches.map((teamData) => {
+        if (teamData.team === matchToRestore.team) {
+          return {
+            ...teamData,
+            matchData: [...teamData.matchData, matchToRestore]
+          };
+        }
+        return teamData;
+      })
+    );
     setDeletedRows(deletedRows.filter(match => match.matchNumber !== restoreMatch));
 
     // Clear restoreMatch after restoring the match to prevent the button from appearing again
@@ -179,16 +204,19 @@ const TeamMatches = () => {
     }
   };
 
-  const sortedData = [...matches].sort((a, b) => {
-    const valueA = a[sortBy];
-    const valueB = b[sortBy];
+  const sortedData = matches.map((teamData) => ({
+    ...teamData,
+    matchData: [...teamData.matchData].sort((a, b) => {
+      const valueA = a[sortBy];
+      const valueB = b[sortBy];
 
-    if (sortDirection === 'asc') {
-      return valueB - valueA;
-    } else {
-      return valueA - valueB;
-    }
-  });
+      if (sortDirection === 'asc') {
+        return valueB - valueA;
+      } else {
+        return valueA - valueB;
+      }
+    })
+  }));
 
   return (
     <>
@@ -208,103 +236,105 @@ const TeamMatches = () => {
 
       {matches.length > 0 && !error && (
         <Stack direction={"column"} spacing={7} mt={9}>
-        <TeamGraphs matches={matches}/>
-        <TableContainer sx={{ maxWidth: '100%', margin: '0 auto', mt: 4 }}>
-          <Table sx={{ minWidth: 650, backgroundColor: "#f57c00" }}>
-            <TableHead sx={{ backgroundColor: "#222", color: "white" }}>
-              <TableRow>
-                <TableCell sx={{ color: "#f57c00", fontWeight: "bold" }}></TableCell>
-                <TableCell sx={{ color: "#f57c00", fontWeight: "bold" }}>Match Number</TableCell>
-                {Object.keys(sortedData[0]).map((column) =>
-                  column !== "matchNumber" ? (
-                    <TableCell key={column} sx={{ color: "white" }}>
-                      <TableSortLabel
-                        active={sortBy === column}
-                        direction={sortDirection}
-                        onClick={() => handleSort(column)}
-                        sx={{
-                          color: "white",
-                          "&.MuiTableSortLabel-active": { color: "#f57c00" },
-                          "&:hover": { color: "#f57c00" },
-                        }}
-                      >
-                        {column.replace(/([a-z])([A-Z])/g, "$1 $2")}
-                      </TableSortLabel>
-                    </TableCell>
-                  ) : null
-                )}
-              </TableRow>
-            </TableHead>
-
-            <TableBody>
-              {sortedData.map((match, index) => (
-                <TableRow
-                  key={match.matchNumber}
-                  sx={{
-                    backgroundColor: index % 2 === 0 ? "#333" : "#444",
-                    "&:hover": { backgroundColor: "#555" },
-                  }}
-                >
-                  <TableCell>
-                    <IconButton
-                      sx={{ color: "primary", fontSize: 20 }}
-                      onClick={() => handleDeleteRow(match.matchNumber)}
-                    >
-                      <RemoveCircleIcon />
-                    </IconButton>
-                  </TableCell>
-                  <TableCell sx={{ color: "#f57c00" }}>{match.matchNumber}</TableCell>
-                  {Object.entries(match).map(
-                    ([key, value]) =>
-                      key !== "matchNumber" && (
-                        <TableCell
-                          key={key}
-                          sx={{
-                            color: "white",
-                            whiteSpace: key === "Extra Information" ? "nowrap" : "normal",
-                          }}
-                        >
-                          {value}
+          {sortedData.map((teamData) => (
+            <TableContainer key={teamData.team} sx={{ maxWidth: '100%', margin: '0 auto', mt: 4 }}>
+              <Typography variant="h5" sx={{ color: "#f57c00" }}>{`Team ${teamData.team}`}</Typography>
+              <Table sx={{ minWidth: 650, backgroundColor: "#f57c00" }}>
+                <TableHead sx={{ backgroundColor: "#222", color: "white" }}>
+                  <TableRow>
+                    <TableCell sx={{ color: "#f57c00", fontWeight: "bold" }}></TableCell>
+                    <TableCell sx={{ color: "#f57c00", fontWeight: "bold" }}>Match Number</TableCell>
+                    {Object.keys(teamData.matchData[0]).map((column) =>
+                      column !== "matchNumber" ? (
+                        <TableCell key={column} sx={{ color: "white" }}>
+                          <TableSortLabel
+                            active={sortBy === column}
+                            direction={sortDirection}
+                            onClick={() => handleSort(column)}
+                            sx={{
+                              color: "white",
+                              "&.MuiTableSortLabel-active": { color: "#f57c00" },
+                              "&:hover": { color: "#f57c00" },
+                            }}
+                          >
+                            {column.replace(/([a-z])([A-Z])/g, "$1 $2")}
+                          </TableSortLabel>
                         </TableCell>
-                      )
-                  )}
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+                      ) : null
+                    )}
+                  </TableRow>
+                </TableHead>
+
+                <TableBody>
+                  {teamData.matchData.map((match, index) => (
+                    <TableRow
+                      key={match.matchNumber}
+                      sx={{
+                        backgroundColor: index % 2 === 0 ? "#333" : "#444",
+                        "&:hover": { backgroundColor: "#555" },
+                      }}
+                    >
+                      <TableCell>
+                        <IconButton
+                          sx={{ color: "primary", fontSize: 20 }}
+                          onClick={() => handleDeleteRow(teamData.team, match.matchNumber)}
+                        >
+                          <RemoveCircleIcon />
+                        </IconButton>
+                      </TableCell>
+                      <TableCell sx={{ color: "#f57c00" }}>{match.matchNumber}</TableCell>
+                      {Object.entries(match).map(
+                        ([key, value]) =>
+                          key !== "matchNumber" && (
+                            <TableCell
+                              key={key}
+                              sx={{
+                                color: "white",
+                                whiteSpace: key === "Extra Information" ? "nowrap" : "normal",
+                              }}
+                            >
+                              {value}
+                            </TableCell>
+                          )
+                      )}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          ))}
         </Stack>
       )}
 
-    {deletedRows.length > 0 && (
-    <Box sx={{ mt: 4 }}>
-        <FormControl fullWidth>
-        <InputLabel>Restore Match</InputLabel>
-        <Select
-            value={restoreMatch}
-            onChange={(e) => setRestoreMatch(e.target.value)}
-            label="Restore Match"
-        >
-            {deletedRows.map((match) => (
-            <MenuItem key={match.matchNumber} value={match.matchNumber}>
-                Match {match.matchNumber}
-            </MenuItem>
-            ))}
-        </Select>
-        </FormControl>
-        {restoreMatch && ( // Only show the restore button if a match is selected
-        <Button
-            variant="outlined"
-            color="white"
-            fullWidth
-            onClick={handleRestoreRow}
-            sx={{ mt: 2 }}
-        >
-            Restore Selected Match
-        </Button>
-        )}
-  </Box>
-)}
+      {deletedRows.length > 0 && (
+        <Box sx={{ mt: 4 }}>
+          <FormControl fullWidth>
+            <InputLabel>Restore Match</InputLabel>
+            <Select
+              value={restoreMatch}
+              onChange={(e) => setRestoreMatch(e.target.value)}
+              label="Restore Match"
+            >
+              {deletedRows.map((match) => (
+                <MenuItem key={match.matchNumber} value={match.matchNumber}>
+                  Match {match.matchNumber}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          {restoreMatch && (
+            <Button
+              variant="outlined"
+              color="white"
+              fullWidth
+              onClick={handleRestoreRow}
+              sx={{ mt: 2 }}
+            >
+              Restore Selected Match
+            </Button>
+          )}
+        </Box>
+      )}
     </>
   );
 };
