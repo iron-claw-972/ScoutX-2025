@@ -1,4 +1,4 @@
-import { Box, Button, TextField, Typography, Table, TableBody, TableCell, TableHead, TableRow, TableSortLabel, TableContainer, CircularProgress, Select, MenuItem, FormControl, InputLabel, IconButton } from "@mui/material";
+import { Box, Button, TextField, Typography, Table, TableBody, TableCell, TableHead, TableRow, TableSortLabel, TableContainer, CircularProgress, Select, MenuItem, FormControl, InputLabel, IconButton, Divider } from "@mui/material";
 import { useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import firebase from "../../../firebase";
@@ -34,6 +34,8 @@ const TeamMatches = () => {
 
       if (teamDocs.length === 0) {
         setError("No matches found for this team number.");
+        setTeam(""); 
+        return; 
       }
 
       const fields = [
@@ -143,7 +145,7 @@ const TeamMatches = () => {
           }
         });
         matchObject["Extra Information"] = extraInfoList.join(", ") || "None";
-
+        setTeam("");
         return matchObject;
       });
 
@@ -159,10 +161,17 @@ const TeamMatches = () => {
     }
   };
 
+  const handleDeleteTeamData = (team) => {
+    // Remove the team's data from the state
+    setMatches((prevMatches) => prevMatches.filter((teamData) => teamData.team !== team));
+  };
+
   const handleDeleteRow = (team, matchNumber) => {
     const updatedMatches = matches.map((teamData) => {
       if (teamData.team === team) {
-        const updatedMatches = teamData.matchData.filter(match => match.matchNumber !== matchNumber);
+        const updatedMatches = teamData.matchData.filter(
+          (match) => match.matchNumber !== matchNumber
+        );
         return { ...teamData, matchData: updatedMatches };
       }
       return teamData;
@@ -173,26 +182,35 @@ const TeamMatches = () => {
       .matchData.find((match) => match.matchNumber === matchNumber);
 
     setMatches(updatedMatches);
-    setDeletedRows([...deletedRows, deletedMatch]);
+
+    // Add to the deletedRows for the specific team
+    setDeletedRows((prevState) => ({
+      ...prevState,
+      [team]: [...(prevState[team] || []), deletedMatch],
+    }));
   };
 
-  const handleRestoreRow = () => {
-    const matchToRestore = deletedRows.find(match => match.matchNumber === restoreMatch);
+  const handleRestoreRow = (team, restoreMatch) => {
+    const matchToRestore = deletedRows[team]?.find(
+      (match) => match.matchNumber === restoreMatch
+    );
     setMatches(
       matches.map((teamData) => {
-        if (teamData.team === matchToRestore.team) {
+        if (teamData.team === team) {
           return {
             ...teamData,
-            matchData: [...teamData.matchData, matchToRestore]
+            matchData: [...teamData.matchData, matchToRestore],
           };
         }
         return teamData;
       })
     );
-    setDeletedRows(deletedRows.filter(match => match.matchNumber !== restoreMatch));
-
-    // Clear restoreMatch after restoring the match to prevent the button from appearing again
-    setRestoreMatch("");
+    setDeletedRows((prevState) => ({
+      ...prevState,
+      [team]: prevState[team].filter(
+        (match) => match.matchNumber !== restoreMatch
+      ),
+    }));
   };
 
   const handleSort = (column) => {
@@ -234,11 +252,21 @@ const TeamMatches = () => {
 
       {error && <Typography color="error" variant="body1" sx={{ mt: 2 }}>{error}</Typography>}
 
-      {matches.length > 0 && !error && (
-        <Stack direction={"column"} spacing={7} mt={9}>
+      {matches.length > 0 && (
+        <Stack direction={"column"} spacing={4} mt={9}>
           {sortedData.map((teamData) => (
+            <Box key={teamData.team}>
             <TableContainer key={teamData.team} sx={{ maxWidth: '100%', margin: '0 auto', mt: 4 }}>
+            <Stack direction={"row"} spacing={4}>
+            <IconButton
+                    sx={{ color: "primary", fontSize: 20, position: "relative", top: "-4px"  }}
+                    onClick={() => handleDeleteTeamData(teamData.team)}
+                  >
+                  <RemoveCircleIcon />
+              </IconButton>
               <Typography variant="h5" sx={{ color: "#f57c00" }}>{`Team ${teamData.team}`}</Typography>
+              </Stack>
+              <Divider sx={{ width: '75%', backgroundColor: 'grey.800', marginY: 4, mt: 2, mb: 4 }} />
               <Table sx={{ minWidth: 650, backgroundColor: "#f57c00" }}>
                 <TableHead sx={{ backgroundColor: "#222", color: "white" }}>
                   <TableRow>
@@ -302,38 +330,33 @@ const TeamMatches = () => {
                 </TableBody>
               </Table>
             </TableContainer>
-          ))}
-        </Stack>
-      )}
-
-      {deletedRows.length > 0 && (
-        <Box sx={{ mt: 4 }}>
-          <FormControl fullWidth>
-            <InputLabel>Restore Match</InputLabel>
-            <Select
-              value={restoreMatch}
-              onChange={(e) => setRestoreMatch(e.target.value)}
-              label="Restore Match"
-            >
-              {deletedRows.map((match) => (
-                <MenuItem key={match.matchNumber} value={match.matchNumber}>
-                  Match {match.matchNumber}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          {restoreMatch && (
-            <Button
-              variant="outlined"
-              color="white"
-              fullWidth
-              onClick={handleRestoreRow}
-              sx={{ mt: 2 }}
-            >
-              Restore Selected Match
-            </Button>
-          )}
+            {/* Show restore dropdown and button under the team table */}
+          <Stack spacing={1} direction="column" sx={{ mt: 2 }}>
+            {deletedRows[teamData.team]?.length > 0 && (
+              <FormControl fullWidth>
+                <InputLabel id="restore-select-label">Restore Match</InputLabel>
+                <Select
+                  labelId="restore-select-label"
+                  value={restoreMatch}
+                  label="Restore Match"
+                  onChange={(e) => setRestoreMatch(e.target.value)} // Handle change
+                >
+                  {deletedRows[teamData.team].map((match) => (
+                    <MenuItem
+                      key={match.matchNumber}
+                      value={match.matchNumber}
+                      onClick={() => handleRestoreRow(teamData.team, match.matchNumber)}
+                    >
+                      Match {match.matchNumber}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            )}
+          </Stack>
         </Box>
+      ))}
+      </Stack>
       )}
     </>
   );
