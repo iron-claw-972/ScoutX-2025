@@ -14,10 +14,12 @@ import {
   Select,
   MenuItem,
   FormControl,
-  InputLabel
+  InputLabel,
+  Typography
 } from '@mui/material';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { ElementPointsTele, ElementPointsAuto } from '../../MatchConstants';
+import { AddCircleRounded } from '@mui/icons-material';
 
 const DataTable = () => {
   const [teamData, setTeamData] = useState([]);
@@ -29,28 +31,46 @@ const DataTable = () => {
   const matchScoutDataRef = collection(firebase, 'matchScoutData');
 
   const calculateAverages = (teamDocs) => {
+    let canClimb = false; // Declare at the top to avoid scope issues
+    let canLeave = false;
+  
     const totals = teamDocs.reduce((acc, doc) => {
       const data = doc.data();
+  
       const fields = [
         'leave', 'AutoAlgaeNet', 'AutoAlgaeProcessor', 'AutoCoralL1', 'AutoCoralL2', 'AutoCoralL3', 'AutoCoralL4',
         'TeleAlgaeNet', 'TeleAlgaeProcessor', 'TeleCoralL1', 'TeleCoralL2', 'TeleCoralL3', 'TeleCoralL4', 'ClimbPosition'
       ];
+  
       fields.forEach((field) => {
         if (!acc[field]) acc[field] = 0;
+  
         if (field === 'leave') {
-          if (data[field] === 'true') acc[field]++;
+          if (data[field] === 'true' || data[field] === true) { 
+            acc[field]++;
+            canLeave = true; // ✅ Update `canLeave` if leave is true
+          }
         } else if (field === 'ClimbPosition') {
-          if (data[field] === 'Deep') acc[field] += ElementPointsTele.DEEP;
-          else if (data[field] === 'Shallow') acc[field] += ElementPointsTele.SHALLOW;
-          else if (data[field] === 'Parked') acc[field] += ElementPointsTele.PARK;
+          if (data[field] === 'Deep') {
+            acc[field] += ElementPointsTele.DEEP;
+            canClimb = true; // ✅ Update `canClimb` if any climb position is valid
+          } else if (data[field] === 'Shallow') {
+            acc[field] += ElementPointsTele.SHALLOW;
+            canClimb = true;
+          } else if (data[field] === 'Parked') {
+            acc[field] += ElementPointsTele.PARK;
+            canClimb = true;
+          }
         } else if (data[field] !== undefined) {
           acc[field] += data[field];
         }
       });
+  
       return acc;
     }, {});
-
+  
     const matchCount = teamDocs.length;
+  
     const statsConfig = {
       "Average Points": {
         fields: [
@@ -91,21 +111,29 @@ const DataTable = () => {
         fields: [{ field: 'ClimbPosition', multiplier: 1 }],
       },
     };
-
-    return Object.keys(statsConfig).reduce((acc, statName) => {
+  
+    const calculatedStats = Object.keys(statsConfig).reduce((acc, statName) => {
       const { fields } = statsConfig[statName];
       if (statName === 'Average Cycles') {
         acc[statName] = Math.round(
           (fields.reduce((sum, field) => sum + (totals[field] || 0), 0) / matchCount) * 10
         ) / 10;
       } else {
-        acc[statName] = Math.round(
-          (fields.reduce((sum, { field, multiplier }) => sum + (totals[field] || 0) * multiplier, 0) / matchCount) * 10
-        ) / 10;
+      acc[statName] = Math.round(
+        (fields.reduce((sum, { field, multiplier }) => sum + (totals[field] || 0) * multiplier, 0) / matchCount) * 10
+      ) / 10;
       }
       return acc;
     }, {});
+  
+    return {
+      ...calculatedStats,
+      canClimb, // ✅ Now correctly updated
+      canLeave, // ✅ Now correctly updated
+    };
   };
+  
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -118,12 +146,16 @@ const DataTable = () => {
       }, {});
 
       // Array of objects, where each object contains the teamNumber and the calculated averages for that team
-      const teamAverages = Object.entries(groupedByTeam).map(([teamNumber, teamDocs]) => ({
-        teamNumber,
-        ...calculateAverages(teamDocs), // Calls the calculateAverages function for each team
-      }));
+      const teamAverages = Object.entries(groupedByTeam).map(([teamNumber, teamDocs]) => {
+        const averages = calculateAverages(teamDocs);
+        return {
+          teamNumber,
+          ...averages,  // ✅ Now contains canClimb and canLeave
+        };
+      });
 
       setTeamData(teamAverages);
+      setOriginalTeamData(teamAverages);
     };
 
     fetchData();
@@ -145,6 +177,26 @@ const DataTable = () => {
     setDeletedRows([...deletedRows, deletedTeam]);
   };
 
+  const handleFilter = (variable, value) => {
+    setFilters(prevFilters => {
+      const newFilters = {
+        ...prevFilters,
+        [variable]: prevFilters[variable] === Boolean(value) ? false : Boolean(value) // Toggle filter
+      };
+  
+      // Apply all active filters dynamically from `originalTeamData`
+      const filteredData = originalTeamData.filter(team => 
+        Object.keys(newFilters).every(key => 
+          newFilters[key] === false || team[key] === newFilters[key]
+        )
+      );
+  
+      setTeamData(filteredData); // ✅ Use `originalTeamData` instead of `teamData`
+      return newFilters;
+    });
+  };  
+   
+
   const handleRestoreRow = () => {
     const teamToRestore = deletedRows.find(team => team.teamNumber === restoreMatch);
     setTeamData([...teamData, teamToRestore]);
@@ -158,8 +210,37 @@ const DataTable = () => {
     return sortDirection === 'asc' ? valueB - valueA : valueA - valueB;
   });
 
+  const [filters, setFilters] = useState({
+    canClimb: false,
+    canLeave: false,
+  });
+  const [originalTeamData, setOriginalTeamData] = useState([]); // Stores all data before filtering
+
   return (
     <>
+      <Box sx={{ mt: 4 }}>
+        <FormControl fullWidth>
+          <InputLabel>Select Filter</InputLabel>
+          <Select
+            onChange={(e) => {
+              const filter = e.target.value;
+                handleFilter(filter, true);
+            }}
+            label="Select Filter"
+          >
+            <MenuItem value="canClimb">
+              <AddCircleRounded sx={{ color: filters.canClimb ? 'primary.main' : 'inherit', mr: 1 }} />
+              Can Climb
+            </MenuItem>
+
+            <MenuItem value="canLeave">
+              <AddCircleRounded sx={{ color: filters.canLeave ? 'primary.main' : 'inherit', mr: 1 }} />
+              Can Leave
+            </MenuItem>
+          </Select>
+        </FormControl>
+      </Box>
+
       <Table sx={{ width: '100%', borderCollapse: 'collapse', backgroundColor: '#f57c00', mt: 2 }}>
         <TableHead sx={{ backgroundColor: '#222', color: 'white' }}>
           <TableRow>
