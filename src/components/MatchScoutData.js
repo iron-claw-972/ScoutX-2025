@@ -186,6 +186,10 @@ export default class MatchScoutData {
             AutoAlgaeNet: 0,
             AutoAvgCoralCycle: 0,
             AutoAvgAlgaeCycle: 0,
+            //Intakes
+            AutoCoralIntakeStation: 0,
+            AutoCoralIntakeGround: 0,
+            AutoAlgaeIntakeGround: 0
         };
     
         let totalCoralCycleTime = 0;
@@ -194,7 +198,7 @@ export default class MatchScoutData {
         let algaeCount = 0;
     
         autoOuttakeCounts.forEach(entry => {
-            const { element, outtakeLocation, cycleTime } = entry;
+            const { element, outtakeLocation, cycleTime, intakeLocation } = entry;
     
             if (outtakeLocation === "MISSED") {
                 metrics.AutoMissed++;
@@ -207,6 +211,8 @@ export default class MatchScoutData {
                     if (outtakeLocation === "L2") metrics.AutoCoralL2++;
                     if (outtakeLocation === "L3") metrics.AutoCoralL3++;
                     if (outtakeLocation === "L4") metrics.AutoCoralL4++;
+                    if (intakeLocation == "GROUND") metrics.AutoCoralIntakeGround++;
+                    if (intakeLocation == "STATION") metrics.AutoCoralIntakeStation++;
                     totalCoralCycleTime += cycleTime;
                     coralCount++;
                 }
@@ -215,6 +221,7 @@ export default class MatchScoutData {
                     metrics.AutoAlgaeScored++;
                     if (outtakeLocation === "PROCESSOR") metrics.AutoAlgaeProcessor++;
                     if (outtakeLocation === "NET") metrics.AutoAlgaeNet++;
+                    if (intakeLocation == "GROUND") metrics.AutoAlgaeIntakeGround++;
                     totalAlgaeCycleTime += cycleTime;
                     algaeCount++;
                 }
@@ -245,6 +252,10 @@ export default class MatchScoutData {
             TeleAlgaeNet: 0, 
             TeleAvgCoralCycle: 0,
             TeleAvgAlgaeCycle: 0,
+            //Intakes
+            TeleCoralIntakeStation: 0,
+            TeleCoralIntakeGround: 0,
+            TeleAlgaeIntakeGround: 0,
         };
     
         let totalCoralCycleTime = 0;
@@ -253,7 +264,7 @@ export default class MatchScoutData {
         let algaeCount = 0;
     
         teleOuttakeCounts.forEach(entry => {
-            const { element, outtakeLocation, cycleTime } = entry;
+            const { element, outtakeLocation, cycleTime, intakeLocation } = entry;
     
             if (outtakeLocation === "MISSED") {
                 metrics.AutoMissed++;
@@ -266,6 +277,8 @@ export default class MatchScoutData {
                     if (outtakeLocation === "L2") metrics.TeleCoralL2++;
                     if (outtakeLocation === "L3") metrics.TeleCoralL3++;
                     if (outtakeLocation === "L4") metrics.TeleCoralL4++;
+                    if (intakeLocation === "STATION") metrics.TeleCoralIntakeStation++;
+                    if (intakeLocation === "GROUND") metrics.TeleCoralIntakeGround++;
                     totalCoralCycleTime += cycleTime;
                     coralCount++;
                 }
@@ -274,6 +287,7 @@ export default class MatchScoutData {
                     metrics.TeleAlgaeScored++;
                     if (outtakeLocation === "PROCESSOR") metrics.TeleAlgaeProcessor++;
                     if (outtakeLocation === "NET") metrics.TeleAlgaeNet++; 
+                    if (intakeLocation === "GROUND") metrics.TeleAlgaeIntakeGround++;
                     totalAlgaeCycleTime += cycleTime;
                     algaeCount++;
                 }
