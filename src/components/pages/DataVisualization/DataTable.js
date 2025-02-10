@@ -58,7 +58,7 @@ const DataTable = () => {
   
       const fields = [
         'leave', 'AutoAlgaeNet', 'AutoAlgaeProcessor', 'AutoCoralL1', 'AutoCoralL2', 'AutoCoralL3', 'AutoCoralL4',
-        'TeleAlgaeNet', 'TeleAlgaeProcessor', 'TeleCoralL1', 'TeleCoralL2', 'TeleCoralL3', 'TeleCoralL4', 'ClimbPosition', 'touchItOwnIt', 'autoCoralL1', 'teleCoralL1', 'autoCoralL4', 'teleCoralL4'
+        'TeleAlgaeNet', 'TeleAlgaeProcessor', 'TeleCoralL1', 'TeleCoralL2', 'TeleCoralL3', 'TeleCoralL4', 'ClimbPosition', 'touchItOwnIt', 'autoCoralL1', 'teleCoralL1', 'autoCoralL4', 'teleCoralL4', 'TeleCoralIntakeStation', 'TeleCoralIntakeGround', 'TeleAlgaeIntakeGround', 'AutoCoralIntakeStation', 'AutoCoralIntakeGround', 'AutoAlgaeIntakeGround', ''
       ];
   
       fields.forEach((field) => {
