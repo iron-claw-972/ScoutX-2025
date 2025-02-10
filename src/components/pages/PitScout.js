@@ -8,11 +8,14 @@ import {
     Select,
     Stack,
     TextField,
-    Typography
+    Typography,
+    ListItemIcon,
+    ListItemText
 } from '@mui/material';
 import SmallNumberCounter from "./matchscout/form_elements/SmallNumberCounter";
 import CustomInput from "./matchscout/form_elements/CustomInput";
 import {doc, getFirestore, setDoc} from 'firebase/firestore';
+import { Constants } from '../../Constants';
 
 
 const PitScout = (props) => {
@@ -20,7 +23,7 @@ const PitScout = (props) => {
     const [robotFeatures, setRobotFeatures] = useState('');
     const [drivetrain, setDrivetrain] = useState("");
     const [intake, setIntake] = useState("");
-    const [outtake, setOuttake] = useState("");
+    const [climb, setClimb] = useState("");
     const [robotType, setRobotType] = useState("");
     const [understage, setUnderstage] = useState(false);
     const [batteryNumber, setBatteryNumber] = useState(0);
@@ -42,20 +45,12 @@ const PitScout = (props) => {
         setIntake(event.target.value);
     };
 
-    const handleOuttake = (event) => {
-        setOuttake(event.target.value);
+    const handleClimb = (event) => {
+        setClimb(event.target.value);
     };
 
     const handleRobotType = (event) => {
         setRobotType(event.target.value)
-    }
-
-    const handleUnderstage = () => {
-        if (understage) {
-            setUnderstage(false);
-        } else {
-            setUnderstage(true);
-        }
     }
 
     const handleBatteryNumber = (newValue) => {
@@ -73,7 +68,7 @@ const PitScout = (props) => {
             teamNumber: teamNumber,
             drivetrain: drivetrain,
             intake: intake,
-            outtake: outtake,
+            climb: climb,
             robotType: robotType,
             understage: understage,
             batteryNumber: batteryNumber,
@@ -109,12 +104,26 @@ const PitScout = (props) => {
                         label="Drivetrain"
                         onChange={handleDrivetrain}>
                         <MenuItem value={0}></MenuItem>
-                        <MenuItem value={1}>Tank</MenuItem>
-                        <MenuItem value={2}>Swerve</MenuItem>
-                        <MenuItem value={3}>H-Drive</MenuItem>
-                        <MenuItem value={4}>Mecanum</MenuItem>
-                        <MenuItem value={5}>Slide</MenuItem>
-                        <MenuItem value={6}>Other</MenuItem>
+                        <MenuItem value={1}>
+                        <ListItemIcon>
+                                <img
+                                    src={Constants.tankDrive}
+                                    alt="Tank"
+                                    style={{ width: 100, height: 80 }}
+                                />
+                            </ListItemIcon>
+                            <ListItemText primary="Tank" />
+                        </MenuItem>
+                        <MenuItem value={2}>
+                        <ListItemIcon>
+                                <img
+                                    src={Constants.swerveDrive}
+                                    alt="Swerve"
+                                    style={{ width: 100, height: 80 }}
+                                />
+                            </ListItemIcon>
+                            <ListItemText primary="Swerve" />
+                            </MenuItem>
                     </Select>
                 </FormControl>
                 <FormControl fullWidth>
@@ -126,28 +135,63 @@ const PitScout = (props) => {
                         label={"Robot Type"}
                         onChange={handleRobotType}>
                         <MenuItem value={0}></MenuItem>
-                        <MenuItem value={1}>WCP Competitive Concept</MenuItem>
+                        <MenuItem value={1}>
+                        <ListItemIcon>
+                                <img
+                                    src={Constants.WCPBot}
+                                    alt="WCP Competitive Concept"
+                                    style={{ width: 70, height: 80 }}
+                                />
+                            </ListItemIcon>
+                            <ListItemText primary="WCP Competitive Concept" />
+                        </MenuItem>
                         <MenuItem value={2}>Everybot</MenuItem>
-                        <MenuItem value={3}>Kitbot</MenuItem>
+                        <MenuItem value={3}>
+                        <ListItemIcon>
+                                <img
+                                    src={Constants.kitBot}
+                                    alt="Kit Bot"
+                                    style={{ width: 70, height: 80 }}
+                                />
+                            </ListItemIcon>
+                            <ListItemText primary="Kit Bot" />
+                        </MenuItem>
+                        <MenuItem value={4}>
+                        <ListItemIcon>
+                                <img
+                                    src={Constants.cranberryAlarmBot}
+                                    alt="Cranberry Alarm Bot"
+                                    style={{ width: 70, height: 80 }}
+                                />
+                            </ListItemIcon>
+                            <ListItemText primary="Cranberry Alarm Bot" />
+                        </MenuItem>
+                        <MenuItem value={5}>Windmill Bot</MenuItem>
                     </Select>
                 </FormControl>
                 <TextField
                     label="Intake"
                     variant="outlined"
+                    helperText={
+                        "Ground? Station?"
+                    }
                     multiline
                     rows={1}
                     value={intake}
                     onChange={handleIntake}
                 />
                 <FormControl fullWidth>
-                    <TextField
-                        label="Outtake"
-                        variant="outlined"
-                        multiline
-                        rows={1}
-                        value={outtake}
-                        onChange={handleOuttake}
-                    />
+                    <InputLabel id="demo-simple-select-label">Climb</InputLabel>
+                    <Select
+                        value={climb}
+                        label="Climb"
+                        onChange={handleClimb}>
+                        <MenuItem value={0}></MenuItem>
+                        <MenuItem value={1}>Deep Climb</MenuItem>
+                        <MenuItem value={2}>Shallow Climb</MenuItem>
+                        <MenuItem value={3}>Both Shallow and Deep Climb</MenuItem>
+                        <MenuItem value={4}>No Climb</MenuItem>
+                    </Select>
                 </FormControl>
                 {/* <TextField
                     label="Robot Features"
@@ -159,35 +203,7 @@ const PitScout = (props) => {
                     value={robotFeatures}
                     onChange={handleRobotFeaturesChange}
                 /> */}
-                <Button
-                    fullWidth
-                    variant={understage ? "contained" : "outlined"}
-                    color={understage ? "primary" : "white"}
-                    onClick={() => {
-                        handleUnderstage();
-                    }}
-                >
-                    Goes Under Stage?
-                </Button>
-                <SmallNumberCounter
-                    label={"Battery Number"}
-                    value={batteryNumber}
-                    onChange={(newValue) => {
-                        handleBatteryNumber(newValue)
-                    }}
-                />
-                <CustomInput
-                    required={false}
-                    label={"Extra Comments"}
-                    helperText={
-                        "Anything else you would like to add? For example, how solid did their robot look?"
-                    }
-                    type={"text"}
-                    multiline={true}
-                    onChange={(newValue) => {
-                        handleExtraNotes(newValue)
-                    }}
-                />
+               
                 {/* <TextField
                     aria-label="Battery Number"
                     placeholder="0"

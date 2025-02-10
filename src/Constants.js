@@ -52,6 +52,11 @@ export const Constants = {
     fieldReef: require("./assets/fieldReef.png"),
     coralGamepiece: require ("./assets/CoralGamepiece.png"),
     algaeGamepiece: require ("./assets/AlgaeGamepiece.png"),
+    cranberryAlarmBot: require ("./assets/CranberryAlarmbot.png"),
+    WCPBot: require ("./assets/WCPBot.png"),
+    kitBot: require ("./assets/KitBot.png"),
+    tankDrive: require ("./assets/tankDrive.png"),
+    swerveDrive: require ("./assets/swerveDrive.png"),
 
     // TODO: Images!
     developers: [

@@ -299,11 +299,12 @@ const DataTable = () => {
       {deletedRows.length > 0 && (
         <Box sx={{ mt: 4 }}>
           <FormControl fullWidth>
-            <InputLabel>Match to Restore</InputLabel>
-            <Select
+          <InputLabel id="restore-select-label">Restore Match</InputLabel>            
+          <Select
+              labelId="restore-select-label"
               value={restoreMatch}
               onChange={(e) => setRestoreMatch(e.target.value)}
-              label="Match to Restore"
+              label="Restore Match"
             >
               {deletedRows.map((team) => (
                 <MenuItem key={team.teamNumber} value={team.teamNumber}>
