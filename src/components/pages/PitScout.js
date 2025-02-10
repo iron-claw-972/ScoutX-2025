@@ -10,7 +10,9 @@ import {
     TextField,
     Typography,
     ListItemIcon,
-    ListItemText
+    ListItemText,
+    Divider,
+    Box
 } from '@mui/material';
 import SmallNumberCounter from "./matchscout/form_elements/SmallNumberCounter";
 import CustomInput from "./matchscout/form_elements/CustomInput";
@@ -85,19 +87,32 @@ const PitScout = (props) => {
     };
 
     return (
-        <Container maxWidth="md" style={{padding: '20px', marginTop: '20px'}}>
-            <Stack direction={"column"} spacing={2}>
-                <Typography variant="h4" gutterBottom>
-                    Pit Scouting Form
-                </Typography>
+        <Box
+            sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            padding: 4,
+        }}
+        >
+            <Stack direction={"column"} width="75%" spacing={2}>
+            <Typography color="" variant="h4" gutterBottom width="100%" textAlign="center" sx={{ 
+                        color: "white", 
+                        mb: 0
+                    }}
+                    >
+                        Pit Scout
+                    </Typography>
+                    <Divider sx={{ width: "100%", backgroundColor: "#bdbdbd" }} />
 
                 <TextField
                     label="Team Number"
                     variant="outlined"
                     value={teamNumber}
                     onChange={handleTeamNumberChange}
+                    
                 />
-                <FormControl fullWidth>
+                <FormControl width="100%">
                     <InputLabel id="demo-simple-select-label">Drivetrain</InputLabel>
                     <Select
                         value={drivetrain}
@@ -166,7 +181,16 @@ const PitScout = (props) => {
                             </ListItemIcon>
                             <ListItemText primary="Cranberry Alarm Bot" />
                         </MenuItem>
-                        <MenuItem value={5}>Windmill Bot</MenuItem>
+                        <MenuItem value={5}>
+                        <ListItemIcon>
+                                <img
+                                    src={Constants.oneoneonefrc}
+                                    alt="111 FRC Bot"
+                                    style={{ width: 70, height: 80 }}
+                                />
+                            </ListItemIcon>
+                            <ListItemText primary=" 111 FRC Bot" />
+                        </MenuItem>
                     </Select>
                 </FormControl>
                 <TextField
@@ -222,7 +246,7 @@ const PitScout = (props) => {
                     Submit Pit Scout
                 </Button>
             </Stack>
-        </Container>
+        </Box>
     );
 };
 

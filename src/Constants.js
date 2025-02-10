@@ -57,6 +57,8 @@ export const Constants = {
     kitBot: require ("./assets/KitBot.png"),
     tankDrive: require ("./assets/tankDrive.png"),
     swerveDrive: require ("./assets/swerveDrive.png"),
+    oneoneonefrc: require ("./assets/111Frc.png"),
+    
 
     // TODO: Images!
     developers: [

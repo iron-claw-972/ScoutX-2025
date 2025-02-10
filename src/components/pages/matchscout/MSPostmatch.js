@@ -69,6 +69,17 @@ export default function MSPostmatch(props) {
     </Grid2>
     <Grid2 xs={6}>
         <CustomToggleButton
+            label={"Can Knock Algae 🟢"}
+            value={data.getPostData("canKnockAlgae")}
+            onClick={(newValue) => {
+                data.setPostData("canKnockAlgae", newValue);
+                update();
+            }}
+            showCheckbox={false}
+        />
+    </Grid2>
+    <Grid2 xs={6}>
+        <CustomToggleButton
             label={"A-stopped 🛑"}
             value={data.getPostData("aStopped")}
             onClick={(newValue) => {
