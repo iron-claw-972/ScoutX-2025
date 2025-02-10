@@ -6,87 +6,77 @@ import {
 import { Box, Stack } from "@mui/material";
 import { ElementPointsAuto, ElementPointsTele } from "../../MatchConstants";
 
+const colors = ["#f57c00", "#0288d1", "#7b1fa2", "#388e3c", "#d32f2f"];
+
 const TeamGraphs = ({ matches }) => {
-  // Map matches to get data for the graph
-  const data = matches
-    .map((match) => ({
+  // Ensure matches is an array of objects where each object contains a team and matchData
+  const processedTeams = matches.map((teamData, index) => {
+    const team = teamData.team;
+    const matchData = teamData.matchData;
+    
+    // Process match data for line chart
+    const lineData = matchData.map((match) => ({
       matchNumber: match.matchNumber,
       Points: match.Points,
-    }))
-    .sort((a, b) => a.matchNumber - b.matchNumber); // Sort the data by match number in ascending order
+    })).sort((a, b) => a.matchNumber - b.matchNumber);
 
-  const Averages = {
-    AveragePoints: 0,
-    AverageAlgaeCycles: 0,
-    AverageCoralCycles: 0,
-    AverageAutoPoints: 0,
-    AverageClimbPoints: 0,
-  };
+    // Process match data for scatter plot
+    const scatterData = matchData.map((match) => {
+      const algaePoints =
+        (match.AutoAlgaeNet || 0) * ElementPointsAuto.ALGAENET +
+        (match.AutoAlgaeProcessor || 0) * ElementPointsAuto.ALGAEPROCESSOR +
+        (match.TeleAlgaeNet || 0) * ElementPointsTele.ALGAENET +
+        (match.TeleAlgaeProcessor || 0) * ElementPointsTele.ALGAEPROCESSOR;
+      const coralPoints =
+        (match.AutoCoralL1 || 0) * ElementPointsAuto.CORALL1 +
+        (match.AutoCoralL2 || 0) * ElementPointsAuto.CORALL2 +
+        (match.AutoCoralL3 || 0) * ElementPointsAuto.CORALL3 +
+        (match.AutoCoralL4 || 0) * ElementPointsAuto.CORALL4 +
+        (match.TeleCoralL1 || 0) * ElementPointsTele.CORALL1 +
+        (match.TeleCoralL2 || 0) * ElementPointsTele.CORALL2 +
+        (match.TeleCoralL3 || 0) * ElementPointsTele.CORALL3 +
+        (match.TeleCoralL4 || 0) * ElementPointsTele.CORALL4;
+      return { algaePoints, coralPoints, matchNumber: match.matchNumber };
+    }).sort((a, b) => a.coralPoints - b.coralPoints);
 
-  // Calculate the Algae and Coral points for each match and prepare data for scatter plot
-  const scatterData = matches.map((match) => {
-    const algaePoints =
-      (match.AutoAlgaeNet || 0) * ElementPointsAuto.ALGAENET +
-      (match.AutoAlgaeProcessor || 0) * ElementPointsAuto.ALGAEPROCESSOR +
-      (match.TeleAlgaeNet || 0) * ElementPointsTele.ALGAENET +
-      (match.TeleAlgaeProccessor || 0) * ElementPointsTele.ALGAEPROCESSOR;
-    const coralPoints =
-      (match.AutoCoralL1 || 0) * ElementPointsAuto?.CORALL1 +
-      (match.AutoCoralL2 || 0) * ElementPointsAuto?.CORALL2 +
-      (match.AutoCoralL3 || 0) * ElementPointsAuto?.CORALL3 +
-      (match.AutoCoralL4 || 0) * ElementPointsAuto?.CORALL4 +
-      (match.TeleCoralL1 || 0) * ElementPointsTele.CORALL1 +
-      (match.TeleCoralL2 || 0) * ElementPointsTele.CORALL2 +
-      (match.TeleCoralL3 || 0) * ElementPointsTele.CORALL3 +
-      (match.TeleCoralL4 || 0) * ElementPointsTele.CORALL4;
-    return { algaePoints, coralPoints, matchNumber: match.matchNumber };
-  });
-
-  // Sort scatter data by coral points in ascending order
-  const sortedScatterData = scatterData.sort((a, b) => a.coralPoints - b.coralPoints);
-
-  // First, sum up all the values
-  matches.forEach((match) => {
-    Averages.AveragePoints += match.Points || 0;
-    Averages.AverageAlgaeCycles += match.AlgaeCycles || 0;
-    Averages.AverageCoralCycles += match.CoralCycles || 0;
-    Averages.AverageAutoPoints +=
-      (match.Leave || 0) * (ElementPointsAuto?.LEAVE || 0) +
-      (match.AutoAlgaeNet || 0) * (ElementPointsAuto?.ALGAENET || 0) +
-      (match.AutoAlgaeProcessor || 0) * (ElementPointsAuto?.ALGAEPROCESSOR || 0) +
-      (match.AutoCoralL1 || 0) * (ElementPointsAuto?.CORALL1 || 0) +
-      (match.AutoCoralL2 || 0) * (ElementPointsAuto?.CORALL2 || 0) +
-      (match.AutoCoralL3 || 0) * (ElementPointsAuto?.CORALL3 || 0) +
-      (match.AutoCoralL4 || 0) * (ElementPointsAuto?.CORALL4 || 0);
-    Averages.AverageClimbPoints += match.Climb || 0;
-  });
-
-  // Get the number of matches
-  const matchCount = matches.length;
-
-  // Divide each total by the number of matches to get the average
-  if (matchCount > 0) {
-    Object.keys(Averages).forEach((key) => {
-      Averages[key] /= matchCount;
-      Averages[key] = Math.round(Averages[key] * 10) / 10;
+    // Calculate averages for radar chart
+    const totalMatches = matchData.length;
+    const averages = matchData.reduce((acc, match) => {
+      acc.AveragePoints += match.Points || 0;
+      acc.AverageAlgaeCycles += match.AlgaeCycles || 0;
+      acc.AverageCoralCycles += match.CoralCycles || 0;
+      acc.AverageAutoPoints += (match.Leave || 0) * ElementPointsAuto.LEAVE;
+      acc.AverageClimbPoints += match.Climb || 0;
+      return acc;
+    }, {
+      AveragePoints: 0,
+      AverageAlgaeCycles: 0,
+      AverageCoralCycles: 0,
+      AverageAutoPoints: 0,
+      AverageClimbPoints: 0,
     });
-  }
 
-  console.log(Averages);
+    Object.keys(averages).forEach(key => {
+      averages[key] = Math.round((averages[key] / totalMatches) * 10) / 10;
+    });
 
-  const radarData = [
-    { metric: "Points", value: Averages.AveragePoints }, // Top
-    { metric: "Climb Points", value: Averages.AverageClimbPoints }, // Right
-    { metric: "Algae Cycles", value: Averages.AverageAlgaeCycles }, // Bottom Right
-    { metric: "Coral Cycles", value: Averages.AverageCoralCycles }, // Bottom Left
-    { metric: "Auto Points", value: Averages.AverageAutoPoints }, // Left
-  ];
+    const radarData = [
+      { metric: "Points", value: averages.AveragePoints },
+      { metric: "Climb Points", value: averages.AverageClimbPoints },
+      { metric: "Algae Cycles", value: averages.AverageAlgaeCycles },
+      { metric: "Coral Cycles", value: averages.AverageCoralCycles },
+      { metric: "Auto Points", value: averages.AverageAutoPoints },
+    ];
+
+    return { team, lineData, scatterData, radarData, color: colors[index % colors.length] };
+  });
+
 
   return (
     <Stack direction={"row"} spacing={4} mt={4}>
       {/* Line Chart */}
       <ResponsiveContainer width="40%" height={500}>
-        <LineChart data={data}>
+        <LineChart>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="matchNumber" label={{ value: "Matches", position: "bottom", offset: 5 }} />
           <YAxis label={{ value: "Points", angle: -90, position: "insideLeft" }} />
@@ -116,7 +106,9 @@ const TeamGraphs = ({ matches }) => {
             cursor={false}
           />
           <Legend align="left" />
-          <Line type="linear" dataKey="Points" stroke="#f57c00" />
+          {processedTeams.map(({ team, lineData, color }) => (
+            <Line key={team} data={lineData} type="linear" dataKey="Points" stroke={color} name={team} />
+          ))}
         </LineChart>
       </ResponsiveContainer>
 
@@ -164,13 +156,15 @@ const TeamGraphs = ({ matches }) => {
             cursor={false}
           />
           <Legend align="left" />
-          <Scatter name="Algae vs Coral" data={sortedScatterData} fill="#f57c00" shape="circle" />
+          {processedTeams.map(({ team, scatterData, color }) => (
+            <Scatter key={team} data={scatterData} name={team} fill={color} shape="circle" />
+          ))}
         </ScatterChart>
       </ResponsiveContainer>
 
       {/* Radar Chart */}
       <ResponsiveContainer width="30%" height={500}>
-        <RadarChart data={radarData}>
+        <RadarChart>
           <PolarGrid stroke="gray" strokeDasharray="3 3" />
           <PolarAngleAxis
             dataKey="metric"
@@ -200,14 +194,9 @@ const TeamGraphs = ({ matches }) => {
               );
             }}
           />
-          <Radar
-            name="Team Averages"
-            dataKey="value"
-            stroke="#f57c00"
-            fill="url(#gradient)"
-            fillOpacity={0.7}
-            strokeWidth={2}
-          />
+          {processedTeams.map(({ team, radarData, color }) => (
+            <Radar key={team} data={radarData} name={team} stroke={color} fill={color} fillOpacity={0.6} />
+          ))}
           <defs>
             <linearGradient id="gradient" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor="#f57c00" stopOpacity={0.8} />

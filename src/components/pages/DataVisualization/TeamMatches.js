@@ -249,22 +249,25 @@ const TeamMatches = () => {
       <Button variant="contained" color="primary" onClick={handleGetData} fullWidth>
         Get Data
       </Button>
-
+      
       {error && <Typography color="error" variant="body1" sx={{ mt: 2 }}>{error}</Typography>}
 
       {matches.length > 0 && (
         <Stack direction={"column"} spacing={4} mt={9}>
+          {matches.length > 0 && (
+            <TeamGraphs matches={matches}/>
+          )}
           {sortedData.map((teamData) => (
             <Box key={teamData.team}>
             <TableContainer key={teamData.team} sx={{ maxWidth: '100%', margin: '0 auto', mt: 4 }}>
             <Stack direction={"row"} spacing={4}>
             <IconButton
-                    sx={{ color: "primary", fontSize: 20, position: "relative", top: "-4px"  }}
+                    sx={{ color: "primary", fontSize: 20 }}
                     onClick={() => handleDeleteTeamData(teamData.team)}
                   >
                   <RemoveCircleIcon />
               </IconButton>
-              <Typography variant="h5" sx={{ color: "#f57c00" }}>{`Team ${teamData.team}`}</Typography>
+              <Typography variant="h5" sx={{ color: "#f57c00", position: "relative", top: "5px" }}>{`Team ${teamData.team}`}</Typography>
               </Stack>
               <Divider sx={{ width: '75%', backgroundColor: 'grey.800', marginY: 4, mt: 2, mb: 4 }} />
               <Table sx={{ minWidth: 650, backgroundColor: "#f57c00" }}>
