@@ -42,14 +42,14 @@ const DataTable = () => {
 
     //Coral Filters
     let canScoreL4 = false;
-    let canScoreL2L3 = false;
+    let canScoreL2L3 = false; //can add later if needed
     let canScoreTrough = false;
     let hasGroundIntakeCoral = false;
     let hasStationIntake = false;
 
     //Algae Filters
     let canScoreNet = false;
-    let canScoreAlgae = false;
+    let canScoreProcessor = false;
     let hasGroundIntakeAlgae = false;
     let canKnockAlgaeOff = false;
   
@@ -58,7 +58,7 @@ const DataTable = () => {
   
       const fields = [
         'leave', 'AutoAlgaeNet', 'AutoAlgaeProcessor', 'AutoCoralL1', 'AutoCoralL2', 'AutoCoralL3', 'AutoCoralL4',
-        'TeleAlgaeNet', 'TeleAlgaeProcessor', 'TeleCoralL1', 'TeleCoralL2', 'TeleCoralL3', 'TeleCoralL4', 'ClimbPosition', 'touchItOwnIt', 'autoCoralL1', 'teleCoralL1', 'autoCoralL4', 'teleCoralL4', 'TeleCoralIntakeStation', 'TeleCoralIntakeGround', 'TeleAlgaeIntakeGround', 'AutoCoralIntakeStation', 'AutoCoralIntakeGround', 'AutoAlgaeIntakeGround', ''
+        'TeleAlgaeNet', 'TeleAlgaeProcessor', 'TeleCoralL1', 'TeleCoralL2', 'TeleCoralL3', 'TeleCoralL4', 'ClimbPosition', 'touchItOwnIt', 'TeleCoralIntakeStation', 'TeleCoralIntakeGround', 'TeleAlgaeIntakeGround', 'AutoCoralIntakeStation', 'AutoCoralIntakeGround', 'AutoAlgaeIntakeGround', 'canKnockAlgae', 'TeleAlgaeNet', 'AutoAlgaeNet', 'TeleAlgaeProcessor', 'AutoAlgaeProcessor'
       ];
   
       fields.forEach((field) => {
@@ -88,24 +88,64 @@ const DataTable = () => {
             touchItOwnIt = true;
           }
         }
-        else if(field === 'autoCoralL1') {
+        else if(field === 'AutoCoralL1') {
           if(data[field] > 0) {
             canScoreTrough = true;
           }
         }
-        else if(field === 'teleCoralL1') {
+        else if(field === 'TeleCoralL1') {
           if(data[field] > 0) {
             canScoreTrough = true;
           }
         }
-        else if(field === 'autoCoralL4') {
+        else if(field === 'AutoCoralL4') {
           if(data[field] > 0) {
             canScoreL4 = true;
           }
         }
-        else if(field === 'teleCoralL4') {
+        else if(field === 'TeleCoralL4') {
           if(data[field] > 0) {
             canScoreL4 = true;
+          }
+        }
+        else if(field === 'TeleCoralIntakeGround') {
+          if(data[field] > 0) {
+            hasGroundIntakeCoral = true;
+          }
+        }
+        else if(field === 'AutoCoralIntakeGround') {
+          if(data[field] > 0) {
+            hasGroundIntakeCoral = true;
+          }
+        }
+        else if(field === 'TeleAlgaeIntakeGround') {
+          if(data[field] > 0) {
+            hasGroundIntakeAlgae = true;
+          }
+        }
+        else if(field === 'AutoAlgaeNet') {
+          if(data[field] > 0) {
+            canScoreNet = true;
+          }
+        }
+        else if(field === 'TeleAlgaeNet') {
+          if(data[field] > 0) {
+            canScoreNet = true;
+          }
+        }
+        else if(field === 'AutoAlgaeProcessor') {
+          if(data[field] > 0) {
+            canScoreProcessor = true;
+          }
+        }
+        else if(field === 'TeleAlgaeProcessor') {
+          if(data[field] > 0) {
+            canScoreProcessor = true;
+          }
+        }
+        else if(field === 'canKnockAlgae') {
+          if(data[field] === true || data[field] === 'true') {
+            canKnockAlgaeOff = true;
           }
         }
         else if (data[field] !== undefined) {
@@ -194,7 +234,7 @@ const DataTable = () => {
     
       // Algae Filters
       canScoreNet,
-      canScoreAlgae,
+      canScoreProcessor,
       hasGroundIntakeAlgae,
       canKnockAlgaeOff,
     };    
@@ -282,7 +322,7 @@ const DataTable = () => {
     
       // Algae Filters
       canScoreNet: false,
-      canScoreAlgae: false,
+      canScoreProcessor: false,
       hasGroundIntakeAlgae: false,
       canKnockAlgaeOff: false,
   });
@@ -305,45 +345,111 @@ const DataTable = () => {
 
   return (
     <>
-      <Box sx={{ mt: 4 }}>
-        <FormControl fullWidth>
-          <InputLabel>Select Filter</InputLabel>
-          <Select
-            value = ""
-            onChange={(e) => {
-              const filter = e.target.value;
-                handleFilter(filter, true);
-            }}
-            label="Select Filter"
-          >
-            <MenuItem value="canClimb">
-              <AddCircleRounded sx={{ color: filters.canClimb ? 'primary.main' : 'inherit', mr: 1 }} />
-              Can Climb
-            </MenuItem>
+      <Box sx={{ display: 'flex', gap: 2, mt: 4 }}>
 
-            <MenuItem value="canLeave">
-              <AddCircleRounded sx={{ color: filters.canLeave ? 'primary.main' : 'inherit', mr: 1 }} />
-              Can Leave
-            </MenuItem>
+{/* General Filters */}
+<FormControl fullWidth>
+  <InputLabel>General Filters</InputLabel>
+  <Select
+    value={Object.keys(filters).filter(key => filters[key] && ['canLeave', 'touchItOwnIt'].includes(key))}
+    onChange={(e) => handleFilter(e.target.value, true)}
+    renderValue={(selected) => selected.length ? selected.join(', ') : 'General Filters'}
+  >
+    <MenuItem value="canLeave">
+      <AddCircleRounded sx={{ color: filters.canLeave ? 'primary.main' : 'inherit', mr: 1 }} />
+      Can Leave
+    </MenuItem>
+    <MenuItem value="touchItOwnIt">
+      <AddCircleRounded sx={{ color: filters.touchItOwnIt ? 'primary.main' : 'inherit', mr: 1 }} />
+      Touch-It-Own-It
+    </MenuItem>
+  </Select>
+</FormControl>
 
-            <MenuItem value="canClimbDeep">
-              <AddCircleRounded sx={{ color: filters.canClimbDeep ? 'primary.main' : 'inherit', mr: 1 }} />
-              Can Climb Deep
-            </MenuItem>
+{/* Climb Filters */}
+<FormControl fullWidth>
+  <InputLabel>Climb Filters</InputLabel>
+  <Select
+    value={Object.keys(filters).filter(key => filters[key] && ['canClimb', 'canClimbDeep', 'canClimbShallow'].includes(key))}
+    onChange={(e) => handleFilter(e.target.value, true)}
+    renderValue={(selected) => selected.length ? selected.join(', ') : 'Climb Filters'}
+  >
+    <MenuItem value="canClimb">
+      <AddCircleRounded sx={{ color: filters.canClimb ? 'primary.main' : 'inherit', mr: 1 }} />
+      Can Climb
+    </MenuItem>
+    <MenuItem value="canClimbDeep">
+      <AddCircleRounded sx={{ color: filters.canClimbDeep ? 'primary.main' : 'inherit', mr: 1 }} />
+      Can Climb Deep
+    </MenuItem>
+    <MenuItem value="canClimbShallow">
+      <AddCircleRounded sx={{ color: filters.canClimbShallow ? 'primary.main' : 'inherit', mr: 1 }} />
+      Can Climb Shallow
+    </MenuItem>
+  </Select>
+</FormControl>
 
-            <MenuItem value="canClimbShallow">
-              <AddCircleRounded sx={{ color: filters.canClimbShallow ? 'primary.main' : 'inherit', mr: 1 }} />
-              Can Climb Shallow
-            </MenuItem>
+{/* Coral Filters */}
+<FormControl fullWidth>
+  <InputLabel>Coral Filters</InputLabel>
+  <Select
+    value={Object.keys(filters).filter(key => filters[key] && ['canScoreL4', 'canScoreL2L3', 'canScoreTrough', 'hasGroundIntakeCoral', 'hasStationIntake'].includes(key))}
+    onChange={(e) => handleFilter(e.target.value, true)}
+    renderValue={(selected) => selected.length ? selected.join(', ') : 'Coral Filters'}
+  >
+    <MenuItem value="canScoreL4">
+      <AddCircleRounded sx={{ color: filters.canScoreL4 ? 'primary.main' : 'inherit', mr: 1 }} />
+      Can Score L4
+    </MenuItem>
+    <MenuItem value="canScoreL2L3">
+      <AddCircleRounded sx={{ color: filters.canScoreL2L3 ? 'primary.main' : 'inherit', mr: 1 }} />
+      Can Score L2/L3
+    </MenuItem>
+    <MenuItem value="canScoreTrough">
+      <AddCircleRounded sx={{ color: filters.canScoreTrough ? 'primary.main' : 'inherit', mr: 1 }} />
+      Can Score Trough
+    </MenuItem>
+    <MenuItem value="hasGroundIntakeCoral">
+      <AddCircleRounded sx={{ color: filters.hasGroundIntakeCoral ? 'primary.main' : 'inherit', mr: 1 }} />
+      Has Ground Intake Coral
+    </MenuItem>
+    <MenuItem value="hasStationIntake">
+      <AddCircleRounded sx={{ color: filters.hasStationIntake ? 'primary.main' : 'inherit', mr: 1 }} />
+      Has Station Intake Coral
+    </MenuItem>
+  </Select>
+</FormControl>
 
-            <MenuItem value="touchItOwnIt">
-              <AddCircleRounded sx={{ color: filters.touchItOwnIt ? 'primary.main' : 'inherit', mr: 1 }} />
-              Touch-It-Own-It
-            </MenuItem>
+{/* Algae Filters */}
+<FormControl fullWidth>
+  <InputLabel>Algae Filters</InputLabel>
+  <Select
+    value={Object.keys(filters).filter(key => filters[key] && ['canScoreNet', 'canScoreProcessor', 'hasGroundIntakeAlgae', 'canKnockAlgaeOff'].includes(key))}
+    onChange={(e) => handleFilter(e.target.value, true)}
+    renderValue={(selected) => selected.length ? selected.join(', ') : 'Algae Filters'}
+  >
+    <MenuItem value="canScoreNet">
+      <AddCircleRounded sx={{ color: filters.canScoreNet ? 'primary.main' : 'inherit', mr: 1 }} />
+      Can Score Net
+    </MenuItem>
+    <MenuItem value="canScoreProcessor">
+      <AddCircleRounded sx={{ color: filters.canScoreProcessor ? 'primary.main' : 'inherit', mr: 1 }} />
+      Can Score Processor
+    </MenuItem>
+    <MenuItem value="hasGroundIntakeAlgae">
+      <AddCircleRounded sx={{ color: filters.hasGroundIntakeAlgae ? 'primary.main' : 'inherit', mr: 1 }} />
+      Has Ground Intake Algae
+    </MenuItem>
+    <MenuItem value="canKnockAlgaeOff">
+      <AddCircleRounded sx={{ color: filters.canKnockAlgaeOff ? 'primary.main' : 'inherit', mr: 1 }} />
+      Can Knock Algae Off
+    </MenuItem>
+  </Select>
+</FormControl>
 
-          </Select>
-        </FormControl>
-      </Box>
+</Box>
+
+
 
       <Table sx={{ width: '100%', borderCollapse: 'collapse', backgroundColor: '#f57c00', mt: 2 }}>
         <TableHead sx={{ backgroundColor: '#222', color: 'white' }}>
