@@ -31,15 +31,34 @@ const DataTable = () => {
   const matchScoutDataRef = collection(firebase, 'matchScoutData');
 
   const calculateAverages = (teamDocs) => {
-    let canClimb = false; // Declare at the top to avoid scope issues
+     // General Filters
     let canLeave = false;
+    let touchItOwnIt = false;
+
+    //Climb Filters
+    let canClimb = false;
+    let canClimbDeep = false;
+    let canClimbShallow = false;
+
+    //Coral Filters
+    let canScoreL4 = false;
+    let canScoreL2L3 = false;
+    let canScoreTrough = false;
+    let hasGroundIntakeCoral = false;
+    let hasStationIntake = false;
+
+    //Algae Filters
+    let canScoreNet = false;
+    let canScoreAlgae = false;
+    let hasGroundIntakeAlgae = false;
+    let canKnockAlgaeOff = false;
   
     const totals = teamDocs.reduce((acc, doc) => {
       const data = doc.data();
   
       const fields = [
         'leave', 'AutoAlgaeNet', 'AutoAlgaeProcessor', 'AutoCoralL1', 'AutoCoralL2', 'AutoCoralL3', 'AutoCoralL4',
-        'TeleAlgaeNet', 'TeleAlgaeProcessor', 'TeleCoralL1', 'TeleCoralL2', 'TeleCoralL3', 'TeleCoralL4', 'ClimbPosition'
+        'TeleAlgaeNet', 'TeleAlgaeProcessor', 'TeleCoralL1', 'TeleCoralL2', 'TeleCoralL3', 'TeleCoralL4', 'ClimbPosition', 'touchItOwnIt', 'autoCoralL1', 'teleCoralL1', 'autoCoralL4', 'teleCoralL4', 'TeleCoralIntakeStation', 'TeleCoralIntakeGround', 'TeleAlgaeIntakeGround', 'AutoCoralIntakeStation', 'AutoCoralIntakeGround', 'AutoAlgaeIntakeGround', ''
       ];
   
       fields.forEach((field) => {
@@ -48,20 +67,48 @@ const DataTable = () => {
         if (field === 'leave') {
           if (data[field] === 'true' || data[field] === true) { 
             acc[field]++;
-            canLeave = true; // ✅ Update `canLeave` if leave is true
+            canLeave = true;
           }
-        } else if (field === 'ClimbPosition') {
+        } 
+        else if (field === 'ClimbPosition') {
           if (data[field] === 'Deep') {
             acc[field] += ElementPointsTele.DEEP;
-            canClimb = true; // ✅ Update `canClimb` if any climb position is valid
+            canClimb = true;
+            canClimbDeep = true;
           } else if (data[field] === 'Shallow') {
             acc[field] += ElementPointsTele.SHALLOW;
             canClimb = true;
+            canClimbShallow = true;
           } else if (data[field] === 'Parked') {
             acc[field] += ElementPointsTele.PARK;
-            canClimb = true;
           }
-        } else if (data[field] !== undefined) {
+        } 
+        else if (field === 'touchItOwnIt') {
+          if(data[field] === true || data[field] === 'true') {
+            touchItOwnIt = true;
+          }
+        }
+        else if(field === 'autoCoralL1') {
+          if(data[field] > 0) {
+            canScoreTrough = true;
+          }
+        }
+        else if(field === 'teleCoralL1') {
+          if(data[field] > 0) {
+            canScoreTrough = true;
+          }
+        }
+        else if(field === 'autoCoralL4') {
+          if(data[field] > 0) {
+            canScoreL4 = true;
+          }
+        }
+        else if(field === 'teleCoralL4') {
+          if(data[field] > 0) {
+            canScoreL4 = true;
+          }
+        }
+        else if (data[field] !== undefined) {
           acc[field] += data[field];
         }
       });
@@ -128,9 +175,29 @@ const DataTable = () => {
   
     return {
       ...calculatedStats,
-      canClimb, // ✅ Now correctly updated
-      canLeave, // ✅ Now correctly updated
-    };
+    
+      // General Filters
+      canLeave,
+      touchItOwnIt,
+    
+      // Climb Filters
+      canClimb,
+      canClimbDeep,
+      canClimbShallow,
+    
+      // Coral Filters
+      canScoreL4,
+      canScoreL2L3,
+      canScoreTrough,
+      hasGroundIntakeCoral,
+      hasStationIntake,
+    
+      // Algae Filters
+      canScoreNet,
+      canScoreAlgae,
+      hasGroundIntakeAlgae,
+      canKnockAlgaeOff,
+    };    
   };
   
   
@@ -191,10 +258,35 @@ const DataTable = () => {
         )
       );
   
-      setTeamData(filteredData); // ✅ Use `originalTeamData` instead of `teamData`
+      setTeamData(filteredData);
       return newFilters;
     });
   };  
+
+  const [filters, setFilters] = useState({
+      // General Filters
+      canLeave: false,
+      touchItOwnIt: false,
+    
+      // Climb Filters
+      canClimb: false,
+      canClimbDeep: false,
+      canClimbShallow: false,
+    
+      // Coral Filters
+      canScoreL4: false,
+      canScoreL2L3: false,
+      canScoreTrough: false,
+      hasGroundIntakeCoral: false,
+      hasStationIntake: false,
+    
+      // Algae Filters
+      canScoreNet: false,
+      canScoreAlgae: false,
+      hasGroundIntakeAlgae: false,
+      canKnockAlgaeOff: false,
+  });
+  const [originalTeamData, setOriginalTeamData] = useState([]); // Stores all data before filtering
    
 
   const handleRestoreRow = () => {
@@ -210,11 +302,6 @@ const DataTable = () => {
     return sortDirection === 'asc' ? valueB - valueA : valueA - valueB;
   });
 
-  const [filters, setFilters] = useState({
-    canClimb: false,
-    canLeave: false,
-  });
-  const [originalTeamData, setOriginalTeamData] = useState([]); // Stores all data before filtering
 
   return (
     <>
@@ -222,6 +309,7 @@ const DataTable = () => {
         <FormControl fullWidth>
           <InputLabel>Select Filter</InputLabel>
           <Select
+            value = ""
             onChange={(e) => {
               const filter = e.target.value;
                 handleFilter(filter, true);
@@ -237,6 +325,22 @@ const DataTable = () => {
               <AddCircleRounded sx={{ color: filters.canLeave ? 'primary.main' : 'inherit', mr: 1 }} />
               Can Leave
             </MenuItem>
+
+            <MenuItem value="canClimbDeep">
+              <AddCircleRounded sx={{ color: filters.canClimbDeep ? 'primary.main' : 'inherit', mr: 1 }} />
+              Can Climb Deep
+            </MenuItem>
+
+            <MenuItem value="canClimbShallow">
+              <AddCircleRounded sx={{ color: filters.canClimbShallow ? 'primary.main' : 'inherit', mr: 1 }} />
+              Can Climb Shallow
+            </MenuItem>
+
+            <MenuItem value="touchItOwnIt">
+              <AddCircleRounded sx={{ color: filters.touchItOwnIt ? 'primary.main' : 'inherit', mr: 1 }} />
+              Touch-It-Own-It
+            </MenuItem>
+
           </Select>
         </FormControl>
       </Box>
@@ -299,12 +403,11 @@ const DataTable = () => {
       {deletedRows.length > 0 && (
         <Box sx={{ mt: 4 }}>
           <FormControl fullWidth>
-          <InputLabel id="restore-select-label">Restore Match</InputLabel>            
-          <Select
-              labelId="restore-select-label"
+            <InputLabel>Match to Restore</InputLabel>
+            <Select
               value={restoreMatch}
               onChange={(e) => setRestoreMatch(e.target.value)}
-              label="Restore Match"
+              label="Match to Restore"
             >
               {deletedRows.map((team) => (
                 <MenuItem key={team.teamNumber} value={team.teamNumber}>
