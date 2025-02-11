@@ -71,7 +71,10 @@ const TeamGraphs = ({ matches }) => {
     return { team, lineData, scatterData, radarData, color: colors[index % colors.length] };
   });
 
-
+  processedTeams.forEach(({ team, radarData }) => {
+    console.log(`Radar Data for Team ${team}:`, radarData);
+  });
+  
   return (
     <Stack direction={"row"} spacing={4} mt={4}>
       {/* Line Chart */}
@@ -195,7 +198,7 @@ const TeamGraphs = ({ matches }) => {
             }}
           />
           {processedTeams.map(({ team, radarData, color }) => (
-            <Radar key={team} data={radarData} name={team} stroke={color} fill={color} fillOpacity={0.6} />
+              <Radar key={team} dataKey="value" data={radarData} name={team} stroke={color} fill={color} fillOpacity={0.6} />
           ))}
           <defs>
             <linearGradient id="gradient" x1="0" y1="0" x2="0" y2="1">
