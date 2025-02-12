@@ -241,7 +241,12 @@ const DataTable = () => {
   };
   
   
-
+  useEffect(() => {
+    if (restoreMatch) {
+      handleRestoreRow();  // Only call when restoreMatch is updated
+    }
+  }, [restoreMatch]); 
+  
   useEffect(() => {
     const fetchData = async () => {
       const querySnapshot = await getDocs(matchScoutDataRef);
@@ -353,7 +358,10 @@ const DataTable = () => {
   <Select
     value={Object.keys(filters).filter(key => filters[key] && ['canLeave', 'touchItOwnIt'].includes(key))}
     onChange={(e) => handleFilter(e.target.value, true)}
-    renderValue={(selected) => selected.length ? selected.join(', ') : 'General Filters'}
+    renderValue={(selected) => selected.length ? selected
+      .map(name => name.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, str => str.toUpperCase()))
+      .join(', ') 
+      : 'General Filters'}
   >
     <MenuItem value="canLeave">
       <AddCircleRounded sx={{ color: filters.canLeave ? 'primary.main' : 'inherit', mr: 1 }} />
@@ -372,7 +380,10 @@ const DataTable = () => {
   <Select
     value={Object.keys(filters).filter(key => filters[key] && ['canClimb', 'canClimbDeep', 'canClimbShallow'].includes(key))}
     onChange={(e) => handleFilter(e.target.value, true)}
-    renderValue={(selected) => selected.length ? selected.join(', ') : 'Climb Filters'}
+    renderValue={(selected) => selected.length ? selected
+      .map(name => name.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, str => str.toUpperCase()))
+      .join(', ')  
+      : 'Climb Filters'}
   >
     <MenuItem value="canClimb">
       <AddCircleRounded sx={{ color: filters.canClimb ? 'primary.main' : 'inherit', mr: 1 }} />
@@ -390,12 +401,15 @@ const DataTable = () => {
 </FormControl>
 
 {/* Coral Filters */}
-<FormControl fullWidth>
+<FormControl fullWidth variant="outlined">
   <InputLabel>Coral Filters</InputLabel>
   <Select
     value={Object.keys(filters).filter(key => filters[key] && ['canScoreL4', 'canScoreL2L3', 'canScoreTrough', 'hasGroundIntakeCoral', 'hasStationIntake'].includes(key))}
     onChange={(e) => handleFilter(e.target.value, true)}
-    renderValue={(selected) => selected.length ? selected.join(', ') : 'Coral Filters'}
+    renderValue={(selected) => selected.length ? selected
+      .map(name => name.replace(/canScoreL2L3/, 'Can Score L2/L3').replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, str => str.toUpperCase()))
+      .join(', ')  
+      : 'Coral Filters'}
   >
     <MenuItem value="canScoreL4">
       <AddCircleRounded sx={{ color: filters.canScoreL4 ? 'primary.main' : 'inherit', mr: 1 }} />
@@ -426,7 +440,10 @@ const DataTable = () => {
   <Select
     value={Object.keys(filters).filter(key => filters[key] && ['canScoreNet', 'canScoreProcessor', 'hasGroundIntakeAlgae', 'canKnockAlgaeOff'].includes(key))}
     onChange={(e) => handleFilter(e.target.value, true)}
-    renderValue={(selected) => selected.length ? selected.join(', ') : 'Algae Filters'}
+    renderValue={(selected) => selected.length ? selected
+      .map(name => name.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, str => str.toUpperCase()))
+      .join(', ')  
+      : 'Algae Filters'}
   >
     <MenuItem value="canScoreNet">
       <AddCircleRounded sx={{ color: filters.canScoreNet ? 'primary.main' : 'inherit', mr: 1 }} />
@@ -508,32 +525,21 @@ const DataTable = () => {
       </Table>
       {deletedRows.length > 0 && (
         <Box sx={{ mt: 4 }}>
-          <FormControl fullWidth>
-            <InputLabel>Match to Restore</InputLabel>
-            <Select
-              value={restoreMatch}
-              onChange={(e) => setRestoreMatch(e.target.value)}
-              label="Match to Restore"
-            >
-              {deletedRows.map((team) => (
-                <MenuItem key={team.teamNumber} value={team.teamNumber}>
-                  {team.teamNumber}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          {restoreMatch && ( // Only show the restore button if a match is selected
-          <Button
-            variant="outlined"
-            color="white"
-            fullWidth
-            onClick={handleRestoreRow}
-            sx={{ mt: 2 }}
+        <FormControl fullWidth>
+          <InputLabel>Match to Restore</InputLabel>
+          <Select
+            value={restoreMatch}
+            onChange={(e) => setRestoreMatch(e.target.value)}  // Update state on change
+            label="Match to Restore"
           >
-            Restore Selected Match
-          </Button>
-          )}
-        </Box>
+            {deletedRows.map((team) => (
+              <MenuItem key={team.teamNumber} value={team.teamNumber}>
+                {team.teamNumber}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Box>
       )}
     </>
   );
