@@ -58,7 +58,7 @@ const DataTable = () => {
   
       const fields = [
         'leave', 'AutoAlgaeNet', 'AutoAlgaeProcessor', 'AutoCoralL1', 'AutoCoralL2', 'AutoCoralL3', 'AutoCoralL4',
-        'TeleAlgaeNet', 'TeleAlgaeProcessor', 'TeleCoralL1', 'TeleCoralL2', 'TeleCoralL3', 'TeleCoralL4', 'ClimbPosition', 'touchItOwnIt', 'TeleCoralIntakeStation', 'TeleCoralIntakeGround', 'TeleAlgaeIntakeGround', 'AutoCoralIntakeStation', 'AutoCoralIntakeGround', 'AutoAlgaeIntakeGround', 'canKnockAlgae', 'TeleAlgaeNet', 'AutoAlgaeNet', 'TeleAlgaeProcessor', 'AutoAlgaeProcessor'
+        'TeleAlgaeNet', 'TeleAlgaeProcessor', 'TeleCoralL1', 'TeleCoralL2', 'TeleCoralL3', 'TeleCoralL4', 'ClimbPosition', 'touchItOwnIt', 'TeleCoralIntakeStation', 'TeleCoralIntakeGround', 'TeleAlgaeIntakeGround', 'AutoCoralIntakeStation', 'AutoCoralIntakeGround', 'AutoAlgaeIntakeGround', 'canKnockAlgae'
       ];
   
       fields.forEach((field) => {
@@ -83,7 +83,10 @@ const DataTable = () => {
             acc[field] += ElementPointsTele.PARK;
           }
         } 
-        else if (field === 'touchItOwnIt') {
+        else if (data[field] !== undefined) {
+          acc[field] += data[field];
+        }
+        if (field === 'touchItOwnIt') {
           if(data[field] === true || data[field] === 'true') {
             touchItOwnIt = true;
           }
@@ -147,9 +150,6 @@ const DataTable = () => {
           if(data[field] === true || data[field] === 'true') {
             canKnockAlgaeOff = true;
           }
-        }
-        else if (data[field] !== undefined) {
-          acc[field] += data[field];
         }
       });
   

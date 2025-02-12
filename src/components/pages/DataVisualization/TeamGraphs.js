@@ -45,7 +45,13 @@ const TeamGraphs = ({ matches }) => {
       acc.AveragePoints += match.Points || 0;
       acc.AverageAlgaeCycles += match.AlgaeCycles || 0;
       acc.AverageCoralCycles += match.CoralCycles || 0;
-      acc.AverageAutoPoints += (match.Leave || 0) * ElementPointsAuto.LEAVE;
+      acc.AverageAutoPoints += (match.Leave || 0) * ElementPointsAuto.LEAVE +
+                               (match.AutoAlgaeNet || 0) * ElementPointsAuto.ALGAENET +
+                               (match.AutoAlgaeProcessor || 0) * ElementPointsAuto.ALGAEPROCESSOR +
+                               (match.AutoCoralL1 || 0) * ElementPointsAuto.CORALL1 +
+                               (match.AutoCoralL2 || 0) * ElementPointsAuto.CORALL2 +
+                               (match.AutoCoralL3 || 0) * ElementPointsAuto.CORALL3 +
+                               (match.AutoCoralL4 || 0) * ElementPointsAuto.CORALL4;
       acc.AverageClimbPoints += match.Climb || 0;
       return acc;
     }, {
