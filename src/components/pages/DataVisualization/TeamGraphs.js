@@ -1,12 +1,18 @@
 import React from "react";
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
-  RadarChart, PolarGrid, PolarAngleAxis, Radar, ScatterChart, Scatter
+  RadarChart, PolarGrid, PolarAngleAxis, Radar, ScatterChart, Scatter, PolarRadiusAxis
 } from "recharts";
 import { Box, Stack } from "@mui/material";
 import { ElementPointsAuto, ElementPointsTele } from "../../MatchConstants";
 
-const colors = ["#f57c00", "#0288d1", "#7b1fa2", "#388e3c", "#d32f2f"];
+const colors = [
+  "#f57c00",   // Orange
+  "#ffffff",   // White
+  "#ffb74d",   // Light Orange
+  "#616161",   // Dark Grey
+  "#c0c0c0",   // Light Grey (Silver)
+];
 
 const TeamGraphs = ({ matches }) => {
   // Ensure matches is an array of objects where each object contains a team and matchData
@@ -77,9 +83,28 @@ const TeamGraphs = ({ matches }) => {
     return { team, lineData, scatterData, radarData, color: colors[index % colors.length] };
   });
 
-  processedTeams.forEach(({ team, radarData }) => {
-    console.log(`Radar Data for Team ${team}:`, radarData);
+  let formattedRadarData = [
+    { subject: 'Points', fullMark: 150 },
+    { subject: 'Climb Points', fullMark: 150 },
+    { subject: 'Algae Cycles', fullMark: 150 },
+    { subject: 'Coral Cycles', fullMark: 150 },
+    { subject: 'Auto Points', fullMark: 150 },
+  ];
+
+  formattedRadarData = formattedRadarData.map((subjectData) => {
+    const radarItem = { subject: subjectData.subject, fullMark: subjectData.fullMark };
+
+    processedTeams.forEach(({ team, radarData }) => {
+      const metricData = radarData.find(data => data.metric === subjectData.subject);
+      if (metricData) {
+        radarItem[team] = metricData.value;
+      }
+    });
+
+    return radarItem;
   });
+
+  console.log("Formatted radar data: ", formattedRadarData);
   
   return (
     <Stack direction={"row"} spacing={4} mt={4}>
@@ -172,11 +197,11 @@ const TeamGraphs = ({ matches }) => {
       </ResponsiveContainer>
 
       {/* Radar Chart */}
-      <ResponsiveContainer width="30%" height={500}>
-        <RadarChart>
+      <ResponsiveContainer width="30%" height={500}> 
+        <RadarChart data={formattedRadarData}>
           <PolarGrid stroke="gray" strokeDasharray="3 3" />
           <PolarAngleAxis
-            dataKey="metric"
+            dataKey="subject"
             stroke="white"
             tickLine={false}
             radius={20}
@@ -203,40 +228,38 @@ const TeamGraphs = ({ matches }) => {
               );
             }}
           />
-          {processedTeams.map(({ team, radarData, color }) => (
-              <Radar key={team} dataKey="value" data={radarData} name={team} stroke={color} fill={color} fillOpacity={0.6} />
-          ))}
-          <defs>
-            <linearGradient id="gradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#f57c00" stopOpacity={0.8} />
-              <stop offset="100%" stopColor="#f57c00" stopOpacity={0.3} />
-            </linearGradient>
-          </defs>
+          {processedTeams.map(({ team, color }) => {
+             const gradientId = `gradient-${team}`;  // Unique gradient ID based on the team
+             return (
+               <React.Fragment key={team}>
+                 {/* Define the gradient for each team */}
+                 <defs>
+                   <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
+                     <stop offset="0%" stopColor={color} stopOpacity={0.8} />
+                     <stop offset="100%" stopColor={color} stopOpacity={0.3} />
+                   </linearGradient>
+                 </defs>
+         
+                 {/* Render Radar with the unique gradient */}
+                 <Radar
+                   key={team}
+                   name={team}
+                   dataKey={team}
+                   stroke={color}  // Stroke color remains the team's color
+                   fill={`url(#${gradientId})`}  // Use the unique gradient for fill
+                   fillOpacity={0.6}  // Lower opacity to make overlapping radars distinguishable
+                   outerRadius={80}  // Static outer radius (or dynamic, as needed)
+                 />
+               </React.Fragment>
+             );
+          })}
           <Tooltip
-            content={({ payload }) => {
-              if (payload && payload.length) {
-                const { metric, value } = payload[0].payload;
-                return (
-                  <div
-                    style={{
-                      backgroundColor: "black",
-                      color: "white",
-                      borderRadius: "6px",
-                      fontSize: "14px",
-                      padding: "6px 12px",
-                      border: "1px solid white",
-                    }}
-                  >
-                    <strong style={{ color: "#f57c00" }}>
-                      {metric}: {value}
-                    </strong>
-                  </div>
-                );
-              }
-              return null;
-            }}
-            cursor={false}
-            contentStyle={{
+    content={({ payload }) => {
+      if (payload && payload.length) {
+        const { subject, [payload[0].name]: value } = payload[0].payload; // Get the team value for each metric
+        return (
+          <div
+            style={{
               backgroundColor: "black",
               color: "white",
               borderRadius: "6px",
@@ -244,13 +267,31 @@ const TeamGraphs = ({ matches }) => {
               padding: "6px 12px",
               border: "1px solid white",
             }}
-          />
+          >
+            <strong style={{ color: "#f57c00" }}>
+              {subject}: {value}
+            </strong>
+          </div>
+        );
+      }
+      return null;
+    }}
+    cursor={false}
+    contentStyle={{
+      backgroundColor: "black",
+      color: "white",
+      borderRadius: "6px",
+      fontSize: "14px",
+      padding: "6px 12px",
+      border: "1px solid white",
+    }}
+  />
           <Legend 
             verticalAlign="top" 
             align="center" 
             />
-        </RadarChart>
-      </ResponsiveContainer>
+        </RadarChart> 
+     </ResponsiveContainer> 
     </Stack>
   );
 };

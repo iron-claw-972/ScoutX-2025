@@ -526,7 +526,7 @@ const DataTable = () => {
       {deletedRows.length > 0 && (
         <Box sx={{ mt: 4 }}>
         <FormControl fullWidth>
-          <InputLabel>Match to Restore</InputLabel>
+          <InputLabel>Restore Match</InputLabel>
           <Select
             value={restoreMatch}
             onChange={(e) => setRestoreMatch(e.target.value)}  // Update state on change
