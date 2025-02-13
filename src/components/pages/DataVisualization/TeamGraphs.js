@@ -104,7 +104,40 @@ const TeamGraphs = ({ matches }) => {
     return radarItem;
   });
 
-  console.log("Formatted radar data: ", formattedRadarData);
+  // Custom Tooltip Component for RadarChart
+const CustomTooltip = ({ active, payload }) => {
+  if (active && payload && payload.length) {
+    const { subject, ...teamData } = payload[0].payload; // Extract subject and team data
+    return (
+      <div
+        style={{
+          backgroundColor: "black",
+          color: "white",
+          borderRadius: "6px",
+          fontSize: "14px",
+          padding: "6px 12px",
+          border: "1px solid white",
+        }}
+      >
+          {Object.keys(teamData).map((team, index) => {
+            // Display team-specific data
+            if (team !== "subject" && team !== "fullMark") {
+              return (
+                <div key={index}>
+                  <strong style={{ color: "#f57c00", fontSize: "16px" }}>{subject}</strong>
+                  <strong style={{ color: "white" }}>
+                    {team}: {teamData[team]}
+                  </strong>
+                </div>
+              );
+            }
+            return null;
+          })}
+        </div>
+    );
+  }
+  return null;
+};
   
   return (
     <Stack direction={"row"} spacing={4} mt={4}>
@@ -253,39 +286,7 @@ const TeamGraphs = ({ matches }) => {
                </React.Fragment>
              );
           })}
-          <Tooltip
-    content={({ payload }) => {
-      if (payload && payload.length) {
-        const { subject, [payload[0].name]: value } = payload[0].payload; // Get the team value for each metric
-        return (
-          <div
-            style={{
-              backgroundColor: "black",
-              color: "white",
-              borderRadius: "6px",
-              fontSize: "14px",
-              padding: "6px 12px",
-              border: "1px solid white",
-            }}
-          >
-            <strong style={{ color: "#f57c00" }}>
-              {subject}: {value}
-            </strong>
-          </div>
-        );
-      }
-      return null;
-    }}
-    cursor={false}
-    contentStyle={{
-      backgroundColor: "black",
-      color: "white",
-      borderRadius: "6px",
-      fontSize: "14px",
-      padding: "6px 12px",
-      border: "1px solid white",
-    }}
-  />
+          <Tooltip content={<CustomTooltip />} cursor={false} />
           <Legend 
             verticalAlign="top" 
             align="center" 
