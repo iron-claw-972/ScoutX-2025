@@ -119,15 +119,13 @@ const CustomTooltip = ({ active, payload }) => {
           border: "1px solid white",
         }}
       >
+          <strong style={{ color: "#f57c00", fontSize: "16px" }}>{subject}</strong>
           {Object.keys(teamData).map((team, index) => {
             // Display team-specific data
             if (team !== "subject" && team !== "fullMark") {
               return (
                 <div key={index}>
-                  <strong style={{ color: "#f57c00", fontSize: "16px" }}>{subject}</strong>
-                  <strong style={{ color: "white" }}>
                     {team}: {teamData[team]}
-                  </strong>
                 </div>
               );
             }
