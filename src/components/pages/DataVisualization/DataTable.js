@@ -91,6 +91,8 @@ const DataTable = () => {
             touchItOwnIt = true;
           }
         }
+
+        //scoring filters
         else if(field === 'AutoCoralL1') {
           if(data[field] > 0) {
             canScoreTrough = true;
@@ -99,6 +101,26 @@ const DataTable = () => {
         else if(field === 'TeleCoralL1') {
           if(data[field] > 0) {
             canScoreTrough = true;
+          }
+        }
+        else if(field === 'TeleCoralL2') {
+          if(data[field] > 0) {
+            canScoreL2L3 = true;
+          }
+        }
+        else if(field === 'TeleCoralL3') {
+          if(data[field] > 0) {
+            canScoreL2L3 = true;
+          }
+        }
+        else if(field === 'AutoCoralL2') {
+          if(data[field] > 0) {
+            canScoreL2L3 = true;
+          }
+        }
+        else if(field === 'AutoCoralL2') {
+          if(data[field] > 0) {
+            canScoreL2L3 = true;
           }
         }
         else if(field === 'AutoCoralL4') {
@@ -111,6 +133,8 @@ const DataTable = () => {
             canScoreL4 = true;
           }
         }
+
+        //intake filters
         else if(field === 'TeleCoralIntakeGround') {
           if(data[field] > 0) {
             hasGroundIntakeCoral = true;
@@ -126,6 +150,18 @@ const DataTable = () => {
             hasGroundIntakeAlgae = true;
           }
         }
+        else if(field === 'TeleCoralIntakeStation') {
+          if(data[field] > 0) {
+            hasStationIntake = true;
+          }
+        }
+        else if(field === 'AutoCoralIntakeStation') {
+          if(data[field] > 0) {
+            hasStationIntake = true;
+          }
+        }
+        
+        //outtake filters
         else if(field === 'AutoAlgaeNet') {
           if(data[field] > 0) {
             canScoreNet = true;

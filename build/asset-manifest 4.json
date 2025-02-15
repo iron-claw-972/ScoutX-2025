@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/static/css/main.e6c13ad2.css",
+    "main.js": "/static/js/main.d10cb9c3.js",
+    "static/media/CranberryAlarmbot.png": "/static/media/CranberryAlarmbot.1e338e9cb7f9ec08ada9.png",
+    "static/media/swerveDrive.png": "/static/media/swerveDrive.96925dfb8613d7b69c8a.png",
+    "static/media/WCPBot.png": "/static/media/WCPBot.f644067f2279ea05e345.png",
+    "static/media/111Frc.png": "/static/media/111Frc.d6adf2247464c5ebf686.png",
+    "static/media/tankDrive.png": "/static/media/tankDrive.2a1e2e35ffb27d887761.png",
+    "static/media/jacob.jpeg": "/static/media/jacob.83a9496a101a399ebd83.jpeg",
+    "static/media/KitBot.png": "/static/media/KitBot.cb7a67079571db7a8c01.png",
+    "static/media/fieldFlipped.png": "/static/media/fieldFlipped.c0be4facc6409702f337.png",
+    "static/media/field.png": "/static/media/field.f6ed4ceec18abeb1fe71.png",
+    "static/media/CoralGamepiece.png": "/static/media/CoralGamepiece.78625e7a8024428df5ee.png",
+    "static/media/AlgaeGamepiece.png": "/static/media/AlgaeGamepiece.09553449a8d78d1867be.png",
+    "index.html": "/index.html",
+    "main.e6c13ad2.css.map": "/static/css/main.e6c13ad2.css.map",
+    "main.d10cb9c3.js.map": "/static/js/main.d10cb9c3.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e6c13ad2.css",
+    "static/js/main.d10cb9c3.js"
+  ]
+}

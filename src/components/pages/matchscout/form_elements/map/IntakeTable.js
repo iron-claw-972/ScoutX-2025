@@ -146,10 +146,10 @@ export default function IntakeTable ({
                                 height:(12 / 100) * boxDimensions.height,
                                 borderRadius: "8px",
                                 fontWeight: "bold",
-                                fontSize: "15px",
+                                fontSize: "13px",
                             }}
                         >
-                            Delete Previous   {data.getOuttakeCount(stage)}
+                            Delete Previous {data.getOuttakeCount(stage)}
                         </Button>
 
 
