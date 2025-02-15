@@ -30,7 +30,7 @@ export default function MSAuto({ data, handleStageChange}) {
                 }}
                 showCheckbox={false}
             />
-            <Stack alignItems="center" spacing={6}>
+            <Stack cc spacing={6}>
                 <MapSim
                     selectedRow={selectedRow}
                     setSelectedRow={setSelectedRow}
