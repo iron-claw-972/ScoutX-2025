@@ -2,7 +2,6 @@ import { Typography, TextField, IconButton, Stack, Button, Box, Divider } from "
 import Grid2 from "@mui/material/Unstable_Grid2";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import Page from "../Page";
 import { useState } from "react";
 import { doc, getFirestore, setDoc } from "firebase/firestore";
 

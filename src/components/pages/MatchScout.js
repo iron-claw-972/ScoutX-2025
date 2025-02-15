@@ -1,4 +1,4 @@
-import { Alert, Button, Collapse, Divider, IconButton, Stack, Typography } from "@mui/material";
+import { Alert, Button, Collapse, Divider, IconButton, Stack, Typography, Box, Container } from "@mui/material";
 import Page from "../Page";
 import { useEffect, useMemo, useState } from "react";
 import MatchScoutData from "../MatchScoutData";
@@ -47,7 +47,7 @@ export default function MatchScout() {
     }, [stage]);
 
     return (
-        <Page>
+        <Container>
             <Typography color={"white"} variant={"h4"}>
                 Match Scout
             </Typography>
@@ -101,7 +101,7 @@ export default function MatchScout() {
                 )}
                 {stage == MatchStage.PRE_MATCH && (
                     <Button
-                        fullWidth
+                        sx={{ width: "100%" }}
                         variant={"outlined"}
                         onClick={() => {
                             if (data.validate().valid) {
@@ -126,6 +126,6 @@ export default function MatchScout() {
                     </Button>
                 )}
             </Stack>
-        </Page>
+        </Container>
     );
 }
