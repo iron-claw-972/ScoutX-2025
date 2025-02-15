@@ -66,7 +66,7 @@ export default function IntakeTable ({
                             width: "30px",
                             height: "40px",
                             top: "32%",
-                            left: "10%",
+                            left: "9%",
                             pointerEvents: "none",
                         }}
                     />
