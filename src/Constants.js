@@ -36,11 +36,6 @@ export const Constants = {
             component: Credits,
         },
         {
-            title: "Gambling",
-            path: "/gambling",
-            component: Gambling,
-        },
-        {
             title: "Data Visualization",
             path: "/DataVisualizationDisplay",
             component: DataVisualizationDisplay,

@@ -33,7 +33,7 @@ const TeamMatches = () => {
       });
 
       if (teamDocs.length === 0) {
-        setError("No matches found for this team number.");
+        setError("No matches found for this team number");
         setTeam(""); 
         return; 
       }
@@ -167,30 +167,41 @@ const TeamMatches = () => {
   };
 
   const handleDeleteRow = (team, matchNumber) => {
-    const updatedMatches = matches.map((teamData) => {
-      if (teamData.team === team) {
-        const updatedMatches = teamData.matchData.filter(
-          (match) => match.matchNumber !== matchNumber
-        );
-        return { ...teamData, matchData: updatedMatches };
-      }
-      return teamData;
-    });
-
-    const deletedMatch = matches
-      .find((teamData) => teamData.team === team)
-      .matchData.find((match) => match.matchNumber === matchNumber);
-
-    setMatches(updatedMatches);
-
-    // Add to the deletedRows for the specific team
-    setDeletedRows((prevState) => ({
-      ...prevState,
-      [team]: [...(prevState[team] || []), deletedMatch],
-    }));
+    // Find the team data
+    const teamData = matches.find((teamData) => teamData.team === team);
+  
+    // Only proceed if the team has at least one match
+    if (teamData && teamData.matchData.length > 1) {
+      const updatedMatches = matches.map((teamData) => {
+        if (teamData.team === team) {
+          const updatedMatchData = teamData.matchData.filter(
+            (match) => match.matchNumber !== matchNumber
+          );
+          return { ...teamData, matchData: updatedMatchData };
+        }
+        return teamData;
+      });
+  
+      // Find the deleted match to store it in deletedRows
+      const deletedMatch = teamData.matchData.find(
+        (match) => match.matchNumber === matchNumber
+      );
+  
+      setMatches(updatedMatches);
+  
+      // Add to the deletedRows for the specific team
+      setDeletedRows((prevState) => ({
+        ...prevState,
+        [team]: [...(prevState[team] || []), deletedMatch],
+      }));
+    } else {
+      // If no rows exist for the team, set the error message
+      setError("At least one row is necessary for visualization");
+    }
   };
 
   const handleRestoreRow = (team, restoreMatch) => {
+    setError(""); 
     const matchToRestore = deletedRows[team]?.find(
       (match) => match.matchNumber === restoreMatch
     );
