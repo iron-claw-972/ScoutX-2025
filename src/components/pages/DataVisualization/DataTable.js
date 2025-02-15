@@ -194,7 +194,7 @@ const DataTable = () => {
           { field: 'AutoCoralL4', multiplier: ElementPointsAuto.CORALL4 },
         ],
       },
-      "Average Endgame Points": {
+      "Average Climb Points": {
         fields: [{ field: 'ClimbPosition', multiplier: 1 }],
       },
     };
@@ -473,7 +473,7 @@ const DataTable = () => {
           <TableRow>
             <TableCell sx={{ color: '#f57c00', fontWeight: 'bold' }}></TableCell>
             <TableCell sx={{ color: '#f57c00', fontWeight: 'bold' }}>Team Number</TableCell>
-            {['Average Points', 'Average Cycles', 'Average Auto Points', 'Average Endgame Points'].map((column) => (
+            {['Average Points', 'Average Cycles', 'Average Auto Points', 'Average Climb Points'].map((column) => (
               <TableCell key={column} sx={{ color: 'white' }}>
                 <TableSortLabel
                   active={sortBy === column}
@@ -518,7 +518,7 @@ const DataTable = () => {
               <TableCell sx={{ color: 'white' }}>{team['Average Points']}</TableCell>
               <TableCell sx={{ color: 'white' }}>{team['Average Cycles']}</TableCell>
               <TableCell sx={{ color: 'white' }}>{team['Average Auto Points']}</TableCell>
-              <TableCell sx={{ color: 'white' }}>{team['Average Endgame Points']}</TableCell>
+              <TableCell sx={{ color: 'white' }}>{team['Average Climb Points']}</TableCell>
             </TableRow>
           ))}
         </TableBody>

@@ -11,8 +11,12 @@ const Gambling = () => {
     const [reel2, setReel2] = useState("");
     const [reel3, setReel3] = useState("");
     const [message, setMessage] = useState("Spin the reels to play!");
+    const [allowSpin, setAllowSpin] = useState(true);  
 
     const spin = () => {
+        if (!allowSpin) return;  
+
+        setAllowSpin(false);  
 
         const randomSymbol1 = symbols[Math.floor(Math.random() * symbols.length)];
         const randomSymbol2 = symbols[Math.floor(Math.random() * symbols.length)];
@@ -54,6 +58,7 @@ const Gambling = () => {
                             startIcon={<Casino />}
                             onClick={spin}
                             sx={{ mt: 2 }}
+                            disabled={!allowSpin}  
                         >
                             Spin
                         </Button>

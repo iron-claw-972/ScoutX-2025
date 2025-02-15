@@ -143,8 +143,22 @@ const CustomTooltip = ({ active, payload }) => {
       <ResponsiveContainer width="40%" height={500}>
         <LineChart>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="matchNumber" label={{ value: "Matches", position: "bottom", offset: 5 }} />
-          <YAxis label={{ value: "Points", angle: -90, position: "insideLeft" }} />
+          <XAxis 
+            dataKey="matchNumber"
+            label={{ value: "Matches", position: "bottom", offset: 5 }}
+            scale="linear"  // Ensure linear scaling
+            domain={[
+              Math.min(
+                ...processedTeams.flatMap(({ lineData }) => lineData.map(d => d.matchNumber))
+              ), // Global minimum match number across all teams
+              Math.max(
+                ...processedTeams.flatMap(({ lineData }) => lineData.map(d => d.matchNumber))
+              )  // Global maximum match number across all teams
+            ]}
+            type="number"  // Ensure the x-axis is treating the match number as a numeric value, not an index
+          />
+          <YAxis 
+            label={{ value: "Points", angle: -90, position: "insideLeft" }} />
           <Tooltip
             content={({ payload }) => {
               if (payload && payload.length) {
