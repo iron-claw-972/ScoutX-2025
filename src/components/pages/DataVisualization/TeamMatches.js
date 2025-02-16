@@ -165,7 +165,7 @@ const TeamMatches = () => {
         let extraInfoList = [];
         extraInfo.forEach((info) => {
           if (data[info] === "true") {
-            extraInfoList.push(info);
+            extraInfoList.push(formatExtraInfo(info));
           }
         });
         matchObject["Extra Information"] = extraInfoList.join(", ") || "None";
@@ -283,7 +283,12 @@ const TeamMatches = () => {
     })
   }));
 
-  console.log("Matches", matches);
+   // Helper function to format extraInfo field keys
+  const formatExtraInfo = (info) => {
+    return info
+      .replace(/([a-z])([A-Z])/g, "$1 $2")  // Adds space between camelCase words
+      .replace(/^./, (str) => str.toUpperCase()); // Capitalizes the first letter
+  };
 
   return (
     <>
