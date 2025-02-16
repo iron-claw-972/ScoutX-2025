@@ -48,7 +48,7 @@ export default function MatchScout() {
 
     return (
         <Container>
-            <Stack direction="column" spacing={2} mt={2} pb={6} align="center">
+            <Stack direction="column" spacing={2} mt={2} pb={10} align="center">
             <Typography color={"white"} variant={"h4"} sx={{ mt:4 }}>
                 Match Scout
             </Typography>
