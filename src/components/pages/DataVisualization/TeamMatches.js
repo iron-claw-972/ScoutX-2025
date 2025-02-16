@@ -164,7 +164,7 @@ const TeamMatches = () => {
 
         let extraInfoList = [];
         extraInfo.forEach((info) => {
-          if (data[info] === "true") {
+          if (data[info] === "true") {  
             extraInfoList.push(formatExtraInfo(info));
           }
         });

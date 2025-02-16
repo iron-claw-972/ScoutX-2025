@@ -35,20 +35,6 @@ export default function MSTeleop({ data, handleStageChange }) {
 
     return (
         <Stack direction={"column"} spacing={2}>
-            <Stack cc spacing={6}>
-                <MapSim
-                    selectedRow={selectedRow}
-                    setSelectedRow={setSelectedRow}
-                    selectedIntakeElement={selectedIntakeElement}
-                    setSelectedIntakeElement={setSelectedIntakeElement}
-                    selectedIntakeLocation={selectedIntakeLocation}
-                    setSelectedIntakeLocation={setSelectedIntakeLocation}
-                    update={update}
-                    stage={MatchStage.TELEOP}
-                    data={data}
-                    handleStageChange={handleStageChange} // Pass the function correctly
-                />
-            </Stack>
             {data.get(MatchStage.TELEOP, 'outtakeCounts').length > 0 && ( 
             <FormControl fullWidth>
             <InputLabel shrink={isFocused || deleteData !== null}>Previous Outtakes</InputLabel>
@@ -79,6 +65,20 @@ export default function MSTeleop({ data, handleStageChange }) {
                     Delete Outtake
               </Button>
             )}
+            <Stack cc spacing={6}>
+                <MapSim
+                    selectedRow={selectedRow}
+                    setSelectedRow={setSelectedRow}
+                    selectedIntakeElement={selectedIntakeElement}
+                    setSelectedIntakeElement={setSelectedIntakeElement}
+                    selectedIntakeLocation={selectedIntakeLocation}
+                    setSelectedIntakeLocation={setSelectedIntakeLocation}
+                    update={update}
+                    stage={MatchStage.TELEOP}
+                    data={data}
+                    handleStageChange={handleStageChange} // Pass the function correctly
+                />
+            </Stack>
         </Stack>
     );
 }

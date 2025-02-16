@@ -1,4 +1,4 @@
-import { Grid, Button, Box, Typography } from "@mui/material";
+import { Grid, Button, Box, Typography, useMediaQuery } from "@mui/material";
 import IntakeButton from "./IntakeButton";
 import { Stack } from "@mui/system";
 import CustomToggleButton from "../CustomToggleButton";
@@ -27,6 +27,9 @@ export default function IntakeTable ({
 }) {
 
     const [cookies, setCookie] = useCookies(); 
+
+    // Use `useMediaQuery` to determine if the screen is small
+    const isSmallScreen = useMediaQuery("(max-width: 960px)");
 
     return (
         
@@ -65,7 +68,7 @@ export default function IntakeTable ({
                             position: "absolute",
                             width: "30px",
                             height: "40px",
-                            top: "32%",
+                            top: "34%",
                             left: "9%",
                             pointerEvents: "none",
                         }}
@@ -78,7 +81,7 @@ export default function IntakeTable ({
                             position: "absolute",
                             width: "40px",
                             height: "40px",
-                            top: "32%",
+                            top: "34%",
                             left: "32%",
                             pointerEvents: "none", 
                         }}
@@ -125,7 +128,6 @@ export default function IntakeTable ({
                             sx={{
                                 width:(40 / 100) * boxDimensions.height,
                                 borderRadius: "8px",
-                                fontWeight: "bold",
                                 fontSize: "16px",
                                 height:(12 / 100) * boxDimensions.height,
                             }}
@@ -145,8 +147,7 @@ export default function IntakeTable ({
                                 width:(40 / 100) * boxDimensions.height,
                                 height:(12 / 100) * boxDimensions.height,
                                 borderRadius: "8px",
-                                fontWeight: "bold",
-                                fontSize: "13px",
+                                fontSize: isSmallScreen ? "13px" : "16px",
                             }}
                         >
                             Delete Previous {data.getOuttakeCount(stage)}
@@ -178,7 +179,6 @@ export default function IntakeTable ({
                             }}
                             sx={{
                             borderRadius: "8px",
-                            fontWeight: "bold",
                             fontSize: "16px",
                             height:(12 / 100) * boxDimensions.height,
                             width:(40 / 100) * boxDimensions.height,
@@ -200,7 +200,6 @@ export default function IntakeTable ({
                    }}
                    sx={{
                        borderRadius: "8px",
-                       fontWeight: "bold",
                        fontSize: "16px",
                        height:(12 / 100) * boxDimensions.height,
                        width:(40 / 100) * boxDimensions.height,

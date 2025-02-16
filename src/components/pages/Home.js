@@ -43,6 +43,7 @@ export default function Home() {
                         component={"h3"}
                         variant={"h2"}
                         sx={{
+                            mt: 2,
                             mb: dynamicHeaderMargin, // Dynamically adjusted margin-bottom
                             backgroundImage: "linear-gradient(to right, #FFA500, #FF4500)",
                             backgroundClip: "text",
@@ -54,7 +55,7 @@ export default function Home() {
                     </Typography>
 
                     {/* Links */}
-                    <Stack direction={"column"} spacing={5}>
+                    <Stack direction={"column"} spacing={3}>
                         {Constants.pages.map((page, idx) =>
                             page.path !== "/" ? (
                                 <React.Fragment key={idx}>
