@@ -53,7 +53,13 @@ export const Constants = {
     tankDrive: require ("./assets/tankDrive.png"),
     swerveDrive: require ("./assets/swerveDrive.png"),
     oneoneonefrc: require ("./assets/111Frc.png"),
-    
+    credits: require ("./assets/credits.png"),
+    dataAnalytics: require ("./assets/dataAnalytics.png"),
+    pitScout: require ("./assets/pitScout.png"),
+    matchScout: require ("./assets/matchScout.png"),
+    humanPlayer: require ("./assets/humanPlayer.png"),
+    rotateIcon: require ("./assets/rotateIcon.png"),
+
 
     developers: [
         {
