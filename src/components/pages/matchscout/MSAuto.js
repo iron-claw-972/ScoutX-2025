@@ -44,20 +44,6 @@ export default function MSAuto({ data, handleStageChange}) {
                 }}
                 showCheckbox={false}
             />
-            <Stack cc spacing={6}>
-                <MapSim
-                    selectedRow={selectedRow}
-                    setSelectedRow={setSelectedRow}
-                    selectedIntakeElement={selectedIntakeElement}
-                    setSelectedIntakeElement={setSelectedIntakeElement}
-                    selectedIntakeLocation={selectedIntakeLocation}
-                    setSelectedIntakeLocation={setSelectedIntakeLocation}
-                    update={update}
-                    stage={MatchStage.AUTO}
-                    data={data}
-                    handleStageChange={handleStageChange} // Pass the function correctly
-                />
-            </Stack>
             {data.get(MatchStage.AUTO, 'outtakeCounts').length > 0 && ( 
             <FormControl fullWidth>
             <InputLabel shrink={isFocused || deleteData !== null}>Previous Outtakes</InputLabel>
@@ -88,6 +74,20 @@ export default function MSAuto({ data, handleStageChange}) {
                     Delete Outtake
               </Button>
             )}
+            <Stack cc spacing={6}>
+                <MapSim
+                    selectedRow={selectedRow}
+                    setSelectedRow={setSelectedRow}
+                    selectedIntakeElement={selectedIntakeElement}
+                    setSelectedIntakeElement={setSelectedIntakeElement}
+                    selectedIntakeLocation={selectedIntakeLocation}
+                    setSelectedIntakeLocation={setSelectedIntakeLocation}
+                    update={update}
+                    stage={MatchStage.AUTO}
+                    data={data}
+                    handleStageChange={handleStageChange} // Pass the function correctly
+                />
+            </Stack>
         </Stack>
     );
 }

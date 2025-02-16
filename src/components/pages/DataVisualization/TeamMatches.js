@@ -123,6 +123,10 @@ const TeamMatches = () => {
           Cycles: 0,
           CoralCycles: 0,
           AlgaeCycles: 0,
+          CoralGroundIntakes: 0,
+          CoralStationIntakes: 0, 
+          AlgaeGroundIntakes: 0, 
+          AlgaeReefIntakes: 0,
         };
 
         fields.forEach((field) => {
@@ -146,6 +150,38 @@ const TeamMatches = () => {
         let points = 0;
         let coralCycles = 0;
         let algaeCycles = 0;
+        let coralGroundIntakes = 0; 
+        let coralStationIntakes = 0;
+        let algaeGroundIntakes = 0;
+        let algaeReefIntakes = 0; 
+
+        const outtakeCounts = [
+          'autoOuttakeCounts', 
+          'teleOuttakeCounts'
+        ]
+
+        outtakeCounts.forEach((count) => {
+          data[count].map((intake) => {
+            const location = intake.intakeLocation; 
+            const element = intake.element; 
+            if (element === "CORAL") {
+              if (location === "GROUND") {
+                coralGroundIntakes++; 
+              }
+              else if (location === "STATION") {
+                coralStationIntakes++; 
+              }
+            }
+            if (element === "ALGAE") {
+              if (location === "GROUND") {
+                algaeGroundIntakes++; 
+              }
+              else if (location === "REEF") {
+                algaeReefIntakes++; 
+              }
+            }
+          })
+        })
 
         Points.forEach((fieldConfig) => {
             let fieldValue = matchObject[fieldConfig.field];
@@ -161,10 +197,14 @@ const TeamMatches = () => {
         matchObject.Cycles = totalCycles;
         matchObject.CoralCycles = coralCycles;
         matchObject.AlgaeCycles = algaeCycles;
+        matchObject.CoralGroundIntakes = coralGroundIntakes;
+        matchObject.CoralStationIntakes = coralStationIntakes; 
+        matchObject.AlgaeGroundIntakes = algaeGroundIntakes;
+        matchObject.AlgaeReefIntakes = algaeReefIntakes; 
 
         let extraInfoList = [];
         extraInfo.forEach((info) => {
-          if (data[info] === "true") {
+          if (data[info] === "true") {  
             extraInfoList.push(formatExtraInfo(info));
           }
         });
@@ -176,7 +216,7 @@ const TeamMatches = () => {
           misses: 0,
           accuracy: '0%'
         };
-        matchObject["Human Player Hits"] = humanPlayerStats.hits;
+        matchObject["Human Player Makes"] = humanPlayerStats.hits;
         matchObject["Human Player Misses"] = humanPlayerStats.misses;
         matchObject["Human Player Accuracy"] = humanPlayerStats.accuracy;
 
