@@ -114,7 +114,11 @@ export default class MatchScoutData {
     }
 
     deletePrevious(stage) {
-        this.data[stage]['outtakeCounts'].pop();  //TODO: fix dis
+        this.data[stage]['outtakeCounts'].pop();  
+    }
+
+    delete(stage, index) {
+        this.data[stage]['outtakeCounts'].splice(index, 1);
     }
     
     getOuttakeCount(stage) {

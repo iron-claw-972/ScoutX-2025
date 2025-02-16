@@ -31,14 +31,14 @@ export const Constants = {
             component: PitScout,
         },
         {
-            title: "Credits",
-            path: "/credits",
-            component: Credits,
-        },
-        {
             title: "Data Visualization",
             path: "/DataVisualizationDisplay",
             component: DataVisualizationDisplay,
+        },
+        {
+            title: "Credits",
+            path: "/credits",
+            component: Credits,
         },
     ],
 
@@ -55,42 +55,36 @@ export const Constants = {
     oneoneonefrc: require ("./assets/111Frc.png"),
     
 
-    // TODO: Images!
     developers: [
         {
-            name: "Maxwell Tan",
-            year: "3rd Year",
+            name: "Eric Jacobson",
+            year: "2nd Year",
             icon: require("./assets/field.png"),
         },
         {
-            name: "Jackob Ericson",
-            year: "3rd Year",
-            icon: require("./assets/jacob.jpeg"),
-        },
-        {
-            name: "William Han",
+            name: "Maxwell Tan",
             year: "1st Year",
             icon: require("./assets/field.png"),
         },
         {
-            name: "Alasvandian Arman",
-            year: "4th Year",
+            name: "William Han",
+            year: "2nd Year",
             icon: require("./assets/field.png"),
-        }
+        },
     ],
 
     specialThanks: [
         {
             name: "Mentors",
-            description: "both technical, and non-technical",
+            description: "Both technical, and non-technical",
         },
         {
             name: "Scouters",
-            description: "again, for giving purpose to this app",
+            description: "Again, for giving purpose to this app",
         },
         {
             name: "Material UI React",
-            description: "for making this app look passable",
+            description: "For making this app look passable",
         },
     ],
 

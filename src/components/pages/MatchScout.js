@@ -48,17 +48,18 @@ export default function MatchScout() {
 
     return (
         <Container>
-            <Typography color={"white"} variant={"h4"}>
+            <Stack direction="column" spacing={2} mt={2} pb={5} align="center">
+            <Typography color={"white"} variant={"h4"} sx={{ mt:4 }}>
                 Match Scout
             </Typography>
-            <Typography variant={"h6"}>
-                {Object.keys(MatchStage)[stage].replace("_", " ")}
-            </Typography>
-            <Divider
-                sx={{
-                    my: 1.5,
-                }}
-            />
+            <Box> {/* Apply negative margin in Box */}
+                    <Typography variant={"h6"} sx={{ mt: -1 }}> {/* Apply negative margin to second Typography */}
+                        {Object.keys(MatchStage)[stage].replace("_", " ")}
+                    </Typography>
+                </Box>
+            <Box> 
+                <Divider sx={{ width: "75%", mt: 2, backgroundColor: 'grey.800'}} />
+            </Box>
             <Collapse in={data.alert.open}>
                 <Alert
                     sx={{
@@ -125,6 +126,7 @@ export default function MatchScout() {
                         Submit
                     </Button>
                 )}
+            </Stack>
             </Stack>
         </Container>
     );

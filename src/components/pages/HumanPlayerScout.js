@@ -28,14 +28,14 @@ const HumanPlayerScout = () => {
         }}
         >
                 <Stack direction="column" spacing={4} alignItems="center" width="75%">
-                    <Typography color="" variant="h4" gutterBottom width="100%" textAlign="center" sx={{ 
+                    <Typography color="" variant="h4" gutterBottom width="75%" textAlign="center" sx={{ 
                         color: "white", 
                         mb: 0
                     }}
                     >
                         Human Player Scout
                     </Typography>
-                    <Divider sx={{ width: "100%", backgroundColor: "#bdbdbd" }} />
+                    <Divider sx={{ width: "75%", backgroundColor: "#bdbdbd" }} />
                     <TextField
                         label="Team Number"
                         variant="outlined"

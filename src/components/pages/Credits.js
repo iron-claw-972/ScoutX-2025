@@ -1,5 +1,5 @@
 import React from 'react';
-import {Avatar, Divider, List, ListItem, ListItemAvatar, ListItemText, Stack, Typography} from '@mui/material';
+import {Avatar, Divider, List, ListItem, ListItemAvatar, ListItemText, Stack, Typography, Box } from '@mui/material';
 import Grid2 from "@mui/material/Unstable_Grid2";
 import Page from "../Page";
 import {Constants} from "../../Constants";
@@ -7,7 +7,15 @@ import {Constants} from "../../Constants";
 const Credits = () => {
 
     return (
-        <Page>
+        <Box
+        sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            padding: 4,
+          }}
+        >
+            <Stack direction="column" spacing={4}>
             <Typography variant={"h3"}>
                 Credits
             </Typography>
@@ -102,7 +110,8 @@ const Credits = () => {
                     )
                 })}
             </Grid2>
-        </Page>
+            </Stack>
+        </Box>
     );
 };
 

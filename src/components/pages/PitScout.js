@@ -27,16 +27,10 @@ const PitScout = (props) => {
     const [intake, setIntake] = useState("");
     const [climb, setClimb] = useState("");
     const [robotType, setRobotType] = useState("");
-    const [understage, setUnderstage] = useState(false);
-    const [batteryNumber, setBatteryNumber] = useState(0);
     const [extraNotes, setExtraNotes] = useState("");
 
     const handleTeamNumberChange = (event) => {
         setTeamNumber(event.target.value);
-    };
-
-    const handleRobotFeaturesChange = (event) => {
-        setRobotFeatures(event.target.value);
     };
 
     const handleDrivetrain = (event) => {
@@ -55,16 +49,6 @@ const PitScout = (props) => {
         setRobotType(event.target.value)
     }
 
-    const handleBatteryNumber = (newValue) => {
-        if (newValue === '' || (!isNaN(newValue) && newValue >= 0)) {
-            setBatteryNumber(newValue);
-        }
-    }
-
-    const handleExtraNotes = (newValue) => {
-        setExtraNotes(newValue);
-    }
-
     const handleSubmit = async () => {
         const pitData = {
             teamNumber: teamNumber,
@@ -72,8 +56,6 @@ const PitScout = (props) => {
             intake: intake,
             climb: climb,
             robotType: robotType,
-            understage: understage,
-            batteryNumber: batteryNumber,
             extraNotes: extraNotes
         }
         // You can handle the form submission logic here
@@ -95,7 +77,7 @@ const PitScout = (props) => {
             padding: 4,
         }}
         >
-            <Stack direction={"column"} width="75%" spacing={2}>
+            <Stack direction={"column"} width="75%" spacing={4}>
             <Typography color="" variant="h4" gutterBottom width="100%" textAlign="center" sx={{ 
                         color: "white", 
                         mb: 0
@@ -103,7 +85,9 @@ const PitScout = (props) => {
                     >
                         Pit Scout
                     </Typography>
-                    <Divider sx={{ width: "100%", backgroundColor: "#bdbdbd" }} />
+                    <Box sx={{ width: "100%", display: "flex", justifyContent: "center", mt: 4 }}>
+                        <Divider sx={{ width: "75%", backgroundColor: "#bdbdbd" }} />
+                    </Box>
 
                 <TextField
                     label="Team Number"
@@ -118,8 +102,7 @@ const PitScout = (props) => {
                         value={drivetrain}
                         label="Drivetrain"
                         onChange={handleDrivetrain}>
-                        <MenuItem value={0}></MenuItem>
-                        <MenuItem value={1}>
+                        <MenuItem value={"Tank"}>
                         <ListItemIcon>
                                 <img
                                     src={Constants.tankDrive}
@@ -129,7 +112,7 @@ const PitScout = (props) => {
                             </ListItemIcon>
                             <ListItemText primary="Tank" />
                         </MenuItem>
-                        <MenuItem value={2}>
+                        <MenuItem value={"Swerve"}>
                         <ListItemIcon>
                                 <img
                                     src={Constants.swerveDrive}
@@ -149,8 +132,7 @@ const PitScout = (props) => {
                         value={robotType}
                         label={"Robot Type"}
                         onChange={handleRobotType}>
-                        <MenuItem value={0}></MenuItem>
-                        <MenuItem value={1}>
+                        <MenuItem value={"WCP Competitive Concept"}>
                         <ListItemIcon>
                                 <img
                                     src={Constants.WCPBot}
@@ -160,8 +142,8 @@ const PitScout = (props) => {
                             </ListItemIcon>
                             <ListItemText primary="WCP Competitive Concept" />
                         </MenuItem>
-                        <MenuItem value={2}>Everybot</MenuItem>
-                        <MenuItem value={3}>
+                        <MenuItem value={"Everybot"}>Everybot</MenuItem>
+                        <MenuItem value={"Kit Bot"}>
                         <ListItemIcon>
                                 <img
                                     src={Constants.kitBot}
@@ -171,7 +153,7 @@ const PitScout = (props) => {
                             </ListItemIcon>
                             <ListItemText primary="Kit Bot" />
                         </MenuItem>
-                        <MenuItem value={4}>
+                        <MenuItem value={"Cranberry Alarm Bot"}>
                         <ListItemIcon>
                                 <img
                                     src={Constants.cranberryAlarmBot}
@@ -181,7 +163,7 @@ const PitScout = (props) => {
                             </ListItemIcon>
                             <ListItemText primary="Cranberry Alarm Bot" />
                         </MenuItem>
-                        <MenuItem value={5}>
+                        <MenuItem value={"111 FRC Bot"}>
                         <ListItemIcon>
                                 <img
                                     src={Constants.oneoneonefrc}
@@ -193,51 +175,43 @@ const PitScout = (props) => {
                         </MenuItem>
                     </Select>
                 </FormControl>
-                <TextField
-                    label="Intake"
-                    variant="outlined"
-                    helperText={
-                        "Ground? Station?"
-                    }
-                    multiline
-                    rows={1}
-                    value={intake}
-                    onChange={handleIntake}
-                />
+                <FormControl>
+                    <InputLabel>Intake</InputLabel>
+                    <Select
+                        fullWidth
+                        margin="normal"
+                        value={intake}
+                        label="Intake"x
+                        onChange={handleIntake}
+                    >
+                        <MenuItem value={"Ground"}>
+                            Ground
+                        </MenuItem>
+                        <MenuItem value={"Station"}>
+                            Station
+                        </MenuItem>
+                    </Select>
+                </FormControl>
                 <FormControl fullWidth>
                     <InputLabel id="demo-simple-select-label">Climb</InputLabel>
                     <Select
                         value={climb}
                         label="Climb"
                         onChange={handleClimb}>
-                        <MenuItem value={0}></MenuItem>
-                        <MenuItem value={1}>Deep Climb</MenuItem>
-                        <MenuItem value={2}>Shallow Climb</MenuItem>
-                        <MenuItem value={3}>Both Shallow and Deep Climb</MenuItem>
-                        <MenuItem value={4}>No Climb</MenuItem>
+                        <MenuItem value={"Deep Climb"}>Deep Climb</MenuItem>
+                        <MenuItem value={"Shallow Climb"}>Shallow Climb</MenuItem>
+                        <MenuItem value={'Both Shallow and Deep Climb'}>Both Shallow and Deep Climb</MenuItem>
+                        <MenuItem value={"No Climb"}>No Climb</MenuItem>
                     </Select>
                 </FormControl>
-                {/* <TextField
-                    label="Robot Features"
+                <TextField
+                    label="Extra Information"
                     variant="outlined"
-                    multiline
-                    rows={4}
                     fullWidth
                     margin="normal"
-                    value={robotFeatures}
-                    onChange={handleRobotFeaturesChange}
-                /> */}
-               
-                {/* <TextField
-                    aria-label="Battery Number"
-                    placeholder="0"
-                    type="number"
-                    fullWidth
-                    margin="normal"
-                    min={0}
-                    value={batteryNumber}
-                    onChange={handleBatteryNumber}
-                /> */}
+                    value={extraNotes}
+                    onChange={(e) => setExtraNotes(e.target.value)} 
+                />
                 <Button
                     sx={{ backgroundColor: "#ff9800", color: "white", '&:hover': { backgroundColor: "#e65100" } }}
                     fullWidth

@@ -235,7 +235,7 @@ const Analytics = () => {
           disabled={loading}
           fullWidth
         >
-          {loading ? <CircularProgress size={24} /> : 'Analyze Teams'}
+          {loading ? <CircularProgress size={24} /> : 'Analyze'}
         </Button>
       </form>
 

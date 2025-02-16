@@ -398,6 +398,7 @@ const DataTable = () => {
       .map(name => name.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, str => str.toUpperCase()))
       .join(', ') 
       : 'General Filters'}
+    label="General Filters"
   >
     <MenuItem value="canLeave">
       <AddCircleRounded sx={{ color: filters.canLeave ? 'primary.main' : 'inherit', mr: 1 }} />
@@ -420,6 +421,7 @@ const DataTable = () => {
       .map(name => name.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, str => str.toUpperCase()))
       .join(', ')  
       : 'Climb Filters'}
+    label="Climb Filters"
   >
     <MenuItem value="canClimb">
       <AddCircleRounded sx={{ color: filters.canClimb ? 'primary.main' : 'inherit', mr: 1 }} />
@@ -446,6 +448,7 @@ const DataTable = () => {
       .map(name => name.replace(/canScoreL2L3/, 'Can Score L2/L3').replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, str => str.toUpperCase()))
       .join(', ')  
       : 'Coral Filters'}
+    label="Coral Filters"
   >
     <MenuItem value="canScoreL4">
       <AddCircleRounded sx={{ color: filters.canScoreL4 ? 'primary.main' : 'inherit', mr: 1 }} />
@@ -480,6 +483,7 @@ const DataTable = () => {
       .map(name => name.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, str => str.toUpperCase()))
       .join(', ')  
       : 'Algae Filters'}
+    label="Algae Filters"
   >
     <MenuItem value="canScoreNet">
       <AddCircleRounded sx={{ color: filters.canScoreNet ? 'primary.main' : 'inherit', mr: 1 }} />

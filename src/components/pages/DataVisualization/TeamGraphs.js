@@ -3,7 +3,7 @@ import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
   RadarChart, PolarGrid, PolarAngleAxis, Radar, ScatterChart, Scatter, PolarRadiusAxis
 } from "recharts";
-import { Box, Stack } from "@mui/material";
+import { Box, Stack, useMediaQuery  } from "@mui/material";
 import { ElementPointsAuto, ElementPointsTele } from "../../MatchConstants";
 
 const colors = [
@@ -136,11 +136,14 @@ const CustomTooltip = ({ active, payload }) => {
   }
   return null;
 };
+
+// Use `useMediaQuery` to determine if the screen is small
+const isSmallScreen = useMediaQuery("(max-width: 960px)");
   
   return (
-    <Stack direction={"row"} spacing={4} mt={4}>
+    <Stack  direction={isSmallScreen ? "column" : "row"} spacing={isSmallScreen ? 4 : 0} mt={4}>
       {/* Line Chart */}
-      <ResponsiveContainer width="40%" height={500}>
+      <ResponsiveContainer width={isSmallScreen ? "100%" : "40%"} height={500}>
         <LineChart>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis 
@@ -156,6 +159,11 @@ const CustomTooltip = ({ active, payload }) => {
               )  // Global maximum match number across all teams
             ]}
             type="number"  // Ensure the x-axis is treating the match number as a numeric value, not an index
+            ticks={  // Dynamic ticks from all unique match numbers
+              [...new Set(
+                processedTeams.flatMap(({ lineData }) => lineData.map(d => d.matchNumber))
+              )].sort((a, b) => a - b)  // Sort the match numbers
+            }
           />
           <YAxis 
             label={{ value: "Points", angle: -90, position: "insideLeft" }} />
@@ -192,7 +200,7 @@ const CustomTooltip = ({ active, payload }) => {
       </ResponsiveContainer>
 
       {/* Scatter Chart */}
-      <ResponsiveContainer width="30%" height={500}>
+      <ResponsiveContainer width={isSmallScreen ? "100%" : "30%"} height={500}>
         <ScatterChart>
           <CartesianGrid strokeDasharray="3 3"  />
           <XAxis
@@ -242,7 +250,7 @@ const CustomTooltip = ({ active, payload }) => {
       </ResponsiveContainer>
 
       {/* Radar Chart */}
-      <ResponsiveContainer width="30%" height={500}> 
+      <ResponsiveContainer width={isSmallScreen ? "100%" : "30%"} height={500}> 
         <RadarChart data={formattedRadarData}>
           <PolarGrid stroke="gray" strokeDasharray="3 3" />
           <PolarAngleAxis

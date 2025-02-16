@@ -1,4 +1,4 @@
-import { Box, Button, TextField, Typography, Table, TableBody, TableCell, TableHead, TableRow, TableSortLabel, TableContainer, CircularProgress, Select, MenuItem, FormControl, InputLabel, IconButton, Divider } from "@mui/material";
+import { Box, Button, TextField, Typography, Table, TableBody, TableCell, TableHead, TableRow, TableSortLabel, TableContainer, CircularProgress, Select, MenuItem, FormControl, InputLabel, IconButton, Divider, useMediaQuery } from "@mui/material";
 import { useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import firebase from "../../../firebase";
@@ -290,6 +290,9 @@ const TeamMatches = () => {
       .replace(/^./, (str) => str.toUpperCase()); // Capitalizes the first letter
   };
 
+  // Use `useMediaQuery` to determine if the screen is small
+  const isSmallScreen = useMediaQuery("(max-width: 960px)");
+
   return (
     <>
       <TextField
@@ -313,7 +316,7 @@ const TeamMatches = () => {
           )}
           {sortedData.map((teamData) => (
             <Box key={teamData.team}>
-            <TableContainer key={teamData.team} sx={{ maxWidth: '100%', margin: '0 auto', mt: 4 }}>
+            <TableContainer key={teamData.team} sx={{ maxWidth: '100%', margin: '0 auto', mt: isSmallScreen ? -4 : 4 }}>
             <Stack direction={"row"} spacing={4}>
             <IconButton
                     sx={{ color: "primary", fontSize: 20 }}
