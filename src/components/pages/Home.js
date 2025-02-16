@@ -19,7 +19,7 @@ export default function Home() {
     const dynamicHeaderMargin = screenHeight > 1200 ? screenHeight * 0.017 : screenHeight * 0.007; // Adjusting 5% or 4%
 
     // Calculate dynamic margins for dividers in the description
-    const dynamicMargin = screenHeight > 1200 ? screenHeight * 0.03 : screenHeight * 0.02;
+    const dynamicMargin = screenHeight > 1200 ? screenHeight * 0.03 : screenHeight * 0.01;
 
     // Use `useMediaQuery` to determine if the screen is small
     const isSmallScreen = useMediaQuery("(max-width: 960px)");
