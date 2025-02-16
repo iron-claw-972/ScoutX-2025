@@ -257,7 +257,7 @@ const TeamMatches = () => {
         fullWidth
         margin="normal"
       />
-      <Button variant="contained" color="primary" onClick={handleGetData} fullWidth>
+      <Button variant="contained" color="primary" sx={{ mt: 2 }} onClick={handleGetData} fullWidth>
         Get Data
       </Button>
       

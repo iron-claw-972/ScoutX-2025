@@ -501,10 +501,7 @@ const DataTable = () => {
 </FormControl>
 
 </Box>
-
-
-
-      <Table sx={{ width: '100%', borderCollapse: 'collapse', backgroundColor: '#f57c00', mt: 2 }}>
+      <Table sx={{ width: '100%', borderCollapse: 'collapse', backgroundColor: '#f57c00', mt: 4 }}>
         <TableHead sx={{ backgroundColor: '#222', color: 'white' }}>
           <TableRow>
             <TableCell sx={{ color: '#f57c00', fontWeight: 'bold' }}></TableCell>
