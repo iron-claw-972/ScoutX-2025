@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Avatar, Button, Card, CardContent, Grid, Stack, Typography } from '@mui/material';
+import { Avatar, Button, Card, CardContent, Grid, Stack, Typography, Box } from '@mui/material';
 import { Casino } from '@mui/icons-material';
 import Page from "../Page";
 import { Constants } from "../../Constants";
@@ -36,7 +36,7 @@ const Gambling = () => {
     };
 
     return (
-        <Page>
+        <Box alignItems="center">
             <Stack spacing={3} alignItems="center" sx={{ padding: 3 }}>
                 <Typography variant="h2" color="primary" gutterBottom>
                     Slot Machine Game
@@ -65,7 +65,7 @@ const Gambling = () => {
                     </CardContent>
                 </Card>
             </Stack>
-        </Page>
+        </Box>
     );
 };
 
