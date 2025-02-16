@@ -34,15 +34,16 @@ export default function MSPostmatch(props) {
                     }}
                 />
             </Grid2>
-
-            <Typography variant={"h4"}>Check All That Apply</Typography>
+            <Box>
+                <Typography variant={"h4"} sx={{ textAlign: 'left', mb: -4, mt: -2 }}>Check All That Apply</Typography>
+            </Box>
 
             {/* Stack for the Toggle Button groups */}
             <Stack direction="column" spacing={2}>
                 {/* General Group */}
                 <Grid2 container spacing={1}>
                     <Grid2 xs={12}>
-                        <Typography variant={"h5"}>General</Typography>
+                        <Typography variant={"h5"} sx={{ textAlign: 'left' }}>General</Typography>
                     </Grid2>
                     <Grid2 xs={6}>
                         <CustomToggleButton
@@ -104,7 +105,7 @@ export default function MSPostmatch(props) {
                 {/* Flaws Group */}
                 <Grid2 container spacing={1}>
                     <Grid2 xs={12}>
-                        <Typography variant={"h6"}>Flaws</Typography>
+                        <Typography variant={"h6"} sx={{ textAlign: 'left' }}>Flaws</Typography>
                     </Grid2>
                     <Grid2 xs={6}>
                         <CustomToggleButton
@@ -199,7 +200,7 @@ export default function MSPostmatch(props) {
                 {/* Broken Parts Group */}
                 <Grid2 container spacing={1}>
                     <Grid2 xs={12}>
-                        <Typography variant={"h6"}>Broken Parts</Typography>
+                        <Typography variant={"h6"} sx={{ textAlign: 'left' }}>Broken Parts</Typography>
                     </Grid2>
                     <Grid2 xs={6}>
                         <CustomToggleButton
