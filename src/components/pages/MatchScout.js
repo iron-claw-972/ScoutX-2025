@@ -58,7 +58,7 @@ export default function MatchScout() {
                     </Typography>
                 </Box>
             <Box> 
-                <Divider sx={{ width: "75%", mt: 2, backgroundColor: 'grey.800'}} />
+                <Divider sx={{ width: "75%", mt: 2, backgroundColor: '#bdbdbd'}} />
             </Box>
             <Collapse in={data.alert.open}>
                 <Alert
