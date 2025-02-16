@@ -22,7 +22,7 @@ export default function Home() {
     const dynamicMargin = screenHeight > 1200 ? screenHeight * 0.03 : screenHeight * 0.01;
 
     // Use `useMediaQuery` to determine if the screen is small
-    const isSmallScreen = useMediaQuery("(max-width: 960px)");
+    const isSmallScreen = useMediaQuery("(max-width: 1200px)");
     
     return (
         <Box

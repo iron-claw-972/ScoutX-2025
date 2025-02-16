@@ -30,6 +30,7 @@ export default function IntakeTable ({
 
     // Use `useMediaQuery` to determine if the screen is small
     const isSmallScreen = useMediaQuery("(max-width: 960px)");
+    const isSuperSmallScreen = useMediaQuery("(max-width: 800px"); 
 
     return (
         
@@ -128,7 +129,7 @@ export default function IntakeTable ({
                             sx={{
                                 width:(40 / 100) * boxDimensions.height,
                                 borderRadius: "8px",
-                                fontSize: "16px",
+                                fontSize: isSuperSmallScreen ? "10px" : isSmallScreen ? "13px" : "16px",
                                 height:(12 / 100) * boxDimensions.height,
                             }}
                         >
@@ -147,7 +148,7 @@ export default function IntakeTable ({
                                 width:(40 / 100) * boxDimensions.height,
                                 height:(12 / 100) * boxDimensions.height,
                                 borderRadius: "8px",
-                                fontSize: isSmallScreen ? "13px" : "16px",
+                                fontSize: isSuperSmallScreen ? "10px" : isSmallScreen ? "13px" : "16px",
                             }}
                         >
                             Delete Previous {data.getOuttakeCount(stage)}
@@ -179,7 +180,7 @@ export default function IntakeTable ({
                             }}
                             sx={{
                             borderRadius: "8px",
-                            fontSize: "16px",
+                            fontSize: isSuperSmallScreen ? "10px" : isSmallScreen ? "13px" : "16px",
                             height:(12 / 100) * boxDimensions.height,
                             width:(40 / 100) * boxDimensions.height,
                             }}
@@ -200,7 +201,7 @@ export default function IntakeTable ({
                    }}
                    sx={{
                        borderRadius: "8px",
-                       fontSize: "16px",
+                       fontSize: isSuperSmallScreen ? "10px" : isSmallScreen ? "13px" : "16px",
                        height:(12 / 100) * boxDimensions.height,
                        width:(40 / 100) * boxDimensions.height,
                    }}
