@@ -10,6 +10,7 @@ import { Stack } from "@mui/system";
 const TeamMatches = () => {
   const [team, setTeam] = useState("");
   const [matches, setMatches] = useState([]); // Stores match data for each team
+  const [humanPlayerData, setHumanPlayerData] = useState([]);
   const [deletedRows, setDeletedRows] = useState([]); // Stores deleted rows
   const [sortBy, setSortBy] = useState("matchNumber");
   const [sortDirection, setSortDirection] = useState("asc");
@@ -18,7 +19,8 @@ const TeamMatches = () => {
   const [hoveredRow, setHoveredRow] = useState(null); // Track hovered row
 
   const matchScoutDataRef = collection(firebase, "matchScoutData");
-
+  const humanPlayerDataRef = collection(firebase, "humanPlayerData");
+  
   const handleGetData = async () => {
     setRestoreMatch(''); 
     setDeletedRows([]); 
@@ -27,8 +29,15 @@ const TeamMatches = () => {
     try {
       const querySnapshot = await getDocs(matchScoutDataRef);
 
+      const humanPlayerQuerySnapshot = await getDocs(humanPlayerDataRef);
+
       const teamDocs = querySnapshot.docs.filter((doc) => {
         const docId = doc.id.split('_')[0]; 
+        return docId === team;
+      });
+
+      const humanPlayerDocs = humanPlayerQuerySnapshot.docs.filter((doc) => {
+        const docId = doc.id.split('_')[0];
         return docId === team;
       });
 
@@ -37,6 +46,21 @@ const TeamMatches = () => {
         setTeam(""); 
         return; 
       }
+
+      const humanPlayerData = {}; 
+      humanPlayerDocs.forEach((doc) => {
+        const data = doc.data();
+        const matchNumber = doc.id.split('_')[1];
+        humanPlayerData[matchNumber] = {
+          hits: data.hits || 0,
+          misses: data.misses || 0,
+          accuracy: data.hits + data.misses > 0 
+            ? ((data.hits / (data.hits + data.misses)) * 100).toFixed(1) + '%'
+            : '0%'
+      }});
+
+      console.log("Human Player Data", humanPlayerData);
+
 
       const fields = [
         "leave",
@@ -145,7 +169,18 @@ const TeamMatches = () => {
           }
         });
         matchObject["Extra Information"] = extraInfoList.join(", ") || "None";
-        setTeam("");
+        
+
+        const humanPlayerStats = humanPlayerData[matchObject.matchNumber] || {
+          hits: 0,
+          misses: 0,
+          accuracy: '0%'
+        };
+        matchObject["Human Player Hits"] = humanPlayerStats.hits;
+        matchObject["Human Player Misses"] = humanPlayerStats.misses;
+        matchObject["Human Player Accuracy"] = humanPlayerStats.accuracy;
+
+
         return matchObject;
       });
 
@@ -154,6 +189,7 @@ const TeamMatches = () => {
         ...prevMatches.filter((m) => m.team !== team),  // Remove previous data for this team
         { team, matchData }
       ]);
+      setTeam("");
 
     } catch (error) {
       console.error("Error fetching match data:", error);
@@ -246,6 +282,8 @@ const TeamMatches = () => {
       }
     })
   }));
+
+  console.log("Matches", matches);
 
   return (
     <>
