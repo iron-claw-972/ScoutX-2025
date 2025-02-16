@@ -1,5 +1,5 @@
   import React, { useState } from 'react';
-  import { Button, ButtonGroup, Box, Typography, Divider } from '@mui/material';
+  import { Button, ButtonGroup, Box, Typography, Divider, useMediaQuery } from '@mui/material';
   import Analytics from './Analytics';
   import DataTable from './DataTable';
   import TeamMatches from './TeamMatches';
@@ -12,6 +12,9 @@
     const handleSelection = (option) => {
       setSelectedOption(option);
     };
+
+    // Use `useMediaQuery` to determine if the screen is small
+    const isSmallScreen = useMediaQuery("(max-width: 960px)");
 
     return (
       <Box
@@ -30,7 +33,7 @@
           variant="outlined"
           color="primary"
           aria-label="option selector"
-          sx={{ width: '75%' }}
+          sx={{ width: isSmallScreen ? '100%' : '75%' }}
         >
           <Button
             onClick={() => handleSelection('Match Data Visualization')}
