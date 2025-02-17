@@ -1,35 +1,62 @@
 import React, { useState } from 'react';
-import { Avatar, Button, Card, CardContent, Grid, Stack, Typography, Box } from '@mui/material';
+import { Avatar, Button, Card, CardContent, Grid, Stack, Typography } from '@mui/material';
 import { Casino } from '@mui/icons-material';
-import Page from "../Page";
-import { Constants } from "../../Constants";
+import { Wheel } from 'react-custom-roulette';
+import Page from '../Page';
 
-const symbols = ["🍒", "🍋", "🍊", "💎", "7️⃣"];
+const prizes = [
+    { option: "🧋Jackpot🧋", style: { fontSize: '14' }},
+    { option: "👾Scout More!", style: { fontSize: '14' } },
+    { option: "🎲Free Roll", style: { fontSize: '14' } },
+    { option: "👾Scout More!", style: { fontSize: '14' } },
+    { option: "🍭Free Candy", style: { fontSize: '14' } },
+    { option: "👾Scout More!", style: { fontSize: '14' } },
+    { option: "😁Free Sticker", style: { fontSize: '14' } },
+    { option: "👾Scout More!", style: { fontSize: '14' } },
+    { option: "🤑Discount", style: { fontSize: '14' } },
+    { option: "👾Scout More!", style: { fontSize: '14' } },
+    { option: "👕Free Shirt", style: { fontSize: '14' } },
+    { option: "👾Scout More!", style: { fontSize: '14' } },
+    { option: "👾Scout More!", style: { fontSize: '14' } },
+    { option: "👾Scout More!", style: { fontSize: '14' } },
+    { option: "👾Scout More!", style: { fontSize: '14' } },
+    { option: "👾Scout More!", style: { fontSize: '14' } },
+    { option: "👾Scout More!", style: { fontSize: '14' } },
+    { option: "👾Scout More!", style: { fontSize: '14' } },
+    { option: "👾Scout More!", style: { fontSize: '14' } },
+    { option: "👾Scout More!", style: { fontSize: '14' } },
+    { option: "👾Scout More!", style: { fontSize: '14' } },
+    { option: "👾Scout More!", style: { fontSize: '14' } },
+];
 
-const Gambling = () => {
-    const [reel1, setReel1] = useState("");
-    const [reel2, setReel2] = useState("");
-    const [reel3, setReel3] = useState("");
-    const [message, setMessage] = useState("Spin the reels to play!");
-    const [allowSpin, setAllowSpin] = useState(true);  
+const WheelGame = () => {
+    const [wheelMounted, setWheelMounted] = useState(false);
+    const [mustSpin, setMustSpin] = useState(false);
+    const [prizeNumber, setPrizeNumber] = useState(0);
+    const [message, setMessage] = useState("Click Spin to Win!");
+    const [rollsRemaining, setRollsRemaining] = useState(1);
 
-    const spin = () => {
-        if (!allowSpin) return;  
+    useEffect(() => {
+        setWheelMounted(true);
+        return () => setWheelMounted(false);
+    }, []);
 
-        setAllowSpin(false);  
+    const spinWheel = () => {
+        if (!wheelMounted || rollsRemaining <= 0) return;
+        
+        const newPrize = Math.floor(Math.random() * prizes.length);
+        setPrizeNumber(newPrize);
+        setMustSpin(true);
+        setRollsRemaining(prev => prev - 1);
+    };
 
-        const randomSymbol1 = symbols[Math.floor(Math.random() * symbols.length)];
-        const randomSymbol2 = symbols[Math.floor(Math.random() * symbols.length)];
-        const randomSymbol3 = symbols[Math.floor(Math.random() * symbols.length)];
-
-        setReel1(randomSymbol1);
-        setReel2(randomSymbol2);
-        setReel3(randomSymbol3);
-
-        if (randomSymbol1 === randomSymbol2 && randomSymbol2 === randomSymbol3) {
-            setMessage("🎉 Jackpot! You won! 🎉");
-        } else if (randomSymbol1 === randomSymbol2 || randomSymbol2 === randomSymbol3 || randomSymbol1 === randomSymbol3) {
-            setMessage("So close! You got a small prize.");
+    const handleStopSpinning = () => {
+        setMustSpin(false);
+        const prize = prizes[prizeNumber].option;
+        
+        if (prize === "🎲 Free Roll") {
+            setMessage("You won a Free Roll! Click Spin to use it!");
+            setRollsRemaining(prev => prev + 1);
         } else {
             setMessage(`You won: ${prize}!`);
         }
