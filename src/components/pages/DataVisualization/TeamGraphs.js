@@ -139,9 +139,10 @@ const CustomTooltip = ({ active, payload }) => {
 
 // Use `useMediaQuery` to determine if the screen is small
 const isSmallScreen = useMediaQuery("(max-width: 960px)");
+const isIPadScreen = useMediaQuery("(max-width: 1400px)")
   
   return (
-    <Stack  direction={isSmallScreen ? "column" : "row"} spacing={isSmallScreen ? 4 : 0} mt={4}>
+    <Stack  direction={isSmallScreen ? "column" : "row"} spacing={isSmallScreen ? 4 : isIPadScreen ? 1 : 5} mt={4}>
       {/* Line Chart */}
       <ResponsiveContainer width={isSmallScreen ? "100%" : "40%"} height={500}>
         <LineChart>
@@ -250,7 +251,7 @@ const isSmallScreen = useMediaQuery("(max-width: 960px)");
       </ResponsiveContainer>
 
       {/* Radar Chart */}
-      <ResponsiveContainer width={isSmallScreen ? "100%" : "30%"} height={500}> 
+      <ResponsiveContainer width={isSmallScreen ? "100%" : isIPadScreen ? "52%" : "30%"} height={500}> 
         <RadarChart data={formattedRadarData}>
           <PolarGrid stroke="gray" strokeDasharray="3 3" />
           <PolarAngleAxis
