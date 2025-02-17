@@ -12,7 +12,6 @@ export default function Home() {
             justifyContent: "center",
             minHeight: "90vh",
             width: "100vw", // Critical: Prevent any overflow from Box itself
-            overflowX: "hidden", // Redundant but safe
             boxSizing: "border-box", 
           }}>
             <Grid
