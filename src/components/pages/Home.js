@@ -5,38 +5,44 @@ import { Constants } from "../../Constants";
 export default function Home() {
 
     return (
-        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center"}}>
+        <Box sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            minHeight: "90vh",
+            width: "100vw", // Critical: Prevent any overflow from Box itself
+            overflowX: "hidden", // Redundant but safe
+            boxSizing: "border-box", 
+          }}>
             <Grid
-    container
-    direction="column"
-    justifyContent="center"
-    alignItems="center"
->
-    <Stack direction="column" alignItems="center" spacing={4}>
-        <Typography
-            variant="h4"
-            sx={{
-                backgroundImage: 'linear-gradient(to right, #FFA500, #FF4500)',
-                backgroundClip: 'text',
-                color: 'transparent',
-                WebkitBackgroundClip: 'text',
-            }}
-        >
-            972 Scouting
-        </Typography>
+                container
+                direction="column"
+                justifyContent="center"
+                alignItems="center"
+            >   
+                <Stack direction="column" alignItems="center" spacing={4}>
+                    <Typography
+                        variant="h4"
+                        sx={{
+                            backgroundImage: 'linear-gradient(to right, #FFA500, #FF4500)',
+                            backgroundClip: 'text',
+                            color: 'transparent',
+                            WebkitBackgroundClip: 'text',
+                        }}
+                    >
+                        972 Scouting
+                    </Typography>
 
-        {/* Make it a 2x2 grid using two vertical stacks */}
-            <Stack direction="row" spacing={2} alignItems="center" justifyContent="space-between" sx={{ height: '100%' }}>
-                {renderScoutBox('Pit Scout', '/pitscout', Constants.pitScout)}
-                {renderScoutBox('HP Scout', '/humanplayerscout', Constants.humanPlayer)}
-                {renderScoutBox('Match Scout', '/matchscout', Constants.matchScout)}
-                {renderScoutBox('Data Visualization', '/DataVisualizationDisplay', Constants.dataAnalytics)}
-                {renderScoutBox('Credits', '/credits', Constants.credits)}
-            </Stack>
-        </Stack>
-</Grid>
-
-
+                    <Stack direction="row" spacing={1} alignItems="center" justifyContent="space-between" sx={{ height: '100%' }}>                {renderScoutBox('Pit Scout', '/pitscout', Constants.pitScout)}
+                        {renderScoutBox('HP Scout', '/humanplayerscout', Constants.humanPlayer)}
+                        {renderScoutBox('Match Scout', '/matchscout', Constants.matchScout)}
+                        {renderScoutBox('Data Visualization', '/DataVisualizationDisplay', Constants.dataAnalytics)}
+                        {renderScoutBox('Credits', '/credits', Constants.credits)}
+                    </Stack>
+                </Stack>
+                <Box height={50}/>
+            </Grid>
         </Box>
     );
 }
