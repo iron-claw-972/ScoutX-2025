@@ -16,6 +16,7 @@ exports.analyzeTeamData = functions.https.onRequest(async (req, res) => {
   cors(req, res, async () => {
     try {
       const teamData = req.body.teamData;
+      const userRequest = req.body.userRequest;
 
       if (!teamData) {
         console.error('No team data provided');
@@ -61,6 +62,8 @@ exports.analyzeTeamData = functions.https.onRequest(async (req, res) => {
             - TeleCoralL1, TeleCoralL2, TeleCoralL3, TeleCoralL4 (Teleop phase scoring for Coral outtakes)
             - TeleAlgaeProcessor, TeleAlgaeNet (Teleop phase scoring for Algae outtakes)
       
+      Additionally, you may receive a **userRequest**, which contains specific considerations or aspects to focus on in the analysis. If present, incorporate the request into your analysis without making it a separate section.
+
       ### How you should analyze the teams:
       - **Each team must be analyzed separately**. You should clearly reference the **team number** throughout the analysis (e.g., "Team 972").
       - For each team, follow the steps below:
@@ -71,18 +74,17 @@ exports.analyzeTeamData = functions.https.onRequest(async (req, res) => {
         5. Provide **two to three sentences** on **overall robot functionality**: Analyze their robot's overall performance and functionality across all matches.
       
       
-        ### Format your analysis clearly by ensuring each team's analysis begins with a header containing "Team {team number}". 
-        For each team, include the following points in your analysis, each separated by a **double newline** ("\n\n"):
-        
-        1. **Auto Scoring**: Provide **one to two sentences** on **Auto Scoring**: Analyze their performance during the autonomous phase (including both Coral and Algae outtakes).
-        2. **Tele Scoring**: Provide **one to two sentences** on **Tele Scoring**: Analyze their performance during the teleop phase (including both Coral and Algae outtakes).
-        3. **Weaknesses**: Provide **two sentences** on their weaknesses: Identify any limitations or issues with their performance (e.g., mechanical failures, poor cycle consistency, scoring inconsistencies).
-        4. **Strengths**: Provide **two sentences** on their strengths: Identify the strengths of their robot and performance (e.g., consistent scoring, good autonomous, solid robot functionality, etc.).
-        5. **Overall Robot Functionality**: Provide **two to three sentences** on **overall robot functionality**: Analyze their robot's overall performance and functionality across all matches.
-        
-        For each team, start with a header in the format **Team {team number}** (replace {team number} with the actual team number), followed by the analysis points. The header should be on its own line, and each point should start on a new line and be separated by a double newline. 
-        
-        Make sure the following format is respected:
+      ### Formatting Rules:
+      - Each team's analysis must start with a numbered header in the format "1. Team {team number}"
+      - Each section must be structured as "{Type}: {Analysis}". The possible types are:
+        - Auto Scoring
+        - Tele Scoring
+        - Weaknesses
+        - Strengths
+        - Overall Robot Functionality
+      - Each section must be separated by **a double newline ("\n\n")**.
+      - If there are **multiple teams**, separate their analysis with "---" on its own line.
+      - **Do NOT use markdown symbols** such as "###", "**", or bullet points.
       
       ### Final Recommendation:
       - After you have provided the analysis for all teams, give a **final recommendation**. In **three to four sentences**, recommend which team you would choose as an alliance partner based on the analysis. 
@@ -204,7 +206,7 @@ exports.analyzeTeamData = functions.https.onRequest(async (req, res) => {
             },
             {
               role: 'user',
-              content: `Here is the team data: ${JSON.stringify(teamData)}`,
+              content: `Here is the team data: ${JSON.stringify(teamData)}${userRequest ? `\n\nUser Request: ${userRequest}` : ''}`,
             },
           ],
           // max_tokens: 350,

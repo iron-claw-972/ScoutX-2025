@@ -22,7 +22,7 @@ export default function Home() {
             >   
                 <Stack direction="column" alignItems="center" spacing={4}>
                     <Typography
-                        variant="h4"
+                        variant="h3"
                         sx={{
                             backgroundImage: 'linear-gradient(to right, #FFA500, #FF4500)',
                             backgroundClip: 'text',

@@ -11,6 +11,7 @@ const Analytics = () => {
   const [team3, setTeam3] = useState('');
   const [matches, setMatches] = useState([]); 
   const [loading, setLoading] = useState(false);
+  const [userRequest, setUserRequest] = useState(null); 
   const [error, setError] = useState(null);
   const [analysis, setAnalysis] = useState(null); // For GPT response
 
@@ -151,31 +152,37 @@ const Analytics = () => {
     }
   };
 
-  // Function to trigger the analysis when the "Analyze" button is clicked
   const analyzeMatches = async () => {
-    const teamsToAnalyze = [team1, team2, team3].filter(team => team); // Only include non-empty teams
-
-    if (teamsToAnalyze.length === 0) return;
-
-    setLoading(true);
     setError(null);
+    
+    const teamsToAnalyze = [team1, team2, team3].filter(team => team);
+    if (teamsToAnalyze.length === 0) {
+      setLoading(false);
+      return;
+    }
 
     try {
       const teamDataPromises = teamsToAnalyze.map(getTeamData);
       const allTeamData = await Promise.all(teamDataPromises);
 
-      // Collect the match data for all teams
-      const matchDataForAllTeams = allTeamData.filter(data => data != null); // Filter out any null responses
-      setMatches(matchDataForAllTeams);
+      const validTeams = allTeamData.filter(data => data && data.matchData);
+      setMatches(validTeams);
+
+      if (validTeams.length === 0) {
+        setError("No matches found for the entered team numbers.");
+        setLoading(false);
+        return;
+      }
+
+      setLoading(true);
 
       const response = await axios.post(
         'https://analyzeteamdata-rage5hpe6a-uc.a.run.app',
-        { teamData: matchDataForAllTeams }
+        { teamData: validTeams, userRequest }
       );
-      
       setAnalysis(response.data.analysis);
     } catch (error) {
-      console.error("Error analyzing matches:", error);
+      setLoading(false); 
       setError("Error analyzing matches: " + error.message);
     } finally {
       setLoading(false);
@@ -227,6 +234,15 @@ const Analytics = () => {
             margin="normal"
           />
         )}
+        <TextField
+          label="Enter Optional Considerations"
+          variant="outlined"
+          value={userRequest}
+          inputProps={{ maxLength: 500 }}
+          onChange={(e) => setUserRequest(e.target.value)}
+          fullWidth
+          margin="normal"
+        />
         <Button
           sx={{ mt: 2 }}
           variant="contained"
