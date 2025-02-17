@@ -567,7 +567,7 @@ const DataTable = () => {
           <Select
             value={restoreMatch}
             onChange={(e) => setRestoreMatch(e.target.value)}  // Update state on change
-            label="Match to Restore"
+            label="Restore Match"
           >
             {deletedRows.map((team) => (
               <MenuItem key={team.teamNumber} value={team.teamNumber}>
