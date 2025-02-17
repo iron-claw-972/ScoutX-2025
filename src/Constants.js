@@ -6,14 +6,16 @@ import Gambling from "./components/pages/Gambling";
 import Analytics from "./components/pages/DataVisualization/Analytics";
 import DataVisualizationDisplay from "./components/pages/DataVisualization/DataVisualizationDisplay"
 import HumanPlayerScout from "./components/pages/HumanPlayerScout";
+import HomeTwo from "./components/pages/HomeTwo";
 
 export const Constants = {
 
     pages: [
+        // Change between Home v1 and Home v2
         {
             title: "Home",
             path: "/",
-            component: Home,
+            component: HomeTwo,
         },
         {
             title: "Match Scout",

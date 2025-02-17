@@ -474,8 +474,8 @@ export default function MapSim(
         ;
 
     return (
-        
-        <Grid2 sx={{ position: "relative" }}>
+        <Box>
+        <Grid2 sx={{ position: "relative", mb: -7}}>
 
             <Stack direction={"column"} spacing={2}>
                 <Stack>
@@ -522,5 +522,6 @@ export default function MapSim(
                 </Stack>
             </Stack>
         </Grid2>
+        </Box>
     )
 }
