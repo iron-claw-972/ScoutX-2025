@@ -6,7 +6,6 @@ import Gambling from "./components/pages/Gambling";
 import Analytics from "./components/pages/DataVisualization/Analytics";
 import DataVisualizationDisplay from "./components/pages/DataVisualization/DataVisualizationDisplay"
 import HumanPlayerScout from "./components/pages/HumanPlayerScout";
-import HomeTwo from "./components/pages/HomeTwo";
 
 export const Constants = {
 
@@ -15,7 +14,7 @@ export const Constants = {
         {
             title: "Home",
             path: "/",
-            component: HomeTwo,
+            component: Home,
         },
         {
             title: "Match Scout",
