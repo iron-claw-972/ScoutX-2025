@@ -1,4 +1,5 @@
 import Home from "./components/pages/Home";
+import HomeTwo from "./components/pages/HomeTwo";
 import MatchScout from "./components/pages/MatchScout";
 import Credits from "./components/pages/Credits";
 import PitScout from "./components/pages/PitScout";
@@ -12,9 +13,9 @@ export const Constants = {
     pages: [
         // Change between Home v1 and Home v2
         {
-            title: "Home",
+            title: "HomeTwo",
             path: "/",
-            component: Home,
+            component: HomeTwo,
         },
         {
             title: "Match Scout",

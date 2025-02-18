@@ -34,11 +34,11 @@ export default function Home() {
                     </Typography>
 
                     <Stack direction="row" spacing={1} alignItems="center" justifyContent="space-between" sx={{ height: '100%' }}>                
-                        {renderScoutBox('Pit Scout', '/pitscout', Constants.jacob)}
-                        {renderScoutBox('HP Scout', '/humanplayerscout', Constants.jacob)}
-                        {renderScoutBox('Match Scout', '/matchscout', Constants.jacob)}
-                        {renderScoutBox('Data Visualization', '/DataVisualizationDisplay', Constants.jacob)}
-                        {renderScoutBox('Credits', '/credits', Constants.jacob)}
+                        {renderScoutBox('Pit Scout', '/pitscout', Constants.pitScout)}
+                        {renderScoutBox('HP Scout', '/humanplayerscout', Constants.humanPlayer)}
+                        {renderScoutBox('Match Scout', '/matchscout', Constants.matchScout)}
+                        {renderScoutBox('Data Visualization', '/DataVisualizationDisplay', Constants.dataAnalytics)}
+                        {renderScoutBox('Credits', '/credits', Constants.credits)}
                     </Stack>
                 </Stack>
                 <Box height={50}/>
