@@ -13,9 +13,9 @@ export const Constants = {
     pages: [
         // Change between Home v1 and Home v2
         {
-            title: "HomeTwo",
+            title: "Home",
             path: "/",
-            component: HomeTwo,
+            component: Home,
         },
         {
             title: "Match Scout",
