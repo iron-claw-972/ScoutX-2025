@@ -177,23 +177,32 @@ export default class MatchScoutData {
         const autoOuttakeCounts = this.data[MatchStage.AUTO]["outtakeCounts"];
         
         const metrics = {
-            AutoMissed: 0,
-            AutoMissedCoral: 0,
-            AutoMissedAlgae: 0,
+            // Coral
             AutoCoralScored: 0,
+            AutoMissedCoral: 0,
             AutoCoralL1: 0,
             AutoCoralL2: 0,
             AutoCoralL3: 0,
             AutoCoralL4: 0,
+            AutoMissedCoralL1: 0,
+            AutoMissedCoralL2: 0,
+            AutoMissedCoralL3: 0,
+            AutoMissedCoralL4: 0,
+            // Algae
             AutoAlgaeScored: 0,
+            AutoMissedAlgae: 0,
             AutoAlgaeProcessor: 0,
             AutoAlgaeNet: 0,
+            AutoMissedAlgaeProcessor: 0,
+            AutoMissedAlgaeNet: 0,
+            // Cycle
             AutoAvgCoralCycle: 0,
             AutoAvgAlgaeCycle: 0,
-            //Intakes
+            // Intakes
             AutoCoralIntakeStation: 0,
             AutoCoralIntakeGround: 0,
-            AutoAlgaeIntakeGround: 0
+            AutoAlgaeIntakeGround: 0,
+            AutoAlgaeIntakeReef: 0
         };
     
         let totalCoralCycleTime = 0;
@@ -203,32 +212,47 @@ export default class MatchScoutData {
     
         autoOuttakeCounts.forEach(entry => {
             const { element, outtakeLocation, cycleTime, intakeLocation } = entry;
-    
-            if (outtakeLocation === "MISSED") {
-                metrics.AutoMissed++;
-                if (element === "CORAL") metrics.AutoMissedCoral++;
-                if (element === "ALGAE") metrics.AutoMissedAlgae++;
-            } else {
-                if (element === "CORAL") {
-                    metrics.AutoCoralScored++;
-                    if (outtakeLocation === "L1") metrics.AutoCoralL1++;
-                    if (outtakeLocation === "L2") metrics.AutoCoralL2++;
-                    if (outtakeLocation === "L3") metrics.AutoCoralL3++;
-                    if (outtakeLocation === "L4") metrics.AutoCoralL4++;
-                    if (intakeLocation == "GROUND") metrics.AutoCoralIntakeGround++;
-                    if (intakeLocation == "STATION") metrics.AutoCoralIntakeStation++;
-                    totalCoralCycleTime += cycleTime;
-                    coralCount++;
-                }
-    
-                if (element === "ALGAE") {
-                    metrics.AutoAlgaeScored++;
-                    if (outtakeLocation === "PROCESSOR") metrics.AutoAlgaeProcessor++;
-                    if (outtakeLocation === "NET") metrics.AutoAlgaeNet++;
-                    if (intakeLocation == "GROUND") metrics.AutoAlgaeIntakeGround++;
-                    totalAlgaeCycleTime += cycleTime;
-                    algaeCount++;
-                }
+            const isMissed = outtakeLocation.includes("MISSED") ? true : false; 
+
+            if (element === "CORAL" && isMissed) {
+                metrics.AutoMissedCoral++; 
+                if (outtakeLocation === "MISSED L1") metrics.AutoMissedCoralL1++;
+                if (outtakeLocation === "MISSED L2") metrics.AutoMissedCoralL2++;
+                if (outtakeLocation === "MISSED L3") metrics.AutoMissedCoralL3++;
+                if (outtakeLocation === "MISSED L4") metrics.AutoMissedCoralL4++;
+                if (intakeLocation === "GROUND") metrics.AutoCoralIntakeGround++;
+                if (intakeLocation === "STATION") metrics.AutoCoralIntakeStation++;
+                totalCoralCycleTime += cycleTime;
+                coralCount++;
+            }
+            else if (element === "CORAL") {
+                metrics.AutoCoralScored++;
+                if (outtakeLocation === "L1") metrics.AutoCoralL1++;
+                if (outtakeLocation === "L2") metrics.AutoCoralL2++;
+                if (outtakeLocation === "L3") metrics.AutoCoralL3++;
+                if (outtakeLocation === "L4") metrics.AutoCoralL4++;
+                if (intakeLocation === "GROUND") metrics.AutoCoralIntakeGround++;
+                if (intakeLocation === "STATION") metrics.AutoCoralIntakeStation++;
+                totalCoralCycleTime += cycleTime;
+                coralCount++;
+            }
+            else if (element === "ALGAE" && isMissed) {
+                metrics.AutoMissedAlgae++; 
+                if (outtakeLocation === "MISSED PROCESSOR") metrics.AutoMissedAlgaeProcessor++;
+                if (outtakeLocation === "MISSED NET") metrics.AutoMissedAlgaeNet++;
+                if (intakeLocation === "GROUND") metrics.AutoAlgaeIntakeGround++;
+                if (intakeLocation === "REEF") metrics.AutoAlgaeIntakeReef++; 
+                totalAlgaeCycleTime += cycleTime;
+                algaeCount++;
+            }
+            else if (element === "ALGAE") {
+                metrics.AutoAlgaeScored++;
+                if (outtakeLocation === "PROCESSOR") metrics.AutoAlgaeProcessor++;
+                if (outtakeLocation === "NET") metrics.AutoAlgaeNet++;
+                if (intakeLocation == "GROUND") metrics.AutoAlgaeIntakeGround++;
+                if (intakeLocation === "REEF") metrics.AutoAlgaeIntakeReef++; 
+                totalAlgaeCycleTime += cycleTime;
+                algaeCount++;
             }
         });
     
@@ -243,23 +267,32 @@ export default class MatchScoutData {
         const teleOuttakeCounts = this.data[MatchStage.TELEOP]["outtakeCounts"];
         
         const metrics = {
-            TeleMissed: 0,
-            TeleMissedCoral: 0,
-            TeleMissedAlgae: 0,
+            // Coral
             TeleCoralScored: 0,
+            TeleMissedCoral: 0,
             TeleCoralL1: 0,
             TeleCoralL2: 0,
             TeleCoralL3: 0,
             TeleCoralL4: 0,
+            TeleMissedCoralL1: 0,
+            TeleMissedCoralL2: 0,
+            TeleMissedCoralL3: 0,
+            TeleMissedCoralL4: 0,
+            // Algae
             TeleAlgaeScored: 0,
+            TeleMissedAlgae: 0,
             TeleAlgaeProcessor: 0,
-            TeleAlgaeNet: 0, 
+            TeleAlgaeNet: 0,
+            TeleMissedAlgaeProcessor: 0,
+            TeleMissedAlgaeNet: 0,
+            // Cycle
             TeleAvgCoralCycle: 0,
             TeleAvgAlgaeCycle: 0,
-            //Intakes
+            // Intakes
             TeleCoralIntakeStation: 0,
             TeleCoralIntakeGround: 0,
             TeleAlgaeIntakeGround: 0,
+            TeleAlgaeIntakeReef: 0
         };
     
         let totalCoralCycleTime = 0;
@@ -269,32 +302,47 @@ export default class MatchScoutData {
     
         teleOuttakeCounts.forEach(entry => {
             const { element, outtakeLocation, cycleTime, intakeLocation } = entry;
-    
-            if (outtakeLocation === "MISSED") {
-                metrics.AutoMissed++;
-                if (element === "CORAL") metrics.TeleMissedCoral++;
-                if (element === "ALGAE") metrics.TeleMissedAlgae++;
-            } else {
-                if (element === "CORAL") {
-                    metrics.TeleCoralScored++;
-                    if (outtakeLocation === "L1") metrics.TeleCoralL1++;
-                    if (outtakeLocation === "L2") metrics.TeleCoralL2++;
-                    if (outtakeLocation === "L3") metrics.TeleCoralL3++;
-                    if (outtakeLocation === "L4") metrics.TeleCoralL4++;
-                    if (intakeLocation === "STATION") metrics.TeleCoralIntakeStation++;
-                    if (intakeLocation === "GROUND") metrics.TeleCoralIntakeGround++;
-                    totalCoralCycleTime += cycleTime;
-                    coralCount++;
-                }
-    
-                if (element === "ALGAE") {
-                    metrics.TeleAlgaeScored++;
-                    if (outtakeLocation === "PROCESSOR") metrics.TeleAlgaeProcessor++;
-                    if (outtakeLocation === "NET") metrics.TeleAlgaeNet++; 
-                    if (intakeLocation === "GROUND") metrics.TeleAlgaeIntakeGround++;
-                    totalAlgaeCycleTime += cycleTime;
-                    algaeCount++;
-                }
+            const isMissed = outtakeLocation.includes("MISSED") ? true : false; 
+
+            if (element === "CORAL" && isMissed) {
+                metrics.TeleMissedCoral++; 
+                if (outtakeLocation === "MISSED L1") metrics.TeleMissedCoralL1++;
+                if (outtakeLocation === "MISSED L2") metrics.TeleMissedCoralL2++;
+                if (outtakeLocation === "MISSED L3") metrics.TeleMissedCoralL3++;
+                if (outtakeLocation === "MISSED L4") metrics.TeleMissedCoralL4++;
+                if (intakeLocation === "GROUND") metrics.TeleCoralIntakeGround++;
+                if (intakeLocation === "STATION") metrics.TeleCoralIntakeStation++;
+                totalCoralCycleTime += cycleTime;
+                coralCount++;
+            }
+            else if (element === "CORAL") {
+                metrics.TeleCoralScored++;
+                if (outtakeLocation === "L1") metrics.TeleCoralL1++;
+                if (outtakeLocation === "L2") metrics.TeleCoralL2++;
+                if (outtakeLocation === "L3") metrics.TeleCoralL3++;
+                if (outtakeLocation === "L4") metrics.TeleCoralL4++;
+                if (intakeLocation === "GROUND") metrics.TeleCoralIntakeGround++;
+                if (intakeLocation === "STATION") metrics.TeleCoralIntakeStation++;
+                totalCoralCycleTime += cycleTime;
+                coralCount++;
+            }
+            else if (element === "ALGAE" && isMissed) {
+                metrics.TeleMissedAlgae++; 
+                if (outtakeLocation === "MISSED PROCESSOR") metrics.TeleMissedAlgaeProcessor++;
+                if (outtakeLocation === "MISSED NET") metrics.TeleMissedAlgaeNet++;
+                if (intakeLocation === "GROUND") metrics.TeleAlgaeIntakeGround++;
+                if (intakeLocation === "REEF") metrics.TeleAlgaeIntakeReef++; 
+                totalAlgaeCycleTime += cycleTime;
+                algaeCount++;
+            }
+            else if (element === "ALGAE") {
+                metrics.TeleAlgaeScored++;
+                if (outtakeLocation === "PROCESSOR") metrics.TeleAlgaeProcessor++;
+                if (outtakeLocation === "NET") metrics.TeleAlgaeNet++;
+                if (intakeLocation == "GROUND") metrics.TeleAlgaeIntakeGround++;
+                if (intakeLocation === "REEF") metrics.TeleAlgaeIntakeReef++; 
+                totalAlgaeCycleTime += cycleTime;
+                algaeCount++;
             }
         });
     

@@ -66,16 +66,28 @@ const TeamMatches = () => {
         "leave",
         "AutoAlgaeNet",
         "AutoAlgaeProcessor",
+        "AutoMissedAlgaeNet",
+        "AutoMissedAlgaeProcessor",
         "AutoCoralL1",
         "AutoCoralL2",
         "AutoCoralL3",
         "AutoCoralL4",
+        "AutoMissedCoralL1",
+        "AutoMissedCoralL2",
+        "AutoMissedCoralL3",
+        "AutoMissedCoralL4",
         "TeleAlgaeNet",
         "TeleAlgaeProcessor",
+        "TeleMissedAlgaeNet",
+        "TeleMissedAlgaeProcessor",
         "TeleCoralL1",
         "TeleCoralL2",
         "TeleCoralL3",
         "TeleCoralL4",
+        "TeleMissedCoralL1",
+        "TeleMissedCoralL2",
+        "TeleMissedCoralL3",
+        "TeleMissedCoralL4",
         "ClimbPosition",
       ];
 
@@ -123,6 +135,8 @@ const TeamMatches = () => {
           Cycles: 0,
           CoralCycles: 0,
           AlgaeCycles: 0,
+          CoralAccuracy: 0, 
+          AlgaeAccuracy: 0, 
           CoralGroundIntakes: 0,
           CoralStationIntakes: 0, 
           AlgaeGroundIntakes: 0, 
@@ -150,6 +164,8 @@ const TeamMatches = () => {
         let points = 0;
         let coralCycles = 0;
         let algaeCycles = 0;
+        let coralAccuracy = 0; 
+        let algaeAccuracy = 0; 
         let coralGroundIntakes = 0; 
         let coralStationIntakes = 0;
         let algaeGroundIntakes = 0;
@@ -191,12 +207,33 @@ const TeamMatches = () => {
             if (fieldConfig.field.includes("Algae")) algaeCycles += fieldValue;
         });
 
+        const totalCoralAttempts = coralCycles + 
+          (matchObject["AutoMissedCoralL1"]) + 
+          (matchObject["AutoMissedCoralL2"]) + 
+          (matchObject["AutoMissedCoralL3"]) + 
+          (matchObject["AutoMissedCoralL4"]) + 
+          (matchObject["TeleMissedCoralL1"]) + 
+          (matchObject["TeleMissedCoralL2"]) + 
+          (matchObject["TeleMissedCoralL3"]) + 
+          (matchObject["TeleMissedCoralL4"]);
+
+        const totalAlgaeAttempts = algaeCycles + 
+          (matchObject["AutoMissedAlgaeNet"]) + 
+          (matchObject["AutoMissedAlgaeProcessor"]) + 
+          (matchObject["TeleMissedAlgaeNet"]) + 
+          (matchObject["TeleMissedAlgaeProcessor"]);
+
+        coralAccuracy = totalCoralAttempts > 0 ? `${((coralCycles / totalCoralAttempts) * 100).toFixed(1)}%` : "0.0%";
+        algaeAccuracy = totalAlgaeAttempts > 0 ? `${((algaeCycles / totalAlgaeAttempts) * 100).toFixed(1)}%` : "0.0%";
+
         let totalCycles = coralCycles + algaeCycles;
 
         matchObject.Points = points;
         matchObject.Cycles = totalCycles;
         matchObject.CoralCycles = coralCycles;
         matchObject.AlgaeCycles = algaeCycles;
+        matchObject.CoralAccuracy = coralAccuracy; 
+        matchObject.AlgaeAccuracy = algaeAccuracy; 
         matchObject.CoralGroundIntakes = coralGroundIntakes;
         matchObject.CoralStationIntakes = coralStationIntakes; 
         matchObject.AlgaeGroundIntakes = algaeGroundIntakes;

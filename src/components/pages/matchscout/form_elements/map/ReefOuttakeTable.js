@@ -14,7 +14,9 @@ export default function ReefOuttakeTable({
     elapsedTime,
     data,
     stage,
-    boxDimensions
+    boxDimensions,
+    isMissed,
+    setIsMissed, 
 }) {
 
     const buttonHeight = `${(16.4 / 100) * boxDimensions.height}px`;
@@ -31,7 +33,8 @@ export default function ReefOuttakeTable({
             <Stack direction={"column"} spacing={"5px"}>
                 <Button
                     onClick={()=> {
-                        data.addOuttakeEntry(stage, selectedIntakeElement, selectedIntakeLocation, elapsedTime, "L4")
+                        isMissed ? data.addOuttakeEntry(stage, selectedIntakeElement, selectedIntakeLocation, elapsedTime, "MISSED L4") : data.addOuttakeEntry(stage, selectedIntakeElement, selectedIntakeLocation, elapsedTime, "L4"); 
+                        setIsMissed(false);
                         setSelectedIntakeElement(0);
                         setSelectedIntakeLocation(0);
                         stopStopwatch();
@@ -49,7 +52,8 @@ export default function ReefOuttakeTable({
 
                 <Button
                     onClick={()=> {
-                        data.addOuttakeEntry(stage, selectedIntakeElement, selectedIntakeLocation, elapsedTime, "L3")
+                        isMissed ? data.addOuttakeEntry(stage, selectedIntakeElement, selectedIntakeLocation, elapsedTime, "MISSED L3") : data.addOuttakeEntry(stage, selectedIntakeElement, selectedIntakeLocation, elapsedTime, "L3"); 
+                        setIsMissed(false);
                         setSelectedIntakeElement(0);
                         setSelectedIntakeLocation(0);
                         stopStopwatch();
@@ -67,7 +71,8 @@ export default function ReefOuttakeTable({
 
                 <Button
                     onClick={()=> {
-                        data.addOuttakeEntry(stage, selectedIntakeElement, selectedIntakeLocation, elapsedTime, "L2")
+                        isMissed ? data.addOuttakeEntry(stage, selectedIntakeElement, selectedIntakeLocation, elapsedTime, "MISSED L2") : data.addOuttakeEntry(stage, selectedIntakeElement, selectedIntakeLocation, elapsedTime, "L2"); 
+                        setIsMissed(false);
                         setSelectedIntakeElement(0);
                         setSelectedIntakeLocation(0);
                         stopStopwatch();
@@ -85,7 +90,8 @@ export default function ReefOuttakeTable({
 
                 <Button
                     onClick={()=> {
-                        data.addOuttakeEntry(stage, selectedIntakeElement, selectedIntakeLocation, elapsedTime, "L1")
+                        isMissed ? data.addOuttakeEntry(stage, selectedIntakeElement, selectedIntakeLocation, elapsedTime, "MISSED L1") : data.addOuttakeEntry(stage, selectedIntakeElement, selectedIntakeLocation, elapsedTime, "L1"); 
+                        setIsMissed(false);
                         setSelectedIntakeElement(0);
                         setSelectedIntakeLocation(0);
                         stopStopwatch();
