@@ -456,6 +456,7 @@ return (
         <Stack direction="row" spacing={2} mt={3}>
           <FormControl fullWidth>
             <Select
+              displayEmpty
               multiple
               value={coralFilters}
               onChange={(e) => handleFilter("coral", e.target.value)}
@@ -471,6 +472,7 @@ return (
 
           <FormControl fullWidth>
             <Select
+              displayEmpty
               multiple
               value={algaeFilters}
               onChange={(e) => handleFilter("algae", e.target.value)}
@@ -486,6 +488,7 @@ return (
 
           <FormControl fullWidth>
             <Select
+              displayEmpty
               multiple
               value={otherFilters}
               onChange={(e) => handleFilter("other", e.target.value)}
