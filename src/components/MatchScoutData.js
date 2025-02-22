@@ -46,6 +46,7 @@ const defaultData = [
         armBroken: false,
         brownsOut: false,
         wobbly: false,
+        canKnockAlgae: false, 
         missesOuttakesConsistently: false,
         slowIntakes: false,
         disabled: false,

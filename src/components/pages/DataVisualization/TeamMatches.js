@@ -17,6 +17,7 @@ const TeamMatches = () => {
   const [error, setError] = useState(""); // To track errors
   const [restoreMatch, setRestoreMatch] = useState(""); // Selected match to restore
   const [hoveredRow, setHoveredRow] = useState(null); // Track hovered row
+  const [clearFilter, setClearFilter] = useState(true); 
 
   const coralFilterFields = [
     "CoralCycles",
@@ -150,6 +151,7 @@ const TeamMatches = () => {
         "armBroken",
         "brownsOut",
         "wobbly",
+        "canKnockAlgae",
         "missesOuttakesConsistently",
         "slowIntakes",
         "disabled",
@@ -419,6 +421,20 @@ const handleFilter = (filterType, selectedValues) => {
   }
 };
 
+const handleClearFilter = () => {
+  if (clearFilter) {
+    setClearFilter(false); 
+    setCoralFilters([]);
+    setAlgaeFilters([]);
+    setOtherFilters([]); 
+  } else {
+    setClearFilter(true); 
+    setCoralFilters(coralFilterFields);
+    setAlgaeFilters(algaeFilterFields); 
+    setOtherFilters(otherFilterFields); 
+  }
+}
+
 const visibleColumns = new Set([...coralFilters, ...algaeFilters, ...otherFilters]);
 
 // Sort the filtered data
@@ -502,6 +518,11 @@ return (
             </Select>
           </FormControl>
         </Stack>
+        <Box mt={3}>
+        <Button fullWidth onClick={handleClearFilter} variant="outlined">
+          {clearFilter ? "Clear All Filters" : "Set All Filters"}
+        </Button>
+        </Box>
         </Box>
 
         {/* Displaying filtered and sorted data */}
