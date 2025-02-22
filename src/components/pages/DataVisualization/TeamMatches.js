@@ -469,7 +469,7 @@ return (
         <TeamGraphs matches={matches} />
 
         <Box>
-        <Stack direction="row" spacing={2} mt={3}>
+        <Stack direction="row" spacing={2} mt={isSmallScreen ? -4 : 3}>
           <FormControl fullWidth>
             <Select
               displayEmpty
@@ -518,7 +518,7 @@ return (
             </Select>
           </FormControl>
         </Stack>
-        <Box mt={3}>
+        <Box mt={3} mb={isSmallScreen ? 2 : 0}>
         <Button fullWidth onClick={handleClearFilter} variant="outlined">
           {clearFilter ? "Clear All Filters" : "Set All Filters"}
         </Button>
