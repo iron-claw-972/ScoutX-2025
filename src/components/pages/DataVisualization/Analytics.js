@@ -30,8 +30,7 @@ const Analytics = () => {
       });
   
       if (teamDocs.length === 0) {
-        setError("No matches found for this team number"); 
-        return;
+        return { team, matchData: null }; // Return null matchData instead of breaking
       } else {
         const fields = [
           "leave",
@@ -57,6 +56,7 @@ const Analytics = () => {
           "armBroken",
           "brownsOut",
           "wobbly",
+          "canKnockAlgae",
           "missesOuttakesConsistently",
           "slowIntakes",
           "disabled",
@@ -165,20 +165,21 @@ const Analytics = () => {
       const teamDataPromises = teamsToAnalyze.map(getTeamData);
       const allTeamData = await Promise.all(teamDataPromises);
 
-      const validTeams = allTeamData.filter(data => data && data.matchData);
-      setMatches(validTeams);
-
-      if (validTeams.length === 0) {
-        setError("No matches found for the entered team numbers.");
-        setLoading(false);
-        return;
+      // Check if any team is missing data
+      const missingTeams = allTeamData.filter(data => data && data.matchData === null);
+      if (missingTeams.length > 0) {
+        setError(`No matches found for team number(s): ${missingTeams.map(t => t.team).join(", ")}`);
+        return; // Stop execution if any team is missing
       }
+
+      // All teams exist; proceed with analysis
+      setMatches(allTeamData);
 
       setLoading(true);
 
       const response = await axios.post(
         'https://analyzeteamdata-rage5hpe6a-uc.a.run.app',
-        { teamData: validTeams, userRequest }
+        { teamData: allTeamData, userRequest }
       );
       setAnalysis(response.data.analysis);
     } catch (error) {

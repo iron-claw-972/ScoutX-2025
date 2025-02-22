@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Box, Divider, Stack, Typography, Grid, useMediaQuery } from "@mui/material";
 import { Constants } from "../../Constants";
 
-export default function Home() {
+export default function HomeTwo() {
     const [screenHeight, setScreenHeight] = useState(window.innerHeight);
 
     // Effect to update height on resize
@@ -35,7 +35,7 @@ export default function Home() {
             }}
         >
             {/* Grid for Header and Description */}
-            <Grid container spacing={isSmallScreen ? 7 : 3} direction={isSmallScreen ? "column" : "row"}>
+            <Grid container spacing={isSmallScreen ? 7 : 3} direction={isSmallScreen ? "column" : "column"}>
                 {/* Left Side (Header and Links) */}
                 <Grid item xs={12} sm={6} container direction="column" alignItems="center">
                     {/* Header */}
@@ -100,7 +100,7 @@ export default function Home() {
                     sx={{ display: "flex" }}
                 >
                     {/* Dynamic Divider - Top */}
-                    <Divider sx={{ width: isSmallScreen ? "50%" : "25%", backgroundColor: "grey.800", mb: dynamicMargin }} />
+                    <Divider sx={{ width: isSmallScreen ? "50%" : "25%", backgroundColor: "grey.800", mb: dynamicMargin, mt: 29 }} />
                     <Typography
                         variant="h5"
                         sx={{

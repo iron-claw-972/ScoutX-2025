@@ -17,6 +17,60 @@ const TeamMatches = () => {
   const [error, setError] = useState(""); // To track errors
   const [restoreMatch, setRestoreMatch] = useState(""); // Selected match to restore
   const [hoveredRow, setHoveredRow] = useState(null); // Track hovered row
+  const [clearFilter, setClearFilter] = useState(true); 
+
+  const coralFilterFields = [
+    "CoralCycles",
+    "CoralAccuracy", 
+    "CoralGroundIntakes", 
+    "CoralStationIntakes", 
+    "AutoCoralL1",
+    "AutoCoralL2",
+    "AutoCoralL3",
+    "AutoCoralL4",
+    "AutoMissedCoralL1",
+    "AutoMissedCoralL2",
+    "AutoMissedCoralL3",
+    "AutoMissedCoralL4",
+    "TeleCoralL1",
+    "TeleCoralL2",
+    "TeleCoralL3",
+    "TeleCoralL4",
+    "TeleMissedCoralL1",
+    "TeleMissedCoralL2",
+    "TeleMissedCoralL3",
+    "TeleMissedCoralL4",
+  ]
+
+  const algaeFilterFields = [
+    "AlgaeCycles",
+    "AlgaeAccuracy",
+    "AlgaeGroundIntakes", 
+    "AlgaeReefIntakes", 
+    "AutoAlgaeNet", 
+    "AutoAlgaeProcessor", 
+    "AutoMissedAlgaeNet", 
+    "AutoMissedAlgaeProcessor", 
+    "TeleAlgaeNet",
+    "TeleAlgaeProcessor",
+    "TeleMissedAlgaeNet",
+    "TeleMissedAlgaeProcessor",
+  ]
+
+  const otherFilterFields = [
+    "Points",
+    "Cycles", 
+    "Leave",
+    "Climb",
+    "Extra Information",
+    "Human Player Makes",
+    "Human Player Misses",
+    "Human Player Accuracy",  
+  ]
+
+  const [coralFilters, setCoralFilters] = useState(coralFilterFields); 
+  const [algaeFilters, setAlgaeFilters] = useState(algaeFilterFields); 
+  const [otherFilters, setOtherFilters] = useState(otherFilterFields); 
 
   const matchScoutDataRef = collection(firebase, "matchScoutData");
   const humanPlayerDataRef = collection(firebase, "humanPlayerData");
@@ -61,21 +115,32 @@ const TeamMatches = () => {
 
       console.log("Human Player Data", humanPlayerData);
 
-
       const fields = [
         "leave",
         "AutoAlgaeNet",
         "AutoAlgaeProcessor",
+        "AutoMissedAlgaeNet",
+        "AutoMissedAlgaeProcessor",
         "AutoCoralL1",
         "AutoCoralL2",
         "AutoCoralL3",
         "AutoCoralL4",
+        "AutoMissedCoralL1",
+        "AutoMissedCoralL2",
+        "AutoMissedCoralL3",
+        "AutoMissedCoralL4",
         "TeleAlgaeNet",
         "TeleAlgaeProcessor",
+        "TeleMissedAlgaeNet",
+        "TeleMissedAlgaeProcessor",
         "TeleCoralL1",
         "TeleCoralL2",
         "TeleCoralL3",
         "TeleCoralL4",
+        "TeleMissedCoralL1",
+        "TeleMissedCoralL2",
+        "TeleMissedCoralL3",
+        "TeleMissedCoralL4",
         "ClimbPosition",
       ];
 
@@ -86,6 +151,7 @@ const TeamMatches = () => {
         "armBroken",
         "brownsOut",
         "wobbly",
+        "canKnockAlgae",
         "missesOuttakesConsistently",
         "slowIntakes",
         "disabled",
@@ -123,6 +189,8 @@ const TeamMatches = () => {
           Cycles: 0,
           CoralCycles: 0,
           AlgaeCycles: 0,
+          CoralAccuracy: 0, 
+          AlgaeAccuracy: 0, 
           CoralGroundIntakes: 0,
           CoralStationIntakes: 0, 
           AlgaeGroundIntakes: 0, 
@@ -150,6 +218,8 @@ const TeamMatches = () => {
         let points = 0;
         let coralCycles = 0;
         let algaeCycles = 0;
+        let coralAccuracy = 0; 
+        let algaeAccuracy = 0; 
         let coralGroundIntakes = 0; 
         let coralStationIntakes = 0;
         let algaeGroundIntakes = 0;
@@ -191,12 +261,33 @@ const TeamMatches = () => {
             if (fieldConfig.field.includes("Algae")) algaeCycles += fieldValue;
         });
 
+        const totalCoralAttempts = coralCycles + 
+          (matchObject["AutoMissedCoralL1"]) + 
+          (matchObject["AutoMissedCoralL2"]) + 
+          (matchObject["AutoMissedCoralL3"]) + 
+          (matchObject["AutoMissedCoralL4"]) + 
+          (matchObject["TeleMissedCoralL1"]) + 
+          (matchObject["TeleMissedCoralL2"]) + 
+          (matchObject["TeleMissedCoralL3"]) + 
+          (matchObject["TeleMissedCoralL4"]);
+
+        const totalAlgaeAttempts = algaeCycles + 
+          (matchObject["AutoMissedAlgaeNet"]) + 
+          (matchObject["AutoMissedAlgaeProcessor"]) + 
+          (matchObject["TeleMissedAlgaeNet"]) + 
+          (matchObject["TeleMissedAlgaeProcessor"]);
+
+        coralAccuracy = totalCoralAttempts > 0 ? `${((coralCycles / totalCoralAttempts) * 100).toFixed(1)}%` : "0.0%";
+        algaeAccuracy = totalAlgaeAttempts > 0 ? `${((algaeCycles / totalAlgaeAttempts) * 100).toFixed(1)}%` : "0.0%";
+
         let totalCycles = coralCycles + algaeCycles;
 
         matchObject.Points = points;
         matchObject.Cycles = totalCycles;
         matchObject.CoralCycles = coralCycles;
         matchObject.AlgaeCycles = algaeCycles;
+        matchObject.CoralAccuracy = coralAccuracy; 
+        matchObject.AlgaeAccuracy = algaeAccuracy; 
         matchObject.CoralGroundIntakes = coralGroundIntakes;
         matchObject.CoralStationIntakes = coralStationIntakes; 
         matchObject.AlgaeGroundIntakes = algaeGroundIntakes;
@@ -309,20 +400,6 @@ const TeamMatches = () => {
     }
   };
 
-  const sortedData = matches.map((teamData) => ({
-    ...teamData,
-    matchData: [...teamData.matchData].sort((a, b) => {
-      const valueA = a[sortBy];
-      const valueB = b[sortBy];
-
-      if (sortDirection === 'asc') {
-        return valueB - valueA;
-      } else {
-        return valueA - valueB;
-      }
-    })
-  }));
-
    // Helper function to format extraInfo field keys
   const formatExtraInfo = (info) => {
     return info
@@ -333,38 +410,135 @@ const TeamMatches = () => {
   // Use `useMediaQuery` to determine if the screen is small
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
 
-  return (
-    <>
-      <TextField
-        label="Enter Team Number"
-        variant="outlined"
-        value={team}
-        onChange={(e) => setTeam(e.target.value)}
-        fullWidth
-        margin="normal"
-      />
-      <Button variant="contained" color="primary" sx={{ mt: 2 }} onClick={handleGetData} fullWidth>
-        Get Data
-      </Button>
-      
-      {error && <Typography color="error" variant="body1" sx={{ mt: 2 }}>{error}</Typography>}
+const handleFilter = (filterType, selectedValues) => {
+  console.log("Match Object", matches); 
+  if (filterType === "coral") {
+    setCoralFilters(selectedValues);
+  } else if (filterType === "algae") {
+    setAlgaeFilters(selectedValues);
+  } else if (filterType === "other") {
+    setOtherFilters(selectedValues);
+  }
+};
 
-      {matches.length > 0 && (
-        <Stack direction={"column"} spacing={4} mt={9}>
-          {matches.length > 0 && (
-            <TeamGraphs matches={matches}/>
-          )}
-          {sortedData.map((teamData) => (
-            <Box key={teamData.team}>
-            <TableContainer key={teamData.team} sx={{ maxWidth: '100%', margin: '0 auto', mt: isSmallScreen ? -4 : 4 }}>
-            <Stack direction={"row"} spacing={4}>
-            <IconButton
-                    sx={{ color: "primary", fontSize: 20 }}
-                    onClick={() => handleDeleteTeamData(teamData.team)}
-                  >
+const handleClearFilter = () => {
+  if (clearFilter) {
+    setClearFilter(false); 
+    setCoralFilters([]);
+    setAlgaeFilters([]);
+    setOtherFilters([]); 
+  } else {
+    setClearFilter(true); 
+    setCoralFilters(coralFilterFields);
+    setAlgaeFilters(algaeFilterFields); 
+    setOtherFilters(otherFilterFields); 
+  }
+}
+
+const visibleColumns = new Set([...coralFilters, ...algaeFilters, ...otherFilters]);
+
+// Sort the filtered data
+const sortedData = matches.map((teamData) => ({
+  ...teamData,
+  matchData: [...teamData.matchData].sort((a, b) => {
+    const valueA = a[sortBy];
+    const valueB = b[sortBy];
+
+    return sortDirection === 'asc' ? valueB - valueA : valueA - valueB;
+  }),
+}));
+
+return (
+  <>
+    <TextField
+      label="Enter Team Number"
+      variant="outlined"
+      value={team}
+      onChange={(e) => setTeam(e.target.value)}
+      fullWidth
+      margin="normal"
+    />
+    <Button variant="contained" color="primary" sx={{ mt: 2 }} onClick={handleGetData} fullWidth>
+      Get Data
+    </Button>
+
+    {error && <Typography color="error" variant="body1" sx={{ mt: 2 }}>{error}</Typography>}
+
+    {matches.length > 0 && (
+      <Stack direction={"column"} spacing={4} mt={9}>
+        <TeamGraphs matches={matches} />
+
+        <Box>
+        <Stack direction="row" spacing={2} mt={isSmallScreen ? -4 : 3}>
+          <FormControl fullWidth>
+            <Select
+              displayEmpty
+              multiple
+              value={coralFilters}
+              onChange={(e) => handleFilter("coral", e.target.value)}
+              renderValue={() => "Coral Filters"}
+            >
+              {coralFilterFields.map((field) => (
+                <MenuItem key={field} value={field}>
+                  {field.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, str => str.toUpperCase())}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          <FormControl fullWidth>
+            <Select
+              displayEmpty
+              multiple
+              value={algaeFilters}
+              onChange={(e) => handleFilter("algae", e.target.value)}
+              renderValue={() => "Algae Filters"}
+            >
+              {algaeFilterFields.map((field) => (
+                <MenuItem key={field} value={field}>
+                  {field.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, str => str.toUpperCase())}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          <FormControl fullWidth>
+            <Select
+              displayEmpty
+              multiple
+              value={otherFilters}
+              onChange={(e) => handleFilter("other", e.target.value)}
+              renderValue={() => "Other Filters"}
+            >
+              {otherFilterFields.map((field) => (
+                <MenuItem key={field} value={field}>
+                  {field.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, str => str.toUpperCase())}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Stack>
+        <Box mt={3} mb={isSmallScreen ? 2 : 0}>
+        <Button fullWidth onClick={handleClearFilter} variant="outlined">
+          {clearFilter ? "Clear All Filters" : "Set All Filters"}
+        </Button>
+        </Box>
+        </Box>
+
+        {/* Displaying filtered and sorted data */}
+        {sortedData.map((teamData) => (
+          <Box key={teamData.team}>
+            <TableContainer sx={{ maxWidth: '100%', margin: '0 auto', mt: isSmallScreen ? -4 : 0 }}>
+              <Stack direction={"row"} spacing={4}>
+                <IconButton
+                  sx={{ color: "primary", fontSize: 20 }}
+                  onClick={() => handleDeleteTeamData(teamData.team)}
+                >
                   <RemoveCircleIcon />
-              </IconButton>
-              <Typography variant="h5" sx={{ color: "#f57c00", position: "relative", top: "5px" }}>{`Team ${teamData.team}`}</Typography>
+                </IconButton>
+                <Typography variant="h5" sx={{ color: "#f57c00", position: "relative", top: "5px" }}>
+                  {`Team ${teamData.team}`}
+                </Typography>
               </Stack>
               <Divider sx={{ width: '75%', backgroundColor: 'grey.800', marginY: 4, mt: 2, mb: 4 }} />
               <Table sx={{ minWidth: 650, backgroundColor: "#f57c00" }}>
@@ -373,7 +547,7 @@ const TeamMatches = () => {
                     <TableCell sx={{ color: "#f57c00", fontWeight: "bold" }}></TableCell>
                     <TableCell sx={{ color: "#f57c00", fontWeight: "bold" }}>Match Number</TableCell>
                     {Object.keys(teamData.matchData[0]).map((column) =>
-                      column !== "matchNumber" ? (
+                      column !== "matchNumber" && visibleColumns.has(column) ? (
                         <TableCell key={column} sx={{ color: "white" }}>
                           <TableSortLabel
                             active={sortBy === column}
@@ -413,7 +587,7 @@ const TeamMatches = () => {
                       <TableCell sx={{ color: "#f57c00" }}>{match.matchNumber}</TableCell>
                       {Object.entries(match).map(
                         ([key, value]) =>
-                          key !== "matchNumber" && (
+                          key !== "matchNumber" && visibleColumns.has(key) && (
                             <TableCell
                               key={key}
                               sx={{
@@ -430,36 +604,37 @@ const TeamMatches = () => {
                 </TableBody>
               </Table>
             </TableContainer>
+
             {/* Show restore dropdown and button under the team table */}
-          <Stack spacing={1} direction="column" sx={{ mt: 2 }}>
-            {deletedRows[teamData.team]?.length > 0 && (
-              <FormControl fullWidth>
-                <InputLabel id="restore-select-label">Restore Match</InputLabel>
-                <Select
-                  labelId="restore-select-label"
-                  value={restoreMatch}
-                  label="Restore Match"
-                  onChange={(e) => setRestoreMatch(e.target.value)} // Handle change
-                >
-                  {deletedRows[teamData.team].map((match) => (
-                    <MenuItem
-                      key={match.matchNumber}
-                      value={match.matchNumber}
-                      onClick={() => handleRestoreRow(teamData.team, match.matchNumber)}
-                    >
-                      Match {match.matchNumber}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            )}
-          </Stack>
-        </Box>
-      ))}
+            <Stack spacing={1} direction="column" sx={{ mt: 2 }}>
+              {deletedRows[teamData.team]?.length > 0 && (
+                <FormControl fullWidth>
+                  <InputLabel id="restore-select-label">Restore Match</InputLabel>
+                  <Select
+                    labelId="restore-select-label"
+                    value={restoreMatch}
+                    label="Restore Match"
+                    onChange={(e) => setRestoreMatch(e.target.value)} // Handle change
+                  >
+                    {deletedRows[teamData.team].map((match) => (
+                      <MenuItem
+                        key={match.matchNumber}
+                        value={match.matchNumber}
+                        onClick={() => handleRestoreRow(teamData.team, match.matchNumber)}
+                      >
+                        Match {match.matchNumber}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              )}
+            </Stack>
+          </Box>
+        ))}
       </Stack>
-      )}
-    </>
-  );
+    )}
+  </>
+);
 };
 
 export default TeamMatches;

@@ -21,8 +21,7 @@ import { Constants } from '../../Constants';
 
 
 const PitScout = (props) => {
-    const [teamNumber, setTeamNumber] = useState('');
-    const [robotFeatures, setRobotFeatures] = useState('');
+    const [teamNumber, setTeamNumber] = useState("");
     const [drivetrain, setDrivetrain] = useState("");
     const [intake, setIntake] = useState("");
     const [climb, setClimb] = useState("");
@@ -50,6 +49,10 @@ const PitScout = (props) => {
     }
 
     const handleSubmit = async () => {
+        if (!teamNumber.trim()) {
+            return;
+        }
+
         const pitData = {
             teamNumber: teamNumber,
             drivetrain: drivetrain,
@@ -58,9 +61,7 @@ const PitScout = (props) => {
             robotType: robotType,
             extraNotes: extraNotes
         }
-        // You can handle the form submission logic here
-        console.log(`Scouting Team ${teamNumber}'s pit with features: ${robotFeatures}`);
-        // Add further logic as needed
+
         const db = getFirestore();
         await setDoc(doc(db, "pitData", teamNumber),
             pitData
