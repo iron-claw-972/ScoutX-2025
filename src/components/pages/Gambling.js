@@ -6,26 +6,30 @@ import { Wheel } from 'react-custom-roulette';
 const prizes = [
     { option: "🧋Jackpot🧋", style: { fontSize: '14' }},
     { option: "👾Scout More!", style: { fontSize: '14' } },
+    { option: "👾Scout More!", style: { fontSize: '14' } },
+    { option: "👾Scout More!", style: { fontSize: '14' } },
+    { option: "👾Scout More!", style: { fontSize: '14' } },
     { option: "🎲Free Roll", style: { fontSize: '14' } },
+    { option: "👾Scout More!", style: { fontSize: '14' } },
+    { option: "👾Scout More!", style: { fontSize: '14' } },
+    { option: "👾Scout More!", style: { fontSize: '14' } },
     { option: "👾Scout More!", style: { fontSize: '14' } },
     { option: "🍭Free Candy", style: { fontSize: '14' } },
     { option: "👾Scout More!", style: { fontSize: '14' } },
+    { option: "👾Scout More!", style: { fontSize: '14' } },
+    { option: "👾Scout More!", style: { fontSize: '14' } },
+    { option: "👾Scout More!", style: { fontSize: '14' } },
     { option: "😁Free Sticker", style: { fontSize: '14' } },
+    { option: "👾Scout More!", style: { fontSize: '14' } },
+    { option: "👾Scout More!", style: { fontSize: '14' } },
+    { option: "👾Scout More!", style: { fontSize: '14' } },
     { option: "👾Scout More!", style: { fontSize: '14' } },
     { option: "🤑Discount", style: { fontSize: '14' } },
     { option: "👾Scout More!", style: { fontSize: '14' } },
+    { option: "👾Scout More!", style: { fontSize: '14' } },
+    { option: "👾Scout More!", style: { fontSize: '14' } },
+    { option: "👾Scout More!", style: { fontSize: '14' } },
     { option: "👕Free Shirt", style: { fontSize: '14' } },
-    { option: "👾Scout More!", style: { fontSize: '14' } },
-    { option: "👾Scout More!", style: { fontSize: '14' } },
-    { option: "👾Scout More!", style: { fontSize: '14' } },
-    { option: "👾Scout More!", style: { fontSize: '14' } },
-    { option: "👾Scout More!", style: { fontSize: '14' } },
-    { option: "👾Scout More!", style: { fontSize: '14' } },
-    { option: "👾Scout More!", style: { fontSize: '14' } },
-    { option: "👾Scout More!", style: { fontSize: '14' } },
-    { option: "👾Scout More!", style: { fontSize: '14' } },
-    { option: "👾Scout More!", style: { fontSize: '14' } },
-    { option: "👾Scout More!", style: { fontSize: '14' } },
 ];
 
 const Gambling = () => {
@@ -53,7 +57,7 @@ const Gambling = () => {
         setMustSpin(false);
         const prize = prizes[prizeNumber].option;
         
-        if (prize === "🎲 Free Roll") {
+        if (prize === "🎲Free Roll") {
             setMessage("You won a Free Roll! Click Spin to use it!");
             setRollsRemaining(prev => prev + 1);
         } else {

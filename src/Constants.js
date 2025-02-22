@@ -61,7 +61,8 @@ export const Constants = {
     humanPlayer: require ("./assets/humanPlayer.png"),
     rotateIcon: require ("./assets/rotateIcon.png"),
     jacob: require ("./assets/jacob.jpeg"),
-
+    info: require ("./assets/info.png"),
+    
 
     developers: [
         {
