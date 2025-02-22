@@ -13,12 +13,15 @@ export default function ProcessorButton({
     elapsedTime,
     data,
     stage,
-    boxDimensions
+    boxDimensions,
+    isMissed,
+    setIsMissed
 }) {
     return (
         <Button
             onClick={() => {
-                data.addOuttakeEntry(stage, selectedIntakeElement, selectedIntakeLocation, elapsedTime, "PROCESSOR")
+                isMissed ? data.addOuttakeEntry(stage, selectedIntakeElement, selectedIntakeLocation, elapsedTime, "MISSED PROCESSOR") : data.addOuttakeEntry(stage, selectedIntakeElement, selectedIntakeLocation, elapsedTime, "PROCESSOR");
+                setIsMissed(false); 
                 setSelectedIntakeElement(0);
                 setSelectedIntakeLocation(0);
                 stopStopwatch();

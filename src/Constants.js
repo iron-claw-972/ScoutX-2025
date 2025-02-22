@@ -1,4 +1,5 @@
 import Home from "./components/pages/Home";
+import HomeTwo from "./components/pages/HomeTwo";
 import MatchScout from "./components/pages/MatchScout";
 import Credits from "./components/pages/Credits";
 import PitScout from "./components/pages/PitScout";

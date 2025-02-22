@@ -38,6 +38,8 @@ export default function MapSim(
     const [isRunning, setIsRunning] = useState(false); // Stopwatch running status
     const timerRef = useRef(null); // Reference to store the interval ID
 
+    const [isMissed, setIsMissed] = useState(false); 
+
     useEffect(() => {
         const handleResize = () => {
             setIsPortrait(window.innerHeight > window.innerWidth);
@@ -133,6 +135,8 @@ export default function MapSim(
             data={data}
             stage={stage}
             boxDimensions={boxDimensions}
+            isMissed={isMissed}
+            setIsMissed={setIsMissed}
         />,
         <NetButton
             x={49.4}
@@ -147,6 +151,8 @@ export default function MapSim(
             data={data}
             stage={stage}
             boxDimensions={boxDimensions}
+            isMissed={isMissed}
+            setIsMissed={setIsMissed}
         />,
         <ReefButton
             x={64.5}
@@ -185,14 +191,10 @@ export default function MapSim(
             boxDimensions={boxDimensions}
         />,
         <Button
-            variant={"contained"}
+            variant={isMissed ? "contained" : "outlined"}
             color={"error"}
             onClick={() => {
-                data.incrementMissedCount(stage, 7);
-                data.addOuttakeEntry(stage, selectedIntakeElement, selectedIntakeLocation, elapsedTime, "MISSED")
-                setSelectedIntakeLocation(0);
-                setSelectedIntakeElement(0); 
-                stopStopwatch();
+                setIsMissed(!isMissed); 
             }}
             disabled={selectedIntakeElement == 0 || selectedIntakeLocation == 0}
             sx={{
@@ -233,6 +235,8 @@ export default function MapSim(
             data={data}
             stage={stage}
             boxDimensions={boxDimensions}
+            isMissed={isMissed}
+            setIsMissed={setIsMissed}
         />,
         <NetButton
             x={89.2}
@@ -247,6 +251,8 @@ export default function MapSim(
             data={data}
             stage={stage}
             boxDimensions={boxDimensions}
+            isMissed={isMissed}
+            setIsMissed={setIsMissed}
         />,
         <ReefButton
             x={66.2}
@@ -285,14 +291,10 @@ export default function MapSim(
             boxDimensions={boxDimensions}
         />,
         <Button
-            variant={"contained"}
+            variant={isMissed ? "contained" : "outlined"}
             color={"error"}
             onClick={() => {
-                data.incrementMissedCount(stage, 7);
-                data.addOuttakeEntry(stage, selectedIntakeElement, selectedIntakeLocation, elapsedTime, "MISSED")
-                setSelectedIntakeLocation(0);
-                setSelectedIntakeElement(0); 
-                stopStopwatch();
+                setIsMissed(!isMissed);
             }}
             disabled={selectedIntakeElement == 0 || selectedIntakeLocation == 0}
             sx={{
@@ -344,6 +346,8 @@ export default function MapSim(
             data={data}
             stage={stage}
             boxDimensions={boxDimensions}
+            isMissed={isMissed}
+            setIsMissed={setIsMissed}
         />,
         <NetButton
             x={89.2}
@@ -358,6 +362,8 @@ export default function MapSim(
             data={data}
             stage={stage}
             boxDimensions={boxDimensions}
+            isMissed={isMissed}
+            setIsMissed={setIsMissed}
         />,
         <ReefButton
             x={66.2}
@@ -396,14 +402,10 @@ export default function MapSim(
             boxDimensions={boxDimensions}
         />,
         <Button
-            variant={"contained"}
+            variant={isMissed ? "contained" : "outlined"}
             color={"error"}
             onClick={() => {
-                data.incrementMissedCount(stage, 7);
-                data.addOuttakeEntry(stage, selectedIntakeElement, selectedIntakeLocation, elapsedTime, "MISSED")
-                setSelectedIntakeLocation(0);
-                setSelectedIntakeElement(0); 
-                stopStopwatch();
+                setIsMissed(!isMissed);
             }}
             disabled={selectedIntakeElement == 0 || selectedIntakeLocation == 0}
             sx={{
@@ -440,17 +442,15 @@ export default function MapSim(
             data={data}
             stage={stage}
             boxDimensions={boxDimensions}
+            isMissed={isMissed}
+            setIsMissed={setIsMissed}
         />,
 
         <Button
-            variant={"contained"}
+            variant={isMissed ? "contained" : "outlined"}
             color={"error"}
             onClick={() => {
-                data.incrementMissedCount(stage, 7);
-                data.addOuttakeEntry(stage, selectedIntakeElement, selectedIntakeLocation, elapsedTime, "MISSED")
-                setSelectedIntakeLocation(0);
-                setSelectedIntakeElement(0); 
-                stopStopwatch();
+                setIsMissed(!isMissed); 
             }}
             disabled={selectedIntakeElement == 0 || selectedIntakeLocation == 0}
             sx={{
