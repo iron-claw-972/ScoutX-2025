@@ -2,33 +2,34 @@ import React, { useState, useEffect } from 'react';
 import { Avatar, Button, Card, CardContent, Grid, Stack, Typography, Box } from '@mui/material';
 import { Casino } from '@mui/icons-material';
 import { Wheel } from 'react-custom-roulette';
+import Page from '../Page';
 
 const prizes = [
     { option: "🧋Jackpot🧋", style: { fontSize: '14' }},
     { option: "👾Scout More!", style: { fontSize: '14' } },
-    { option: "🎲Free Roll", style: { fontSize: '14' } },
     { option: "👾Scout More!", style: { fontSize: '14' } },
-    { option: "🍭Free Candy", style: { fontSize: '14' } },
     { option: "👾Scout More!", style: { fontSize: '14' } },
     { option: "😁Free Sticker", style: { fontSize: '14' } },
     { option: "👾Scout More!", style: { fontSize: '14' } },
-    { option: "🤑Discount", style: { fontSize: '14' } },
     { option: "👾Scout More!", style: { fontSize: '14' } },
     { option: "👕Free Shirt", style: { fontSize: '14' } },
     { option: "👾Scout More!", style: { fontSize: '14' } },
     { option: "👾Scout More!", style: { fontSize: '14' } },
+    { option: "🍭Free Candy", style: { fontSize: '14' } },
+    { option: "👾Scout More!", style: { fontSize: '14' } },
+    { option: "👾Scout More!", style: { fontSize: '14' } },
+    { option: "🤑Discount", style: { fontSize: '14' } },
     { option: "👾Scout More!", style: { fontSize: '14' } },
     { option: "👾Scout More!", style: { fontSize: '14' } },
     { option: "👾Scout More!", style: { fontSize: '14' } },
     { option: "👾Scout More!", style: { fontSize: '14' } },
-    { option: "👾Scout More!", style: { fontSize: '14' } },
-    { option: "👾Scout More!", style: { fontSize: '14' } },
+    { option: "🎲Free Roll", style: { fontSize: '14' } },
     { option: "👾Scout More!", style: { fontSize: '14' } },
     { option: "👾Scout More!", style: { fontSize: '14' } },
     { option: "👾Scout More!", style: { fontSize: '14' } },
 ];
 
-const Gambling = () => {
+const WheelGame = () => {
     const [wheelMounted, setWheelMounted] = useState(false);
     const [mustSpin, setMustSpin] = useState(false);
     const [prizeNumber, setPrizeNumber] = useState(0);
@@ -118,4 +119,4 @@ const Gambling = () => {
     );
 };
 
-export default Gambling;
+export default WheelGame;

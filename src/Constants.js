@@ -60,7 +60,6 @@ export const Constants = {
     matchScout: require ("./assets/matchScout.png"),
     humanPlayer: require ("./assets/humanPlayer.png"),
     rotateIcon: require ("./assets/rotateIcon.png"),
-    jacob: require ("./assets/jacob.jpeg"),
 
 
     developers: [
