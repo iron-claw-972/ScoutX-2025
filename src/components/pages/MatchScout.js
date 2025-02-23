@@ -11,19 +11,16 @@ import CloseIcon from "@mui/icons-material/Close";
 import Gambling from "./Gambling";
 
 export default function MatchScout() {
-    // Memoize the `data` object to avoid re-creating it on each render
-    let data = useMemo(() => new MatchScoutData(), []);
+    // Memoize the `data` object and pass in `setAlert`
+    const [alert, setAlert] = useState({ open: false, message: "", severity: "success" });
+    let data = useMemo(() => new MatchScoutData(setAlert), []);
 
-    // Add a `useState` hook to manage the stage
     const [stage, setStage] = useState(data.stage);
-
-    // Add a `useState` for the current component
     const [currentComponent, setCurrentComponent] = useState(<MSPrematch data={data} />);
 
-    // Define a function to handle stage changes
     const handleStageChange = (newStage) => {
-        data.stage = newStage; // Synchronize the data object
-        setStage(newStage); // Update the state to trigger re-render
+        data.stage = newStage;
+        setStage(newStage);
     };
 
     useEffect(() => {
@@ -32,16 +29,16 @@ export default function MatchScout() {
                 setCurrentComponent(<MSPrematch data={data} />);
                 break;
             case MatchStage.AUTO:
-                setCurrentComponent(<MSAuto data={data} handleStageChange={handleStageChange}/>);
+                setCurrentComponent(<MSAuto data={data} handleStageChange={handleStageChange} />);
                 break;
             case MatchStage.TELEOP:
                 setCurrentComponent(<MSTeleop data={data} handleStageChange={handleStageChange} />);
                 break;
             case MatchStage.POST_MATCH:
-                setCurrentComponent(<MSPostmatch data={data} handleStageChange={handleStageChange}/>);
+                setCurrentComponent(<MSPostmatch data={data} handleStageChange={handleStageChange} />);
                 break;
             case MatchStage.GAMBLING:
-                setCurrentComponent(<Gambling data={data} handleStageChange={handleStageChange}/>);
+                setCurrentComponent(<Gambling data={data} handleStageChange={handleStageChange} />);
                 break;
         }
     }, [stage]);
@@ -49,84 +46,76 @@ export default function MatchScout() {
     return (
         <Container>
             <Stack direction="column" spacing={2} mt={2} pb={6} align="center">
-            <Typography color={"white"} variant={"h4"} sx={{ mt:4 }}>
-                Match Scout
-            </Typography>
-            <Box> {/* Apply negative margin in Box */}
-                    <Typography variant={"h6"} sx={{ mt: -1 }}> {/* Apply negative margin to second Typography */}
+                <Typography color={"white"} variant={"h4"} sx={{ mt: 4 }}>
+                    Match Scout
+                </Typography>
+                <Box>
+                    <Typography variant={"h6"} sx={{ mt: -1 }}>
                         {Object.keys(MatchStage)[stage].replace("_", " ")}
                     </Typography>
                 </Box>
-            <Box> 
-                <Divider sx={{ width: "75%", mt: 2, backgroundColor: '#bdbdbd'}} />
-            </Box>
-            <Collapse in={data.alert.open}>
-                <Alert
-                    sx={{
-                        mb: 3,
-                    }}
-                    action={
-                        <IconButton
-                            aria-label="close"
-                            color="inherit"
-                            size="small"
-                            onClick={() => {
-                                data.alert.open = false;
-                                setStage(stage); // Trigger re-render
+                <Box>
+                    <Divider sx={{ width: "75%", mt: 2, backgroundColor: '#bdbdbd' }} />
+                </Box>
+
+                {/* Alert is now controlled by React state */}
+                <Collapse in={alert.open}>
+                    <Alert
+                        sx={{ mb: 3 }}
+                        action={
+                            <IconButton
+                                aria-label="close"
+                                color="inherit"
+                                size="small"
+                                onClick={() => setAlert({ ...alert, open: false })}
+                            >
+                                <CloseIcon fontSize="inherit" />
+                            </IconButton>
+                        }
+                        severity={alert.severity}
+                    >
+                        {alert.message}
+                    </Alert>
+                </Collapse>
+
+                {currentComponent}
+
+                <Stack
+                    direction={"row"}
+                    spacing={2}
+                    sx={{ my: stage == MatchStage.AUTO || stage == MatchStage.TELEOP ? 0.5 : 2 }}
+                >
+                    {stage == MatchStage.POST_MATCH && (
+                        <Button fullWidth variant={"outlined"} onClick={() => handleStageChange(stage - 1)}>
+                            Previous
+                        </Button>
+                    )}
+                    {stage == MatchStage.PRE_MATCH && (
+                        <Button
+                            sx={{ width: "100%" }}
+                            variant={"outlined"}
+                            onClick={() => handleStageChange(stage + 1)}
+                        >
+                            Next
+                        </Button>
+                    )}
+                    {stage === MatchStage.POST_MATCH && (
+                        <Button
+                            fullWidth
+                            color={"success"}
+                            variant={"outlined"}
+                            onClick={async () => {
+                                console.log("RETURN", await data.submit());
+                                const success = await data.submit();
+                                if (success) {
+                                    handleStageChange(stage + 2);
+                                }
                             }}
                         >
-                            <CloseIcon fontSize="inherit" />
-                        </IconButton>
-                    }
-                    severity={data.alert.severity}
-                >
-                    {data.alert.message}
-                </Alert>
-            </Collapse>
-            {currentComponent}
-            <Stack
-                direction={"row"}
-                spacing={2}
-                sx={{
-                    my: stage == MatchStage.AUTO || stage == MatchStage.TELEOP ? 0.5 : 2,
-                }}
-            >
-                {stage == MatchStage.POST_MATCH && (
-                    <Button
-                        fullWidth
-                        variant={"outlined"}
-                        onClick={() => handleStageChange(stage - 1)}
-                    >
-                        Previous
-                    </Button>
-                )}
-                {stage == MatchStage.PRE_MATCH && (
-                    <Button
-                        sx={{ width: "100%" }}
-                        variant={"outlined"}
-                        onClick={() => {
-                            if (data.validate().valid) {
-                                handleStageChange(stage + 1);
-                            }
-                        }}
-                    >
-                        Next
-                    </Button>
-                )}
-                {stage === MatchStage.POST_MATCH && (
-                    <Button
-                        fullWidth
-                        color={"success"}
-                        variant={"outlined"}
-                        onClick={() => {
-                            data.submit(); 
-                            handleStageChange(stage + 2);
-                        }}
-                    >
-                        Submit
-                    </Button>
-                )}
-            </Stack>
+                            Submit
+                        </Button>
+                    )}
+                </Stack>
             </Stack>
         </Container>
     );

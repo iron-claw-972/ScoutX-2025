@@ -64,11 +64,12 @@ const defaultData = [
     }
 ];
 export default class MatchScoutData {
-    constructor() {
+    constructor(setAlert) {
         this.stage = MatchStage.PRE_MATCH;
         this.data = defaultData;
         this.history = [];
         this.historyCounter = 0;
+        this.setAlert = setAlert;
 
         this.alert = {
             open: false,
@@ -355,124 +356,59 @@ export default class MatchScoutData {
     }
     
 
-    async submit(navigate) {
-        const validation = this.validate(true);
-        if (!validation.valid) {
-            this.sendAlert(validation.message, "error");
-            return validation;
-        }
+    async submit() {
 
-        this.set(MatchStage.METADATA, "timestamp", Date.now());
-        const db = getFirestore();
-
-        const autoOuttakeCounts = defaultData[1].outtakeCounts;
-        const teleOuttakeCounts = defaultData[2].outtakeCounts;
-
-        const autoioCount = defaultData[1].outtakeCounts.length;
-        const teleioCount = defaultData[2].outtakeCounts.length;
-
-        const teleClimbPosition = defaultData[2].climb;
-
-        const autoMissedCounts = defaultData[1].missedCounts;
-        const teleMissedCounts = defaultData[2].missedCounts;
-
-        const autoMetrics = this.deriveAutoOuttakeMetrics();
-        const teleMetrics = this.deriveTeleOuttakeMetrics();
-
-        let firebaseData = {
-            autoioCount: autoioCount,
-            teleioCount: teleioCount,
-            autoOuttakeCounts: autoOuttakeCounts,
-            teleOuttakeCounts: teleOuttakeCounts,
-            ClimbPosition: teleClimbPosition,
-        };
-
-        firebaseData = { ...firebaseData, ...autoMetrics, ...teleMetrics };
-
-        for (const key in defaultData) {
-            for (const inner in defaultData[key]) {
-                firebaseData[`${inner}`] = `${defaultData[key][inner]}`;
-            }
-        }
-        delete firebaseData.io;
-        await setDoc(
-            doc(db, "matchScoutData", defaultData[0].team + "_" + defaultData[0].match),
-            firebaseData
-        );
+        if (this.data[0]['team'] === null || 
+            this.data[0]['match'] === null || 
+            this.data[0]['name'] === null ||
+            this.data[0]['team'] === null ||
+            this.data[0]['alliance'] === null ||
+            this.data[0]['driver_station'] === null ||
+            this.data[0]['start_position'] === null) 
+        {
+            this.sendAlert("Incomplete data in Pre-Match Page", "error");
+            return false; 
+        } else {
+            this.set(MatchStage.METADATA, "timestamp", Date.now());
+            const db = getFirestore();
     
-        return true;
+            const autoOuttakeCounts = defaultData[1].outtakeCounts;
+            const teleOuttakeCounts = defaultData[2].outtakeCounts;
+    
+            const autoioCount = defaultData[1].outtakeCounts.length;
+            const teleioCount = defaultData[2].outtakeCounts.length;
+    
+            const teleClimbPosition = defaultData[2].climb;
+    
+            const autoMetrics = this.deriveAutoOuttakeMetrics();
+            const teleMetrics = this.deriveTeleOuttakeMetrics();
+    
+            let firebaseData = {
+                autoioCount: autoioCount,
+                teleioCount: teleioCount,
+                autoOuttakeCounts: autoOuttakeCounts,
+                teleOuttakeCounts: teleOuttakeCounts,
+                ClimbPosition: teleClimbPosition,
+            };
+    
+            firebaseData = { ...firebaseData, ...autoMetrics, ...teleMetrics };
+    
+            for (const key in defaultData) {
+                for (const inner in defaultData[key]) {
+                    firebaseData[`${inner}`] = `${defaultData[key][inner]}`;
+                }
+            }
+            delete firebaseData.io;
+            await setDoc(
+                doc(db, "matchScoutData", defaultData[0].team + "_" + defaultData[0].match),
+                firebaseData
+            );
+        
+            return true;
+        }
     }
 
     sendAlert(message, severity) {
-        this.alert.message = message;
-        this.alert.severity = severity;
-        this.alert.open = true;
-    }
-
-    validate(submit = false) {
-        return {valid: true, message: ""};
-        let alert = null;
-        if (this.stage !== MatchStage.POST_MATCH && submit)
-            alert = {
-                valid: false,
-                message: "You must complete the match before submitting.",
-            };
-
-        if (this.stage === MatchStage.PRE_MATCH) {
-            if (!Scouters.includes(this.get(MatchStage.PRE_MATCH, "name")))
-                alert = {
-                    valid: false,
-                    message: "Error in checking your name. Did you make a typo?",
-                };
-            else if (this.get(MatchStage.PRE_MATCH, "alliance") === null)
-                alert = {
-                    valid: false,
-                    message: "Please select your team's alliance.",
-                };
-            else if (
-                !Object.keys().includes(
-                    this.get(MatchStage.PRE_MATCH, "driver_station")
-                )
-            )
-                alert = {
-                    valid: false,
-                    message: "Please select your team's driver station.",
-                };
-            else if (
-                !Object.keys(StartPosition).includes(
-                    this.get(MatchStage.PRE_MATCH, "start_position")
-                )
-            )
-                alert = {
-                    valid: false,
-                    message: "Please select your team's starting position.",
-                };
-            else if (this.get(MatchStage.PRE_MATCH, "team") === null)
-                alert = {
-                    valid: false,
-                    message: "Please select your assigned team.",
-                };
-        } else if (this.stage === MatchStage.POST_MATCH) {
-            if (this.get(MatchStage.POST_MATCH, "rating") === 0)
-                alert = {
-                    valid: false,
-                    message: "Please rate your driver's performance.",
-                };
-            else if (
-                this.get(MatchStage.POST_MATCH, "defense") &&
-                this.get(MatchStage.POST_MATCH, "defense_rating") === 0
-            )
-                alert = {
-                    valid: false,
-                    message:
-                        "Please rate the your assigned team's defensive capabilities.",
-                };
-        }
-
-        if (alert === null) alert = {valid: true, message: ""};
-
-        if (!alert.valid) this.sendAlert(alert.message, "error");
-
-        return alert;
+        this.setAlert({ open: true, message, severity }); // Use state updater
     }
 }

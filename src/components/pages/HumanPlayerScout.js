@@ -12,10 +12,12 @@ const HumanPlayerScout = () => {
     const [misses, setMisses] = useState(0);
 
     const handleSubmit = async () => {
-        const humanPlayerData = { hits, misses };
-        const db = getFirestore();
-        await setDoc(doc(db, "humanPlayerData", teamNumber + '_' + matchNumber), humanPlayerData);
-        window.location.reload();
+        if (teamNumber !== '' && matchNumber !== '') {
+            const humanPlayerData = { hits, misses };
+            const db = getFirestore();
+            await setDoc(doc(db, "humanPlayerData", teamNumber + '_' + matchNumber), humanPlayerData);
+            window.location.reload();
+        }
     };
 
     return (

@@ -191,6 +191,9 @@ const PitScout = (props) => {
                         <MenuItem value={"Station"}>
                             Station
                         </MenuItem>
+                        <MenuItem value={"Ground and Station"}>
+                            Ground and Station
+                        </MenuItem>
                     </Select>
                 </FormControl>
                 <FormControl fullWidth>
