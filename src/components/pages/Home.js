@@ -31,15 +31,15 @@ export default function Home() {
                 972 Scouting
             </Typography>
 
-                    <Stack direction="row" spacing={1} alignItems="center" justifyContent="space-between" sx={{ height: '100%' }}>                
-                        {renderScoutBox('Pit Scout', '/pitscout', Constants.jacob)}
-                        {renderScoutBox('HP Scout', '/humanplayerscout', Constants.jacob)}
-                        {renderScoutBox('Match Scout', '/matchscout', Constants.jacob)}
-                        {renderScoutBox('Data Visualization', '/DataVisualizationDisplay', Constants.jacob)}
-                        {renderScoutBox('Credits', '/credits', Constants.jacob)}
-                    </Stack>
-                </Stack>
-                <Box height={50}/>
+         
+            <Box direction="row" alignItems="center" spacing={0}>
+            <Grid container justifyContent="center" columnSpacing={isSmallScreen ? 2 : 5} rowSpacing={isSmallScreen ? 1 : -1} sx={{ maxWidth: isSmallScreen ? 500 : 700 }}>
+            <Grid item xs={4}>{renderScoutBox('/pitscout', Constants.pitScout, isSmallScreen)}</Grid>
+            <Grid item xs={4}>{renderScoutBox('/matchscout', Constants.matchScout, isSmallScreen)}</Grid>
+            <Grid item xs={4}>{renderScoutBox('/humanplayerscout', Constants.humanPlayer, isSmallScreen)}</Grid>
+            <Grid item xs={4}>{renderScoutBox('/DataVisualizationDisplay', Constants.dataAnalytics, isSmallScreen)}</Grid>
+            <Grid item xs={4}>{renderScoutBox('/credits', Constants.credits, isSmallScreen)}</Grid>
+            <Grid item xs={4}>{renderScoutBox('/info', Constants.info, isSmallScreen)}</Grid>
             </Grid>
             </Box>
             </Stack>
