@@ -35,11 +35,12 @@ export default function Home() {
             <Box direction="row" alignItems="center" spacing={0}>
             <Grid container justifyContent="center" columnSpacing={isSmallScreen ? 2 : 5} rowSpacing={isSmallScreen ? 1 : -1} sx={{ maxWidth: isSmallScreen ? 500 : 700 }}>
             <Grid item xs={4}>{renderScoutBox('/pitscout', Constants.pitScout, isSmallScreen)}</Grid>
-            <Grid item xs={4}>{renderScoutBox('/matchscout', Constants.matchScout, isSmallScreen)}</Grid>
-            <Grid item xs={4}>{renderScoutBox('/humanplayerscout', Constants.humanPlayer, isSmallScreen)}</Grid>
-            <Grid item xs={4}>{renderScoutBox('/DataVisualizationDisplay', Constants.dataAnalytics, isSmallScreen)}</Grid>
-            <Grid item xs={4}>{renderScoutBox('/credits', Constants.credits, isSmallScreen)}</Grid>
-            <Grid item xs={4}>{renderScoutBox('/info', Constants.info, isSmallScreen)}</Grid>
+    <Grid item xs={4}>{renderScoutBox('/matchscout', Constants.matchScout, isSmallScreen)}</Grid>
+    <Grid item xs={4}>{renderScoutBox('/humanplayerscout', Constants.humanPlayer, isSmallScreen)}</Grid>
+    <Grid item xs={4} sx={{ justifyContent: "center" }}>
+        {renderScoutBox('/DataVisualizationDisplay', Constants.dataAnalytics, isSmallScreen)}</Grid>
+    <Grid item xs={4} sx={{ justifyContent: "center" }}>
+        {renderScoutBox('/credits', Constants.credits, isSmallScreen)}</Grid>
             </Grid>
             </Box>
             </Stack>
