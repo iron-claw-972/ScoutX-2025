@@ -33,7 +33,7 @@ export default function MSPrematch(props) {
                 margin="normal"
               />
                 <TextField
-                label="Team"
+                label="Team Number"
                 type="number"
                 variant="outlined"
                 value={data.get(MatchStage.PRE_MATCH, "team")}
