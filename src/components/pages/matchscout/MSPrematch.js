@@ -5,7 +5,7 @@ import {CageLocation, MatchStage, StartPosition} from "../../MatchConstants";
 import CustomAutocomplete from "./form_elements/CustomAutocomplete";
 
 import CustomInput from "./form_elements/CustomInput";
-import {Box, Button} from "@mui/material";
+import {Box, Button, TextField, Select, MenuItem, InputLabel, FormControl } from "@mui/material";
 import {useCookies} from "react-cookie";
 
 export default function MSPrematch(props) {
@@ -21,60 +21,86 @@ export default function MSPrematch(props) {
     return (
         <>
             <Grid2 container spacing={3}>
-                <CustomAutocomplete
-                    small
-                    label={"Name"}
-                    options={Scouters}
-                    value={data.get(MatchStage.PRE_MATCH, "name")}
-                    onChange={(newValue) => {
-                        data.set(MatchStage.PRE_MATCH, "name", newValue);
-                        update();
-                    }}
-                />
-                <CustomInput
-                    fullWidth
-                    required
-                    label={"Team"}
-                    type={"number"}
-                    multiline={false}
-                    value={data.get(MatchStage.PRE_MATCH, "team")}
-                    onChange={(newValue) => {
-                        data.set(MatchStage.PRE_MATCH, "team", newValue);
-                        update();
-                    }}
-                />
-                <CustomInput
-                    fullWidth   
-                    required
-                    label={"Match Number"}
-                    type={"number"}
-                    multiline={false}
-                    value={data.get(MatchStage.PRE_MATCH, "match")}
-                    onChange={(newValue) => {
-                        data.set(MatchStage.PRE_MATCH, "match", newValue);
-                        update();
-                    }}
-                />
-                <CustomAutocomplete
-                    small
-                    label={"Alliance"}
-                    options={["BLUE", "RED"]}
+              <TextField
+                label="Name"
+                variant="outlined"
+                value={data.get(MatchStage.PRE_MATCH, "name")}
+                onChange={(event) => { 
+                    data.set(MatchStage.PRE_MATCH, "name", event.target.value);
+                    update();
+                }}
+                fullWidth
+                margin="normal"
+              />
+                <TextField
+                label="Team Number"
+                type="number"
+                variant="outlined"
+                value={data.get(MatchStage.PRE_MATCH, "team")}
+                onChange={(event) => { 
+                    data.set(MatchStage.PRE_MATCH, "team", event.target.value);
+                    update();
+                }}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                label="Match Number"
+                type="number"
+                variant="outlined"
+                value={data.get(MatchStage.PRE_MATCH, "match")}
+                onChange={(event) => { 
+                    data.set(MatchStage.PRE_MATCH, "match", event.target.value);
+                    update();
+                }}
+                fullWidth
+                margin="normal"
+              />
+
+              <Box sx={{ width: "100%", my: 3 }}>
+              <FormControl fullWidth>
+                <InputLabel>Alliance</InputLabel>
+                <Select
                     value={data.get(MatchStage.PRE_MATCH, "alliance")}
-                    onChange={(newValue) => {
-                        data.set(MatchStage.PRE_MATCH, "alliance", newValue);
+                    onChange={(e) => {
+                        data.set(MatchStage.PRE_MATCH, "alliance", e.target.value);  // Update state on change
                         update();
                     }}
-                />
-                <CustomAutocomplete
-                    small
-                    label={"Start Position"}
-                    options={Object.keys(StartPosition)}
+                    label="Alliance"
+                >
+                    <MenuItem key="Blue" value="Blue">
+                        Blue 
+                    </MenuItem>
+                    <MenuItem key="Red" value="Red">
+                        Red 
+                    </MenuItem>
+                </Select>
+              </FormControl>
+              </Box>
+
+              <Box sx={{ width: "100%" }}>
+              <FormControl fullWidth>
+                <InputLabel>Start Position</InputLabel>
+                <Select
                     value={data.get(MatchStage.PRE_MATCH, "start_position")}
-                    onChange={(newValue) => {
-                        data.set(MatchStage.PRE_MATCH, "start_position", newValue);
+                    onChange={(e) => {
+                        data.set(MatchStage.PRE_MATCH, "start_position", e.target.value);  // Update state on change
                         update();
                     }}
-                />
+                    label="Start Position"
+                >
+                    <MenuItem key="Near Processor Side" value="Near Processor Side">
+                        Near Processor Side 
+                    </MenuItem>
+                    <MenuItem key="Middle" value="Middle">
+                        Middle 
+                    </MenuItem>
+                    <MenuItem key="Far Processor Side" value="Far Processor Side">
+                        Far Processor Side 
+                    </MenuItem>
+                </Select>
+              </FormControl>
+              </Box>
             </Grid2>
             <Box sx={{
                 my: 4
