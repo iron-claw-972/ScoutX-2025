@@ -369,7 +369,7 @@ export default class MatchScoutData {
             console.log("Alliance", this.data[0]['alliance']);
             console.log("Start Position", this.data[0]['start_position']);
     
-            this.sendAlert("Incomplete data in Pre-Match Page", "error");
+            this.sendAlert("Incomplete Pre-Match Page", "error");
             return false; 
         } else {
             this.set(MatchStage.METADATA, "timestamp", Date.now());
