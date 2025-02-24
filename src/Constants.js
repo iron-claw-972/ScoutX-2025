@@ -66,17 +66,17 @@ export const Constants = {
         {
             name: "Eric Jacobson",
             year: "Scouting App Lead - 2nd Year",
-            icon: require("./assets/field.png"),
+            icon: require("./assets/jacob.jpeg"),
         },
         {
             name: "Maxwell Tan",
-            year: "Developer - 1st Year",
-            icon: require("./assets/field.png"),
+            year: "Google Senior Developer - 1st Year",
+            icon: require("./assets/jacob2.jpeg"),
         },
         {
             name: "William Han",
             year: "Developer - 2nd Year",
-            icon: require("./assets/field.png"),
+            icon: require("./assets/jacob3.png"),
         },
     ],
 
