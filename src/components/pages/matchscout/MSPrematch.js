@@ -33,7 +33,7 @@ export default function MSPrematch(props) {
                     }}
                 />
                 <CustomInput
-                    small
+                    fullWidth
                     required
                     label={"Team"}
                     type={"number"}
@@ -45,7 +45,7 @@ export default function MSPrematch(props) {
                     }}
                 />
                 <CustomInput
-                    small
+                    fullWidth   
                     required
                     label={"Match Number"}
                     type={"number"}
@@ -63,16 +63,6 @@ export default function MSPrematch(props) {
                     value={data.get(MatchStage.PRE_MATCH, "alliance")}
                     onChange={(newValue) => {
                         data.set(MatchStage.PRE_MATCH, "alliance", newValue);
-                        update();
-                    }}
-                />
-                <CustomAutocomplete
-                    small
-                    label={"Cage Location"}
-                    options={Object.keys(CageLocation)}
-                    value={data.get(MatchStage.PRE_MATCH, "cage_location")}
-                    onChange={(newValue) => {
-                        data.set(MatchStage.PRE_MATCH, "cage_location", newValue);
                         update();
                     }}
                 />

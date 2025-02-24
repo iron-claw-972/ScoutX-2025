@@ -14,8 +14,6 @@ import {
     Divider,
     Box
 } from '@mui/material';
-import SmallNumberCounter from "./matchscout/form_elements/SmallNumberCounter";
-import CustomInput from "./matchscout/form_elements/CustomInput";
 import {doc, getFirestore, setDoc} from 'firebase/firestore';
 import { Constants } from '../../Constants';
 

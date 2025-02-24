@@ -14,7 +14,7 @@ export default function CustomInput(props) {
     const onChange = props.onChange
 
     return (
-        <Grid2 xs={small ? 6 : 12} sm={fullWidth ? 12 : 6}>
+        <Grid2 xs={12} sm={fullWidth ? 12 : 6}>
             <FormControl fullWidth>
                 <TextField
                     required={required}
