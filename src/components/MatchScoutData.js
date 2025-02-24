@@ -16,7 +16,6 @@ const defaultData = [
         match: null,
         name: null,
         alliance: null,
-        driver_station: null,
         start_position: null,
     },
     {
@@ -358,17 +357,22 @@ export default class MatchScoutData {
 
     async submit() {
 
-        if (this.data[0]['team'] === null || 
-            this.data[0]['match'] === null || 
-            this.data[0]['name'] === null ||
-            this.data[0]['team'] === null ||
-            this.data[0]['alliance'] === null ||
-            this.data[0]['driver_station'] === null ||
-            this.data[0]['start_position'] === null) 
-        {
-            this.sendAlert("Incomplete data in Pre-Match Page", "error");
-            return false; 
-        } else {
+    // if (this.data[0]['team'] === null || 
+    //     this.data[0]['match'] === null || 
+    //     this.data[0]['name'] === null ||
+    //     this.data[0]['alliance'] === null ||
+    //     this.data[0]['start_position'] === null) 
+    // {
+        
+    //     console.log("Team", this.data[0]['team']);
+    //     console.log("Match", this.data[0]['match']);
+    //     console.log("Name", this.data[0]['name']);
+    //     console.log("Alliance", this.data[0]['alliance']);
+    //     console.log("Start Position", this.data[0]['start_position']);
+
+    //     this.sendAlert("Incomplete data in Pre-Match Page", "error");
+    //     return false; 
+     
             this.set(MatchStage.METADATA, "timestamp", Date.now());
             const db = getFirestore();
     
@@ -405,7 +409,7 @@ export default class MatchScoutData {
             );
         
             return true;
-        }
+        
     }
 
     sendAlert(message, severity) {
