@@ -25,9 +25,8 @@ export default function MSPrematch(props) {
                     small
                     label={"Name"}
                     options={Scouters}
-                    value={cookies.name || ""}
+                    value={data.get(MatchStage.PRE_MATCH, "name")}
                     onChange={(newValue) => {
-                        setCookie('name', newValue);
                         data.set(MatchStage.PRE_MATCH, "name", newValue);
                         update();
                     }}
