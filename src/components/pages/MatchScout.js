@@ -61,7 +61,7 @@ export default function MatchScout() {
                 {/* Alert is now controlled by React state */}
                 <Collapse in={alert.open}>
                     <Alert
-                        sx={{ mb: 3 }}
+                        sx={{ mb: 0, mt: 2 }}
                         action={
                             <IconButton
                                 aria-label="close"

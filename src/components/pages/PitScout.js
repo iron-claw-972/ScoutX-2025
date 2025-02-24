@@ -12,10 +12,12 @@ import {
     ListItemIcon,
     ListItemText,
     Divider,
-    Box
+    Box,
+    Collapse,
+    Alert,
+    IconButton
 } from '@mui/material';
-import SmallNumberCounter from "./matchscout/form_elements/SmallNumberCounter";
-import CustomInput from "./matchscout/form_elements/CustomInput";
+import CloseIcon from "@mui/icons-material/Close";
 import {doc, getFirestore, setDoc} from 'firebase/firestore';
 import { Constants } from '../../Constants';
 
@@ -27,6 +29,7 @@ const PitScout = (props) => {
     const [climb, setClimb] = useState("");
     const [robotType, setRobotType] = useState([]);
     const [extraNotes, setExtraNotes] = useState("");
+    const [alert, setAlert] = useState({open: false, message: "", severity: "success"}); 
 
     const robotTypeFields = [
         'WCP CC Robot', 
@@ -74,23 +77,24 @@ const PitScout = (props) => {
 
     const handleSubmit = async () => {
         if (!teamNumber.trim()) {
+            setAlert({open: true, message: "Submit Team Number", severity: "error"})
             return;
-        }
+        } else {
+            const pitData = {
+                teamNumber: teamNumber,
+                drivetrain: drivetrain,
+                intake: intake,
+                climb: climb,
+                robotType: robotType,
+                extraNotes: extraNotes
+            }
 
-        const pitData = {
-            teamNumber: teamNumber,
-            drivetrain: drivetrain,
-            intake: intake,
-            climb: climb,
-            robotType: robotType,
-            extraNotes: extraNotes
+            const db = getFirestore();
+            await setDoc(doc(db, "pitData", teamNumber),
+                pitData
+            );
+            window.location.reload();
         }
-
-        const db = getFirestore();
-        await setDoc(doc(db, "pitData", teamNumber),
-            pitData
-        );
-        window.location.reload();
     };
 
     return (
@@ -113,7 +117,27 @@ const PitScout = (props) => {
                     <Box sx={{ width: "100%", display: "flex", justifyContent: "center", mt: 4 }}>
                         <Divider sx={{ width: "75%", backgroundColor: "#bdbdbd" }} />
                     </Box>
-
+                {/* Alert is now controlled by React state */}
+                <Box sx={{ width:"100%" }}>
+                    <Collapse in={alert.open}>
+                    <Alert
+                        sx={{ mb: 0, mt: 2 }}
+                        action={
+                            <IconButton
+                                aria-label="close"
+                                color="inherit"
+                                size="small"
+                                onClick={() => setAlert({ ...alert, open: false })}
+                            >
+                                <CloseIcon fontSize="inherit" />
+                            </IconButton>
+                        }
+                        severity={alert.severity}
+                    >
+                        {alert.message}
+                    </Alert>
+                    </Collapse>
+                    </Box>
                 <TextField
                     label="Team Number"
                     variant="outlined"

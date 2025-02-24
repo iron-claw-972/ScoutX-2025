@@ -2,7 +2,7 @@ import Grid2 from "@mui/material/Unstable_Grid2";
 import { useState } from "react";
 import { MatchStage } from "../../MatchConstants";
 import CustomInput from "./form_elements/CustomInput";
-import { Box, Typography, Stack, Grid } from "@mui/material";
+import { Box, Typography, Stack, Grid, TextField } from "@mui/material";
 import CustomToggleButton from "./form_elements/CustomToggleButton";
 
 export default function MSPostmatch(props) {
@@ -18,20 +18,17 @@ export default function MSPostmatch(props) {
     return (
         <Stack direction="column" spacing={5}>
             <Grid2 container spacing={3}>
-                <CustomInput
-                    required={false}
-                    label={"Extra Comments"}
-                    helperText={
-                        "Anything else you would like to add? For example, what were some potential sources of error?"
-                    }
-                    type={"text"}
-                    multiline={true}
-                    fullWidth={true}
+                <TextField
+                    label="Extra Comments"
+                    variant="outlined"
                     value={data.get(MatchStage.POST_MATCH, "comments")}
-                    onChange={(newValue) => {
-                        data.set(MatchStage.POST_MATCH, "comments", newValue);
+                    onChange={(event) => { 
+                        data.set(MatchStage.POST_MATCH, "comments", event.target.value);
                         update();
                     }}
+                    fullWidth
+                    margin="normal"
+                    helperText="Anything else you would like to add? For example, what were some potential sources of error?"
                 />
             </Grid2>
             <Box>

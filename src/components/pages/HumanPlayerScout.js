@@ -1,7 +1,8 @@
-import { Typography, TextField, IconButton, Stack, Button, Box, Divider } from "@mui/material";
+import { Typography, TextField, IconButton, Stack, Button, Box, Divider, Alert, Collapse } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
+import CloseIcon from "@mui/icons-material/Close";
 import { useState } from "react";
 import { doc, getFirestore, setDoc } from "firebase/firestore";
 
@@ -10,6 +11,7 @@ const HumanPlayerScout = () => {
     const [matchNumber, setMatchNumber] = useState('');
     const [hits, setHits] = useState(0);
     const [misses, setMisses] = useState(0);
+    const [alert, setAlert] = useState({open: false, message: "", severity: "success"}); 
 
     const handleSubmit = async () => {
         if (teamNumber !== '' && matchNumber !== '') {
@@ -17,6 +19,8 @@ const HumanPlayerScout = () => {
             const db = getFirestore();
             await setDoc(doc(db, "humanPlayerData", teamNumber + '_' + matchNumber), humanPlayerData);
             window.location.reload();
+        } else {
+            setAlert({open: true, message: "Incomplete Human Player Data Submission", severity: "error"})
         }
     };
 
@@ -38,6 +42,28 @@ const HumanPlayerScout = () => {
                         Human Player Scout
                     </Typography>
                     <Divider sx={{ width: "75%", backgroundColor: "#bdbdbd" }} />
+                    {/* Alert is now controlled by React state */}
+                    <Box sx={{ width:"100%" }}>
+                    <Collapse in={alert.open}>
+                    <Alert
+                        sx={{ mb: 0, mt: 2 }}
+                        action={
+                            <IconButton
+                                aria-label="close"
+                                color="inherit"
+                                size="small"
+                                onClick={() => setAlert({ ...alert, open: false })}
+                            >
+                                <CloseIcon fontSize="inherit" />
+                            </IconButton>
+                        }
+                        severity={alert.severity}
+                    >
+                        {alert.message}
+                    </Alert>
+                    </Collapse>
+                    </Box>
+
                     <TextField
                         label="Team Number"
                         variant="outlined"

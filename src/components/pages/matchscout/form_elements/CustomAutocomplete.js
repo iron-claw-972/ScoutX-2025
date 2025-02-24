@@ -9,7 +9,7 @@ export default function CustomAutocomplete(props) {
     const onChange = props.onChange;
 
     return (
-        <Grid2 xs={(small ? 6 : 12)} sm={6}>
+        <Grid2 xs={(small ? 6 : 12)} sm={12}>
             <FormControl fullWidth>
                 <Autocomplete
                     id={label}
