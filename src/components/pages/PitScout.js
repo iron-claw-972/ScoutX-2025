@@ -27,14 +27,28 @@ const PitScout = (props) => {
     const [drivetrain, setDrivetrain] = useState("");
     const [intake, setIntake] = useState("");
     const [climb, setClimb] = useState("");
-    const [robotType, setRobotType] = useState("");
+    const [robotType, setRobotType] = useState([]);
     const [extraNotes, setExtraNotes] = useState("");
     const [alert, setAlert] = useState({open: false, message: "", severity: "success"}); 
+
+    const robotTypeFields = [
+        'WCP CC Robot', 
+        'Everybot', 
+        'Kitbot', 
+        'Cranberry Alarm type Bot',
+        'Windmill Side Elevator Bot',
+        'REV Starter Bot',
+        "Regular Sideways Elevator",
+        "2 Dof Arm On elevator",
+    ]
 
     const handleTeamNumberChange = (event) => {
         setTeamNumber(event.target.value);
     };
 
+    // Drivertrain Types: 
+    // Swerve
+    // Tank
     const handleDrivetrain = (event) => {
         setDrivetrain(event.target.value);
     };
@@ -46,6 +60,16 @@ const PitScout = (props) => {
     const handleClimb = (event) => {
         setClimb(event.target.value);
     };
+
+    // Robot Types:
+    // WCP CC Robot 
+    // Everybot 
+    // Kitbot 
+    // Cranberry Alarm type Bot
+    // Windmill Side Elevator Bot
+    // REV Starter Bot
+    // Regular Sideways Elevator
+    // 2 Dof Arm On elevator
 
     const handleRobotType = (event) => {
         setRobotType(event.target.value)
@@ -128,76 +152,29 @@ const PitScout = (props) => {
                         label="Drivetrain"
                         onChange={handleDrivetrain}>
                         <MenuItem value={"Tank"}>
-                        <ListItemIcon>
-                                <img
-                                    src={Constants.tankDrive}
-                                    alt="Tank"
-                                    style={{ width: 100, height: 80 }}
-                                />
-                            </ListItemIcon>
-                            <ListItemText primary="Tank" />
+                            Tank
                         </MenuItem>
                         <MenuItem value={"Swerve"}>
-                        <ListItemIcon>
-                                <img
-                                    src={Constants.swerveDrive}
-                                    alt="Swerve"
-                                    style={{ width: 100, height: 80 }}
-                                />
-                            </ListItemIcon>
-                            <ListItemText primary="Swerve" />
-                            </MenuItem>
+                            Swerve
+                        </MenuItem>
                     </Select>
                 </FormControl>
                 <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">Robot Type</InputLabel>
+                    <InputLabel>Robot Types</InputLabel>
                     <Select
+                        multiple
                         fullWidth
                         margin="normal"
                         value={robotType}
-                        label={"Robot Type"}
-                        onChange={handleRobotType}>
-                        <MenuItem value={"WCP Competitive Concept"}>
-                        <ListItemIcon>
-                                <img
-                                    src={Constants.WCPBot}
-                                    alt="WCP Competitive Concept"
-                                    style={{ width: 70, height: 80 }}
-                                />
-                            </ListItemIcon>
-                            <ListItemText primary="WCP Competitive Concept" />
-                        </MenuItem>
-                        <MenuItem value={"Everybot"}>Everybot</MenuItem>
-                        <MenuItem value={"Kit Bot"}>
-                        <ListItemIcon>
-                                <img
-                                    src={Constants.kitBot}
-                                    alt="Kit Bot"
-                                    style={{ width: 70, height: 80 }}
-                                />
-                            </ListItemIcon>
-                            <ListItemText primary="Kit Bot" />
-                        </MenuItem>
-                        <MenuItem value={"Cranberry Alarm Bot"}>
-                        <ListItemIcon>
-                                <img
-                                    src={Constants.cranberryAlarmBot}
-                                    alt="Cranberry Alarm Bot"
-                                    style={{ width: 70, height: 80 }}
-                                />
-                            </ListItemIcon>
-                            <ListItemText primary="Cranberry Alarm Bot" />
-                        </MenuItem>
-                        <MenuItem value={"111 FRC Bot"}>
-                        <ListItemIcon>
-                                <img
-                                    src={Constants.oneoneonefrc}
-                                    alt="111 FRC Bot"
-                                    style={{ width: 70, height: 80 }}
-                                />
-                            </ListItemIcon>
-                            <ListItemText primary=" 111 FRC Bot" />
-                        </MenuItem>
+                        label={"Robot Types"}
+                        onChange={handleRobotType}
+                        renderValue={(selected) => selected.join(", ")}
+                    >
+                        {robotTypeFields.map((field) => (
+                            <MenuItem value={field}>
+                                {field}
+                            </MenuItem>
+                        ))}
                     </Select>
                 </FormControl>
                 <FormControl>
@@ -214,6 +191,9 @@ const PitScout = (props) => {
                         </MenuItem>
                         <MenuItem value={"Station"}>
                             Station
+                        </MenuItem>
+                        <MenuItem value={"Ground and Station"}>
+                            Ground and Station
                         </MenuItem>
                         <MenuItem value={"Ground and Station"}>
                             Ground and Station
