@@ -8,29 +8,6 @@ import Header from "./components/Header";
 import './firebase.js';
 
 export default function App() {
-  useEffect(() => {
-    /* eslint-disable no-restricted-globals */
-    const lockOrientation = async () => {
-      try {
-        if (screen.orientation && screen.orientation.lock) {
-          await screen.orientation.lock("landscape");
-        }
-      } catch (e) {
-        console.error("Orientation lock failed", e);
-      }
-    };
-
-    lockOrientation();
-
-    // Clean up by unlocking orientation on unmount (optional)
-    return () => {
-      if (screen.orientation && screen.orientation.unlock) {
-        screen.orientation.unlock();
-      }
-    };
-    /* eslint-enable no-restricted-globals */
-  }, []);
-
   return (
     <>
       <ThemeProvider theme={theme}>
