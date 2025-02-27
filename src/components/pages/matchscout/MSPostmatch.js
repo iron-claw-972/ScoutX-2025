@@ -106,7 +106,7 @@ export default function MSPostmatch(props) {
                     </Grid2>
                     <Grid2 xs={6}>
                         <CustomToggleButton
-                            label={"Consistently Browns Out ⚡"}
+                            label={"Consistently Browns Out / Jittery ⚡"}
                             value={data.getPostData("brownsOut")}
                             onClick={(newValue) => {
                                 data.setPostData("brownsOut", newValue);
