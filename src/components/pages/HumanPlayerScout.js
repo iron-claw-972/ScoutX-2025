@@ -7,6 +7,7 @@ import { useState } from "react";
 import { doc, getFirestore, setDoc } from "firebase/firestore";
 
 const HumanPlayerScout = () => {
+    const [verificationCode, setVerificationCode] = useState(''); 
     const [teamNumber, setTeamNumber] = useState('');
     const [matchNumber, setMatchNumber] = useState('');
     const [hits, setHits] = useState(0);
@@ -14,15 +15,23 @@ const HumanPlayerScout = () => {
     const [alert, setAlert] = useState({open: false, message: "", severity: "success"}); 
 
     const handleSubmit = async () => {
-        if (teamNumber !== '' && matchNumber !== '') {
+        if (teamNumber !== '' && matchNumber !== '' && verificationCode === 'IronClaw!1') {
             const humanPlayerData = { hits, misses };
             const db = getFirestore();
             await setDoc(doc(db, "humanPlayerData", teamNumber + '_' + matchNumber), humanPlayerData);
             window.location.reload();
-        } else {
+        } else if ((teamNumber === '' || matchNumber === '') && verificationCode !== 'IronClaw!1') {
+            setAlert({open: true, message: "Incomplete Human Player Data Submission and Incorrect Verification Code", severity: "error"})
+        } else if (teamNumber === '' || matchNumber === '') {
             setAlert({open: true, message: "Incomplete Human Player Data Submission", severity: "error"})
+        } else {
+            setAlert({open: true, message: "Incorrect Verification Code", severity: "error"})
         }
     };
+
+    const handleVerificationCodeChange = (event) => {
+        setVerificationCode(event.target.value); 
+    }
 
     return (
         <Box
@@ -63,8 +72,15 @@ const HumanPlayerScout = () => {
                     </Alert>
                     </Collapse>
                     </Box>
-
                     <TextField
+                        label="User Verification Code"
+                        variant="outlined"
+                        value={verificationCode}
+                        onChange={handleVerificationCodeChange}
+                        fullWidth
+                    />   
+                    <TextField
+                        type="number"
                         label="Team Number"
                         variant="outlined"
                         value={teamNumber}
@@ -72,6 +88,7 @@ const HumanPlayerScout = () => {
                         fullWidth
                     />
                     <TextField
+                        type="number"
                         label="Match Number"
                         variant="outlined"
                         value={matchNumber}

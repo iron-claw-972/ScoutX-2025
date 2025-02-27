@@ -12,11 +12,12 @@ const climb = [
 const defaultData = [
     {
         prematchstage: MatchStage.PRE_MATCH,
-        team: null,
-        match: null,
-        name: null,
-        alliance: null,
-        start_position: null,
+        verificationCode: '', 
+        team: '',
+        match: '',
+        name: '',
+        alliance: '',
+        start_position: '',
     },
     {
         autostage: MatchStage.AUTO,
@@ -356,22 +357,24 @@ export default class MatchScoutData {
     
 
     async submit() {
-        if (this.data[0]['team'] === null || 
-            this.data[0]['match'] === null || 
-            this.data[0]['name'] === null ||
-            this.data[0]['alliance'] === null ||
-            this.data[0]['start_position'] === null) 
-        {
-            
-            console.log("Team", this.data[0]['team']);
-            console.log("Match", this.data[0]['match']);
-            console.log("Name", this.data[0]['name']);
-            console.log("Alliance", this.data[0]['alliance']);
-            console.log("Start Position", this.data[0]['start_position']);
-    
+        const isIncomplete = this.data[0]['team'] === '' || 
+                            this.data[0]['match'] === '' || 
+                            this.data[0]['name'] === '' ||
+                            this.data[0]['alliance'] === '' ||
+                            this.data[0]['start_position'] === '' ||
+                            this.data[0]['verificationCode'] === ''; 
+
+        if (isIncomplete && this.data[0]['verificationCode'] !== 'IronClaw!1') {
+            this.sendAlert("Incomplete Pre-Match Page and Incorrect Code", "error");
+            return false; 
+        } else if (isIncomplete) {
             this.sendAlert("Incomplete Pre-Match Page", "error");
             return false; 
+        } else if (this.data[0]['verificationCode'] !== 'IronClaw!1') {
+            this.sendAlert("Incorrect Verification Code", "error");
+            return false; 
         } else {
+            this.setAlert({open: false})
             this.set(MatchStage.METADATA, "timestamp", Date.now());
             const db = getFirestore();
     

@@ -21,6 +21,17 @@ export default function MSPrematch(props) {
     return (
         <>
             <Grid2 container spacing={3}>
+            <TextField
+                label="User Verification Code"
+                variant="outlined"
+                value={data.get(MatchStage.PRE_MATCH, "verificationCode")}
+                onChange={(event) => { 
+                    data.set(MatchStage.PRE_MATCH, "verificationCode", event.target.value);
+                    update();
+                }}
+                fullWidth
+                margin="normal"
+              />
               <TextField
                 label="Name"
                 variant="outlined"

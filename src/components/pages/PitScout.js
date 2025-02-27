@@ -23,6 +23,7 @@ import { Constants } from '../../Constants';
 
 
 const PitScout = (props) => {
+    const [verificationCode, setVerificationCode] = useState(""); 
     const [teamNumber, setTeamNumber] = useState("");
     const [drivetrain, setDrivetrain] = useState("");
     const [intake, setIntake] = useState("");
@@ -41,7 +42,9 @@ const PitScout = (props) => {
         "Regular Sideways Elevator",
         "2 Dof Arm On elevator",
     ]
-
+    const handleVerificationCodeChange = (event) => {
+        setVerificationCode(event.target.value)
+    }
     const handleTeamNumberChange = (event) => {
         setTeamNumber(event.target.value);
     };
@@ -76,8 +79,14 @@ const PitScout = (props) => {
     }
 
     const handleSubmit = async () => {
-        if (!teamNumber.trim()) {
+        if (teamNumber === '' && verificationCode !== 'IronClaw!1') {    
+            setAlert({open: true, message: "Submit Team Number and Incorrect Verification Code", severity: "error"})
+            return;
+        } else if (teamNumber === '') {
             setAlert({open: true, message: "Submit Team Number", severity: "error"})
+            return;
+        } else if (verificationCode !== 'IronClaw!1') {
+            setAlert({open: true, message: "Incorrect Verification Code", severity: "error"})
             return;
         } else {
             const pitData = {
@@ -139,11 +148,17 @@ const PitScout = (props) => {
                     </Collapse>
                     </Box>
                 <TextField
+                    label="User Verification Code"
+                    variant="outlined"
+                    value={verificationCode}
+                    onChange={handleVerificationCodeChange}
+                />    
+                <TextField
+                    type="number"
                     label="Team Number"
                     variant="outlined"
                     value={teamNumber}
                     onChange={handleTeamNumberChange}
-                    
                 />
                 <FormControl width="100%">
                     <InputLabel id="demo-simple-select-label">Drivetrain</InputLabel>
