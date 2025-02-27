@@ -105,7 +105,6 @@ export default function MatchScout() {
                             color={"success"}
                             variant={"outlined"}
                             onClick={async () => {
-                                console.log("RETURN", await data.submit());
                                 const success = await data.submit();
                                 if (success) {
                                     handleStageChange(stage + 2);

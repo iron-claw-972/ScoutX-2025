@@ -2,37 +2,60 @@ import React, { useState, useEffect } from 'react';
 import { Avatar, Button, Card, CardContent, Grid, Stack, Typography, Box } from '@mui/material';
 import { Casino } from '@mui/icons-material';
 import { Wheel } from 'react-custom-roulette';
-import Page from '../Page';
 
 const prizes = [
-    { option: "🧋Jackpot🧋", style: { fontSize: '14' }},
-    { option: "👾Scout More!", style: { fontSize: '14' } },
-    { option: "👾Scout More!", style: { fontSize: '14' } },
-    { option: "👾Scout More!", style: { fontSize: '14' } },
-    { option: "👾Scout More!", style: { fontSize: '14' } },
-    { option: "👾Scout More!", style: { fontSize: '14' } },
-    { option: "👾Scout More!", style: { fontSize: '14' } },
-    { option: "😁Free Sticker", style: { fontSize: '14' } },
-    { option: "👾Scout More!", style: { fontSize: '14' } },
-    { option: "👾Scout More!", style: { fontSize: '14' } },
-    { option: "👾Scout More!", style: { fontSize: '14' } },
-    { option: "👾Scout More!", style: { fontSize: '14' } },
-    { option: "👾Scout More!", style: { fontSize: '14' } },
-    { option: "👕Free Shirt", style: { fontSize: '14' } },
-    { option: "👾Scout More!", style: { fontSize: '14' } },
-    { option: "👾Scout More!", style: { fontSize: '14' } },
-    { option: "🍭Free Candy", style: { fontSize: '14' } },
-    { option: "👾Scout More!", style: { fontSize: '14' } },
-    { option: "👾Scout More!", style: { fontSize: '14' } },
-    { option: "🤑Discount", style: { fontSize: '14' } },
-    { option: "👾Scout More!", style: { fontSize: '14' } },
-    { option: "👾Scout More!", style: { fontSize: '14' } },
-    { option: "👾Scout More!", style: { fontSize: '14' } },
-    { option: "👾Scout More!", style: { fontSize: '14' } },
-    { option: "🎲Free Roll", style: { fontSize: '14' } },
-    { option: "👾Scout More!", style: { fontSize: '14' } },
-    { option: "👾Scout More!", style: { fontSize: '14' } },
-    { option: "👾Scout More!", style: { fontSize: '14' } },
+    { option: "🧋 Jackpot! 🧋", style: { fontSize: '10' }},
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "🎲 Free Spin!", style: { fontSize: '10' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "🎲 Free Spin!", style: { fontSize: '10' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
+    { option: "👾 Scout More!", style: { fontSize: '9' } },
 ];
 
 const WheelGame = () => {
@@ -59,12 +82,14 @@ const WheelGame = () => {
     const handleStopSpinning = () => {
         setMustSpin(false);
         const prize = prizes[prizeNumber].option;
-        
-        if (prize === "🎲Free Roll") {
-            setMessage("You won a Free Roll! Click Spin to use it!");
+
+        if (prize === "🎲 Free Spin") {
+            setMessage("You won a Free Roll! Click Spin to use it.");
             setRollsRemaining(prev => prev + 1);
+        } else if (prize === "👾 Scout More!") {
+            setMessage('Get back to work!');
         } else {
-            setMessage(`You won: ${prize}!`);
+            setMessage('Congratualtions!! 🎊🎉 Make sure to take a screenshot and send it to Eric on slack to redeem your prize.');
         }
     };
 
