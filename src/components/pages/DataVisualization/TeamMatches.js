@@ -422,8 +422,7 @@ const TeamMatches = () => {
     }
   }, [teamToAverage]); // Only runs when `matches` changes
 
-  // Which dependency: teamToAverage or matches 
-  // TODO: teamToAverage will be smooth (no repeated code) but does not work with updating averages. matches will work but laggy cuz repeats code (causes useEffect to keep getting called)
+  // TODO: teamToRestore will be smoooth (no repeated code) but does not work with updating averages. matches will work but laggy cuz repeats code (causes useEffect to keep getting called)
   
   // ✅ Ensure updates in delete and restore functions
   const handleDeleteRow = (team, matchNumber) => {
