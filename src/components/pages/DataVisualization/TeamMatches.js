@@ -647,7 +647,7 @@ return (
                   <TableRow>
                     <TableCell sx={{ color: "#f57c00", fontWeight: "bold" }}></TableCell>
                     <TableCell sx={{ color: "#f57c00", fontWeight: "bold" }}>Match Number</TableCell>
-                    {Object.keys(teamData.matchData[1]).map((column) =>
+                    {Object.keys(teamData.matchData[0]).map((column) =>
                       column !== "matchNumber" && visibleColumns.has(column) ? (
                         <TableCell key={column} sx={{ color: "white" }}>
                           <TableSortLabel
