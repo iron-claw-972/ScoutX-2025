@@ -21,7 +21,7 @@ export default function NetButton({
         <Button
             onClick={() => {
                 if(selectedIntakeElement == IntakeElement.ALGAE) {
-                    isMissed ? data.addOuttakeEntry(stage, selectedIntakeElement, selectedIntakeLocation, elapsedTime, "MISSED NET") : data.addOuttakeEntry(stage, selectedIntakeElement, selectedIntakeLocation, elapsedTime, "MISSED_NET");
+                    isMissed ? data.addOuttakeEntry(stage, selectedIntakeElement, selectedIntakeLocation, elapsedTime, "MISSED NET") : data.addOuttakeEntry(stage, selectedIntakeElement, selectedIntakeLocation, elapsedTime, "NET");
                     setIsMissed(false);
                 }
                 setSelectedIntakeElement(0);

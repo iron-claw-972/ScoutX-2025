@@ -83,7 +83,7 @@ const WheelGame = () => {
         setMustSpin(false);
         const prize = prizes[prizeNumber].option;
 
-        if (prize === "🎲 Free Spin") {
+        if (prize === "🎲 Free Spin!") {
             setMessage("You won a Free Roll! Click Spin to use it.");
             setRollsRemaining(prev => prev + 1);
         } else if (prize === "👾 Scout More!") {
