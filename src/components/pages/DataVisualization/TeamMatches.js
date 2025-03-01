@@ -78,8 +78,6 @@ const TeamMatches = () => {
   const humanPlayerDataRef = collection(firebase, "humanPlayerData");
   
   const handleGetData = async () => {
-    setRestoreMatch(''); 
-    setDeletedRows([]); 
     setError(""); // Reset error message
 
     try {
@@ -277,8 +275,8 @@ const TeamMatches = () => {
           (matchObject["TeleMissedAlgaeNet"]) + 
           (matchObject["TeleMissedAlgaeProcessor"]);
 
-        coralAccuracy = totalCoralAttempts > 0 ? `${((coralCycles / totalCoralAttempts) * 100).toFixed(1)}%` : "0.0%";
-        algaeAccuracy = totalAlgaeAttempts > 0 ? `${((algaeCycles / totalAlgaeAttempts) * 100).toFixed(1)}%` : "0.0%";
+        coralAccuracy = totalCoralAttempts > 0 ? `${((coralCycles / totalCoralAttempts) * 100).toFixed(1)}%` : "No Attempts";
+        algaeAccuracy = totalAlgaeAttempts > 0 ? `${((algaeCycles / totalAlgaeAttempts) * 100).toFixed(1)}%` : "No Attemps";
 
         let totalCycles = coralCycles + algaeCycles;
 
@@ -303,24 +301,24 @@ const TeamMatches = () => {
         
 
         const humanPlayerStats = humanPlayerData[matchObject.matchNumber] || {
-          hits: 0,
-          misses: 0,
-          accuracy: '0%'
+          hits: 'N/A',
+          misses: 'N/A',
+          accuracy: 'N/A',
         };
+        
         matchObject["Human Player Makes"] = humanPlayerStats.hits;
         matchObject["Human Player Misses"] = humanPlayerStats.misses;
         matchObject["Human Player Accuracy"] = humanPlayerStats.accuracy;
 
-
         return matchObject;
       });
 
-      setTeamToAverage(team);
+      const updatedMatchData = handleAverages(matchData);
 
       // Update matches with the new matchData for this team
       setMatches((prevMatches) => [
         ...prevMatches.filter((m) => m.team !== team),  // Remove previous data for this team
-        { team, matchData }
+        { team, matchData: updatedMatchData }
       ]);
       setTeam("");
 
@@ -335,116 +333,85 @@ const TeamMatches = () => {
     setMatches((prevMatches) => prevMatches.filter((teamData) => teamData.team !== team));
   };
 
-  const handleAverages = (team) => {
-    const teamData = matches.find((teamData) => teamData.team === team);
-  
-    if (teamData && teamData.matchData.length > 0) {
-      let averageMatch = { matchNumber: "Averages" };
-      const numMatches = teamData.matchData.filter(match => match.matchNumber !== "Averages").length;
-      const sumFields = {};
-  
-      teamData.matchData.forEach((match) => {
-        if (match.matchNumber !== "Averages") {
-          for (const key in match) {
+  const handleAverages = (matchData) => {
+    if (matchData.length === 1) return matchData;
+
+    // Ensure we are only working with valid matches (no "Averages")
+    const filteredMatchData = matchData.filter(match => match.matchNumber !== "Averages");
+
+    if (filteredMatchData.length === 0) return []; // Ensure no empty average is added
+
+    let averageMatch = { matchNumber: "Averages" };
+    const numMatches = filteredMatchData.length; // Use filtered data for count
+    const sumFields = {};
+
+    // Sum up all numerical fields
+    filteredMatchData.forEach((match) => {
+        for (const key in match) {
             if (typeof match[key] === "number") {
-              sumFields[key] = (sumFields[key] || 0) + match[key];
+                sumFields[key] = (sumFields[key] || 0) + match[key];
             }
-          }
         }
-      });
-  
-      for (const key in sumFields) {
+    });
+
+    // Compute averages
+    for (const key in sumFields) {
         averageMatch[key] = parseFloat((sumFields[key] / numMatches).toFixed(1));
-      }
-  
-      const totalCoralAttempts =
-        (sumFields["CoralCycles"] || 0) +
-        (sumFields["AutoMissedCoralL1"] || 0) +
-        (sumFields["AutoMissedCoralL2"] || 0) +
-        (sumFields["AutoMissedCoralL3"] || 0) +
-        (sumFields["AutoMissedCoralL4"] || 0) +
-        (sumFields["TeleMissedCoralL1"] || 0) +
-        (sumFields["TeleMissedCoralL2"] || 0) +
-        (sumFields["TeleMissedCoralL3"] || 0) +
-        (sumFields["TeleMissedCoralL4"] || 0);
-  
-      const totalAlgaeAttempts =
-        (sumFields["AlgaeCycles"] || 0) +
-        (sumFields["AutoMissedAlgaeNet"] || 0) +
-        (sumFields["AutoMissedAlgaeProcessor"] || 0) +
-        (sumFields["TeleMissedAlgaeNet"] || 0) +
-        (sumFields["TeleMissedAlgaeProcessor"] || 0);
-        
-        // Place Coral Accuracy and Algae Accuracy after Algae Cycles in the object 
-        const orderedAverageMatch = {};
-        for (const key in averageMatch) {
-          orderedAverageMatch[key] = averageMatch[key];
-          if (key === "AlgaeCycles") {
-            orderedAverageMatch["CoralAccuracy"] =
-              totalCoralAttempts > 0
-                ? `${((sumFields["CoralCycles"] / totalCoralAttempts) * 100).toFixed(1)}%`
-                : "0.0%";
-            orderedAverageMatch["AlgaeAccuracy"] =
-              totalAlgaeAttempts > 0
-                ? `${((sumFields["AlgaeCycles"] / totalAlgaeAttempts) * 100).toFixed(1)}%`
-                : "0.0%";
-          }
-        }
-        averageMatch = orderedAverageMatch;
-
-      // Add extra fields at the end, initialized to "N/A"
-      averageMatch["Extra Information"] = "N/A";
-      averageMatch["Human Player Makes"] = "N/A";
-      averageMatch["Human Player Misses"] = "N/A";
-      averageMatch["Human Player Accuracy"] = "N/A";
-
-      // Replace or add "Averages" row
-      const newMatchData = teamData.matchData.map(match =>
-        match.matchNumber === "Averages" ? averageMatch : match
-      );
-  
-      if (!teamData.matchData.some(match => match.matchNumber === "Averages")) {
-        newMatchData.unshift(averageMatch);
-      }
-  
-      const updatedMatches = matches.map((teamData) =>
-        teamData.team === team ? { ...teamData, matchData: newMatchData } : teamData
-      );
-  
-      setMatches(updatedMatches);
     }
+
+    // Calculate Coral and Algae accuracy
+    const totalCoralAttempts = ((sumFields["CoralCycles"] || 0) +
+        ["AutoMissedCoralL1", "AutoMissedCoralL2", "AutoMissedCoralL3", "AutoMissedCoralL4",
+        "TeleMissedCoralL1", "TeleMissedCoralL2", "TeleMissedCoralL3", "TeleMissedCoralL4"]
+        .reduce((sum, key) => sum + (sumFields[key] ?? 0), 0)) || 0; 
+
+    const totalAlgaeAttempts = ((sumFields["AlgaeCycles"] || 0) +
+        ["AutoMissedAlgaeNet", "AutoMissedAlgaeProcessor",
+        "TeleMissedAlgaeNet", "TeleMissedAlgaeProcessor"]
+        .reduce((sum, key) => sum + (sumFields[key] ?? 0), 0)) || 0; 
+
+    const coralAccuracy = totalCoralAttempts > 0 ? `${(sumFields["CoralCycles"] / totalCoralAttempts * 100).toFixed(1)}%` : "No Attempts";
+    const algaeAccuracy = totalAlgaeAttempts > 0 ? `${(sumFields["AlgaeCycles"] / totalAlgaeAttempts * 100).toFixed(1)}%` : "No Attempts";
+
+    // Construct a reordered object with CoralAccuracy and AlgaeAccuracy after AlgaeCycles
+    const reorderedAverageMatch = {};
+    for (const key in averageMatch) {
+        reorderedAverageMatch[key] = averageMatch[key];
+        if (key === "AlgaeCycles") {
+            reorderedAverageMatch["CoralAccuracy"] = coralAccuracy;
+            reorderedAverageMatch["AlgaeAccuracy"] = algaeAccuracy;
+        }
+    }
+
+    // Set placeholders for fields that shouldn't be averaged
+    reorderedAverageMatch["Extra Information"] = "N/A";
+    reorderedAverageMatch["Human Player Makes"] = "N/A";
+    reorderedAverageMatch["Human Player Misses"] = "N/A";
+    reorderedAverageMatch["Human Player Accuracy"] = "N/A";
+
+    return [...filteredMatchData, reorderedAverageMatch]; // Append the updated "Averages" match
   };
   
-  // ✅ Use `useEffect` to update averages AFTER `matches` updates
-  useEffect(() => {
-    if (teamToAverage) {
-      handleAverages(teamToAverage); 
-    }
-  }, [teamToAverage]); // Only runs when `matches` changes
-
-  // TODO: teamToRestore will be smoooth (no repeated code) but does not work with updating averages. matches will work but laggy cuz repeats code (causes useEffect to keep getting called)
-  
-  // ✅ Ensure updates in delete and restore functions
+  // Ensure updates in delete and restore functions
   const handleDeleteRow = (team, matchNumber) => {
+    setError(""); // Reset error message
+  
     const teamData = matches.find((teamData) => teamData.team === team);
-    
-    if (teamData && teamData.matchData.length > 2) {
-      const updatedMatches = matches.map((teamData) => {
-        if (teamData.team === team) {
-          return {
-            ...teamData,
-            matchData: teamData.matchData.filter((match) => match.matchNumber !== matchNumber),
-          };
-        }
-        return teamData;
-      });
   
-      const deletedMatch = teamData.matchData.find((match) => match.matchNumber === matchNumber);
+    if (teamData.matchData.length > 2) {
+      const updatedMatchData = teamData.matchData.filter(match => match.matchNumber !== matchNumber);
   
-      setMatches(updatedMatches);
-      setTeamToAverage(team); // ✅ Update state after `matches` updates   
+      const deletedMatch = teamData.matchData.find(match => match.matchNumber === matchNumber);
   
-      setDeletedRows((prevState) => ({
+      const newMatchDataWithAverages = handleAverages(updatedMatchData);
+  
+      // Update matches state
+      setMatches(matches.map(teamData =>
+        teamData.team === team ? { ...teamData, matchData: newMatchDataWithAverages } : teamData
+      ));
+  
+      // Store deleted row
+      setDeletedRows(prevState => ({
         ...prevState,
         [team]: [...(prevState[team] || []), deletedMatch],
       }));
@@ -453,35 +420,43 @@ const TeamMatches = () => {
     }
   };
   
-  const handleRestoreRow = () => {
-    setRestoreMatch("");
-    setError("");
-  
-    const matchToRestore = deletedRows[teamToRestore]?.find(
-      (match) => match.matchNumber === restoreMatch
-    );
-  
-    setMatches(
-      matches.map((teamData) => {
-        if (teamData.team === teamToRestore) {
-          return {
-            ...teamData,
-            matchData: [...teamData.matchData, matchToRestore],
-          };
-        }
-        return teamData;
-      })
-    );
-  
-    setTeamToAverage(teamToRestore); // ✅ Update state after `matches` updates
-  
-    setDeletedRows((prevState) => ({
-      ...prevState,
-      [teamToRestore]: prevState[teamToRestore].filter(
-        (match) => match.matchNumber !== restoreMatch
-      ),
-    }));
-  };
+    const handleRestoreRow = () => {
+      setError("");
+      setRestoreMatch("");
+
+      const matchToRestore = deletedRows[teamToRestore]?.find(
+        (match) => match.matchNumber === restoreMatch
+      );
+      
+      
+      setMatches(
+        matches.map((teamData) => {
+            if (teamData.team === teamToRestore) {
+                // Ensure previous "Averages" row is removed before recalculating
+                const updatedMatchData = [
+                    ...teamData.matchData,
+                    matchToRestore
+                ];
+
+                // Recalculate new averages with the correct data
+                const newMatchDataWithAverages = handleAverages(updatedMatchData);
+
+                return {
+                    ...teamData,
+                    matchData: newMatchDataWithAverages,
+                };
+            }
+            return teamData;
+        })
+      );
+    
+      setDeletedRows((prevState) => ({
+        ...prevState,
+        [teamToRestore]: prevState[teamToRestore].filter(
+          (match) => match.matchNumber !== restoreMatch
+        ),
+      }));
+    };
 
   useEffect(() => {
     if (restoreMatch) {
