@@ -5,6 +5,7 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import CloseIcon from "@mui/icons-material/Close";
 import { useState } from "react";
 import { doc, getFirestore, setDoc } from "firebase/firestore";
+import { Constants } from "../../Constants";
 
 const HumanPlayerScout = () => {
     const [verificationCode, setVerificationCode] = useState(''); 
@@ -15,12 +16,12 @@ const HumanPlayerScout = () => {
     const [alert, setAlert] = useState({open: false, message: "", severity: "success"}); 
 
     const handleSubmit = async () => {
-        if (teamNumber !== '' && matchNumber !== '' && verificationCode === 'IronClaw!1') {
+        if (teamNumber !== '' && matchNumber !== '' && verificationCode === Constants.verificationCode) {
             const humanPlayerData = { hits, misses };
             const db = getFirestore();
             await setDoc(doc(db, "humanPlayerData", teamNumber + '_' + matchNumber), humanPlayerData);
             window.location.reload();
-        } else if ((teamNumber === '' || matchNumber === '') && verificationCode !== 'IronClaw!1') {
+        } else if ((teamNumber === '' || matchNumber === '') && verificationCode !== Constants.verificationCode) {
             setAlert({open: true, message: "Incomplete Human Player Data Submission and Incorrect Verification Code", severity: "error"})
         } else if (teamNumber === '' || matchNumber === '') {
             setAlert({open: true, message: "Incomplete Human Player Data Submission", severity: "error"})

@@ -79,13 +79,13 @@ const PitScout = (props) => {
     }
 
     const handleSubmit = async () => {
-        if (teamNumber === '' && verificationCode !== 'IronClaw!1') {    
+        if (teamNumber === '' && verificationCode !== Constants.verificationCode) {    
             setAlert({open: true, message: "Submit Team Number and Incorrect Verification Code", severity: "error"})
             return;
         } else if (teamNumber === '') {
             setAlert({open: true, message: "Submit Team Number", severity: "error"})
             return;
-        } else if (verificationCode !== 'IronClaw!1') {
+        } else if (verificationCode !== Constants.verificationCode) {
             setAlert({open: true, message: "Incorrect Verification Code", severity: "error"})
             return;
         } else {

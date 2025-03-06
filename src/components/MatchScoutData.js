@@ -1,6 +1,7 @@
 import {MatchStage, StartPosition, IntakeElement, IntakeLocations} from "./MatchConstants";
 import {Scouters} from "./Scouters";
 import {doc, getFirestore, setDoc} from "firebase/firestore";
+import { Constants } from "../Constants";
 
 const climb = [
     "Neither",
@@ -364,13 +365,13 @@ export default class MatchScoutData {
                             this.data[0]['start_position'] === '' ||
                             this.data[0]['verificationCode'] === ''; 
 
-        if (isIncomplete && this.data[0]['verificationCode'] !== 'IronClaw!1') {
+        if (isIncomplete && this.data[0]['verificationCode'] !== Constants.verificationCode) {
             this.sendAlert("Incomplete Pre-Match Page and Incorrect Code", "error");
             return false; 
         } else if (isIncomplete) {
             this.sendAlert("Incomplete Pre-Match Page", "error");
             return false; 
-        } else if (this.data[0]['verificationCode'] !== 'IronClaw!1') {
+        } else if (this.data[0]['verificationCode'] !== Constants.verificationCode) {
             this.sendAlert("Incorrect Verification Code", "error");
             return false; 
         } else {

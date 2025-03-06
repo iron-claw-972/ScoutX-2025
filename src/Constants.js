@@ -128,5 +128,8 @@ export const Constants = {
                 "Tyrus Chung"
             ]
         }
-    ]
+    ],
+
+    verificationCode: "!1"
+
 }
