@@ -10,16 +10,13 @@ import { Stack } from "@mui/system";
 const TeamMatches = () => {
   const [team, setTeam] = useState("");
   const [matches, setMatches] = useState([]); // Stores match data for each team
-  const [humanPlayerData, setHumanPlayerData] = useState([]);
   const [deletedRows, setDeletedRows] = useState([]); // Stores deleted rows
   const [sortBy, setSortBy] = useState("matchNumber");
   const [sortDirection, setSortDirection] = useState("asc");
   const [error, setError] = useState(""); // To track errors
   const [restoreMatch, setRestoreMatch] = useState(""); // Selected match to restore
   const [teamToRestore, setTeamToRestore] = useState(""); 
-  const [hoveredRow, setHoveredRow] = useState(null); // Track hovered row
   const [clearFilter, setClearFilter] = useState(true);
-  const [teamToAverage, setTeamToAverage] = useState(null);  
 
   const coralFilterFields = [
     "CoralCycles",
@@ -65,6 +62,7 @@ const TeamMatches = () => {
     "Leave",
     "Climb",
     "Extra Information",
+    "Comments", 
     "Human Player Makes",
     "Human Player Misses",
     "Human Player Accuracy",  
@@ -298,7 +296,9 @@ const TeamMatches = () => {
           }
         });
         matchObject["Extra Information"] = extraInfoList.join(", ") || "None";
-        
+
+        // Add comments 
+        matchObject['Comments'] = data['comments'] !== '' ? data['comments'] : "None"; 
 
         const humanPlayerStats = humanPlayerData[matchObject.matchNumber] || {
           hits: 'N/A',
@@ -385,6 +385,7 @@ const TeamMatches = () => {
 
     // Set placeholders for fields that shouldn't be averaged
     reorderedAverageMatch["Extra Information"] = "N/A";
+    reorderedAverageMatch["Comments"] = "N/A"; 
     reorderedAverageMatch["Human Player Makes"] = "N/A";
     reorderedAverageMatch["Human Player Misses"] = "N/A";
     reorderedAverageMatch["Human Player Accuracy"] = "N/A";

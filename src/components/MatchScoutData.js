@@ -22,7 +22,7 @@ const defaultData = [
     },
     {
         autostage: MatchStage.AUTO,
-        leave: false,
+        leave: true,
         climb: climb[0], 
         io: [
             {intake: "PRELOAD"},
