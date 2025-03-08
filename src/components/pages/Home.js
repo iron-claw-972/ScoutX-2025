@@ -1,110 +1,126 @@
-import React, { useState, useEffect } from "react";
-import { Box, Divider, Stack, Typography, Grid, useMediaQuery } from "@mui/material";
+import React from "react";
+import { Box, Stack, Typography, Button, useMediaQuery } from "@mui/material";
 import { Constants } from "../../Constants";
+import bgImage from "../../assets/backGround.png";
 
 export default function Home() {
-
     const isSmallScreen = useMediaQuery("(max-width: 960px)");
-    const isIPadScreen = useMediaQuery("(max-width: 1400px)");
 
     return (
         <Box sx={{
+            position: "fixed",
             mt: -5,
             display: "flex",
             flexDirection: "column",
+            overflow: "hidden", 
             alignItems: "center",
             justifyContent: "center",
-            minHeight: "90vh",
+            minHeight: "100vh",
             width: "100vw",
             boxSizing: "border-box", 
+            backgroundImage: `url(${bgImage})`,
+            backgroundSize: "cover", 
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
         }}>
- <Stack direction="column" alignItems="center" spacing={isSmallScreen ? .5 : 2 }>
-           <Typography
-                variant={isSmallScreen ? "h4" : "h2"}
+            
+            {/* Title */}
+            <Typography
+                variant={isSmallScreen ? "h4" : "h1"}
                 gutterBottom
-                sx={{   
-                    backgroundImage: 'linear-gradient(to right, #FFA500, #FF4500)',
-                    backgroundClip: 'text',
-                    color: 'transparent',
-                    WebkitBackgroundClip: 'text', }}
+                sx={{
+                    position: "absolute",
+                    top: 60,
+                    left: 200,
+                    textAlign: "left",
+                    display: "inline-block", 
+                    color: "white", 
+                    fontFamily: '"Noto Sans", sans-serif',
+                }}
             >
-                972 Scouting
+                Scout
+                <Box
+                    component="span"
+                    sx={{
+                        backgroundImage: 'linear-gradient(to right, #FFA500, #FF4500)',
+                        backgroundClip: 'text',
+                        color: 'transparent',
+                        WebkitBackgroundClip: 'text',
+                        display: "inline-block",
+                        verticalAlign: "top", 
+                        pl: 2,
+                        pt: .20,
+                    }}
+                >
+                    X
+                </Box>
             </Typography>
 
-         
-            <Box direction="row" alignItems="center" spacing={0}>
-            <Grid container justifyContent="center" columnSpacing={isSmallScreen ? 2 : 5} rowSpacing={isSmallScreen ? 1 : -1} sx={{ maxWidth: isSmallScreen ? 500 : 700 }}>
-            <Grid item xs={4}>{renderScoutBox('/pitscout', Constants.pitScout, isSmallScreen)}</Grid>
-    <Grid item xs={4}>{renderScoutBox('/matchscout', Constants.matchScout, isSmallScreen)}</Grid>
-    <Grid item xs={4}>{renderScoutBox('/humanplayerscout', Constants.humanPlayer, isSmallScreen)}</Grid>
-    <Grid item xs={4} sx={{ justifyContent: "center" }}>
-        {renderScoutBox('/DataVisualizationDisplay', Constants.dataAnalytics, isSmallScreen)}</Grid>
-    <Grid item xs={4} sx={{ justifyContent: "center" }}>
-        {renderScoutBox('/credits', Constants.credits, isSmallScreen)}</Grid>
-            </Grid>
-            </Box>
+            
+            <Typography
+                variant={isSmallScreen ? "h5" : "h3"}
+                sx={{
+                    position: "absolute",
+                    top: 180,
+                    left: 200,
+                    textAlign: "left",
+                    display: "inline-block", 
+                    color: "white", 
+                    fontFamily: '"Noto Sans", sans-serif',
+                }}
+            >
+                Collection. Visualization. Analysis.
+            </Typography>
+            <Typography
+                variant={isSmallScreen ? "h5" : "h5"}
+                sx={{
+                    position: "absolute",
+                    top: 260,
+                    left: 200,
+                    textAlign: "left",
+                    display: "inline-block", 
+                    color: "grey", 
+                    fontFamily: '"Noto Sans", sans-serif',
+                }}
+            >
+                By Iron Claw 972
+            </Typography>
+
+
+          
+            <Stack direction="row" spacing={2} sx={{ position: "absolute",
+                    top: 320,
+                    left: 200,
+                    mt: 4 }}>
+                {renderScoutButton('/pitscout', "Pit Scout", isSmallScreen)}
+                {renderScoutButton('/matchscout', "Match Scout", isSmallScreen)}
+                {renderScoutButton('/humanplayerscout', "Human Player", isSmallScreen)}
+                {renderScoutButton('/DataVisualizationDisplay', "Data Analytics", isSmallScreen)}
+                {renderScoutButton('/credits', "Credits", isSmallScreen)}
             </Stack>
         </Box>
     );
 }
 
-
-function renderScoutBox(path, image, isSmallScreen) {
+/* Renders an MUI Button instead of Grid */
+function renderScoutButton(path, label, isSmallScreen) {
     return (
-        <Stack direction={'column'} width={isSmallScreen ? 150 : "110%"}>
-            <Box height={isSmallScreen ? 120 : "100%"}>
-                <Box
-                    borderRadius={8}
-                    draggable={"false"}
-                    component={"img"}
-                    src={image}
-                    sx={{ 
-                        py: 1, 
-                        width: '100%', 
-                        height: '130%',
-                        display: 'flex', 
-                        flexDirection: 'column', 
-                        justifyContent: 'center', 
-                        alignItems: 'center', 
-                        cursor: 'pointer',
-                        borderWidth: '2px',
-                        borderColor: 'white',
-                        transition: 'transform 0.3s ease-in-out', 
-                        '&:hover': {
-                            transform: 'scale(1.1)', 
-                        }
-                    }}
-                    onClick={() => { window.location.pathname = path; }}
-                ></Box>
-            </Box>
-
-            <Box
-                sx={{ py: 1, width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', cursor: 'pointer' }}
-                onClick={() => { window.location.pathname = path; }}
-            >
-                
-            </Box>
-            <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', mt: 0.5 }}>
-                
-            </Box>
-        </Stack>
-    );
-}
-
-function renderGradientText(text) {
-    return (
-        <Typography
-            component="span"
+        <Button
+            variant="contained"
             sx={{
-                backgroundImage: "linear-gradient(to right, #FFA500, #FF4500)",
-                backgroundClip: "text",
-                color: "transparent",
-                WebkitBackgroundClip: "text",
-                lineHeight: 2,
-                fontSize: "1.8rem",
+                backgroundColor: "#FF9800",
+                color: "white",
+                borderRadius: "8px",
+                px: 4, 
+                py: 2,
+                fontSize: isSmallScreen ? "0.9rem" : "1.1rem",
+                fontWeight: "bold",
+                textTransform: "none",
+                "&:hover": { backgroundColor: "#e65100" }
             }}
+            onClick={() => { window.location.pathname = path; }}
         >
-            {text}
-        </Typography>
+            {label}
+        </Button>
     );
 }
