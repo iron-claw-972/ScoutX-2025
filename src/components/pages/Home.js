@@ -5,6 +5,8 @@ import bgImage from "../../assets/backGround.png";
 
 export default function Home() {
     const isSmallScreen = useMediaQuery("(max-width: 960px)");
+    const isIPadScreen = useMediaQuery("(max-width: 1180px)")
+    const isIPadPro = useMediaQuery("(max-width: 1366px)")
 
     return (
         <Box sx={{
@@ -26,12 +28,12 @@ export default function Home() {
             
             {/* Title */}
             <Typography
-                variant={isSmallScreen ? "h4" : "h1"}
+                variant={isSmallScreen ? "h3" : "h1"}
                 gutterBottom
                 sx={{
                     position: "absolute",
-                    top: 60,
-                    left: 200,
+                    top: isSmallScreen ? 20 : isIPadScreen ? 20 : isIPadPro ? 30 : 60,
+                    left: isSmallScreen ? 70 : isIPadScreen ? 60 : isIPadPro ? 100 : 200,
                     textAlign: "left",
                     display: "inline-block", 
                     color: "white", 
@@ -61,8 +63,8 @@ export default function Home() {
                 variant={isSmallScreen ? "h5" : "h3"}
                 sx={{
                     position: "absolute",
-                    top: 180,
-                    left: 200,
+                    top: isSmallScreen ? 80 : isIPadScreen ? 160 : isIPadPro ? 160 : 180,
+                    left: isSmallScreen ? 70 : isIPadScreen ? 60 : isIPadPro ? 100 : 200,
                     textAlign: "left",
                     display: "inline-block", 
                     color: "white", 
@@ -72,25 +74,25 @@ export default function Home() {
                 Collection. Visualization. Analysis.
             </Typography>
             <Typography
-                variant={isSmallScreen ? "h5" : "h5"}
+                variant={isSmallScreen ? "h6" : "h5"}
                 sx={{
                     position: "absolute",
-                    top: 260,
-                    left: 200,
+                    top: isSmallScreen ? 120 : isIPadScreen ? 250 : isIPadPro ? 250 : 260,
+                    left: isSmallScreen ? 70 : isIPadScreen ? 65 : isIPadPro ? 105 : 205,
                     textAlign: "left",
                     display: "inline-block", 
                     color: "grey", 
                     fontFamily: '"Noto Sans", sans-serif',
                 }}
             >
-                By Iron Claw 972
+                Developed by Iron Claw 972
             </Typography>
 
 
           
             <Stack direction="row" spacing={2} sx={{ position: "absolute",
-                    top: 320,
-                    left: 200,
+                     top: isSmallScreen ? 160 : isIPadPro ? 320 : isIPadPro ? 330 : 320,
+                     left: isSmallScreen ? 70 : isIPadScreen ? 60 : isIPadPro ? 100 : 200,
                     mt: 4 }}>
                 {renderScoutButton('/pitscout', "Pit Scout", isSmallScreen)}
                 {renderScoutButton('/matchscout', "Match Scout", isSmallScreen)}
@@ -103,7 +105,7 @@ export default function Home() {
 }
 
 /* Renders an MUI Button instead of Grid */
-function renderScoutButton(path, label, isSmallScreen) {
+function renderScoutButton(path, label, isSmallScreen, isIPadScreen, isIPadPro) {
     return (
         <Button
             variant="contained"
@@ -111,9 +113,9 @@ function renderScoutButton(path, label, isSmallScreen) {
                 backgroundColor: "#FF9800",
                 color: "white",
                 borderRadius: "8px",
-                px: 4, 
+                px: isSmallScreen ? 2 : isIPadScreen ? 4 : isIPadPro ? 5 : 4, 
                 py: 2,
-                fontSize: isSmallScreen ? "0.9rem" : "1.1rem",
+                fontSize: isSmallScreen ? "0.7rem" : isIPadScreen ? "1.1rem" : isIPadPro ? "4.0rem" : "1.1rem",
                 fontWeight: "bold",
                 textTransform: "none",
                 "&:hover": { backgroundColor: "#e65100" }
