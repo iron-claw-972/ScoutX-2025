@@ -13,17 +13,19 @@ export default function MSAuto({ data, handleStageChange }) {
     const [selectedIntakeLocation, setSelectedIntakeLocation] = useState(IntakeLocations.PRELOAD);
     const [isFocused, setIsFocused] = useState(false);
     const [alert, setAlert] = useState({ open: false, severity: "info", message: "Remember to switch to Tele Page" });
+    const [timer, setTimer] = useState(false); 
 
     useEffect(() => {
         const alertTimer = setTimeout(() => {
             setAlert({ open: true, severity: "info", message: "Remember to switch to Tele Page" });
             setTimeout(() => {
                 setAlert((prev) => ({ ...prev, open: false }));
+                setTimer(!timer);
             }, 10000);
         }, 15000);
 
         return () => clearTimeout(alertTimer);
-    }, []);
+    }, [timer]);
 
     const update = () => {
         setCounter(counter + 1);
