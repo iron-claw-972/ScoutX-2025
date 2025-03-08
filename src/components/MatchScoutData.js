@@ -23,19 +23,12 @@ const defaultData = [
     {
         autostage: MatchStage.AUTO,
         leave: true,
-        climb: climb[0], 
-        io: [
-            {intake: "PRELOAD"},
-        ],
-
         outtakeCounts: [],
-        missedCounts: []
     },
     {
         telestage: MatchStage.TELEOP,
         climb: climb[0], 
         outtakeCounts: [],
-        missedCounts: []
     },
     {
         postmatchstage: MatchStage.POST_MATCH,
@@ -83,20 +76,6 @@ export default class MatchScoutData {
         return this.data[stage][path];
     }
 
-    getCount(stage, path, key) {
-        // TODO: change so that only return number of non missed notes 
-        return this.data[stage][path][key].length;   
-    }
-
-    setCount(stage, path, key, value, selectedRow) {
-        const target = this.data[stage][path][key];
-        if (value > this.getCount(stage, path, key)) {
-            target.push(`${value}-${IntakeLocations[selectedRow]}`);
-        } else {
-            target.pop();
-        }
-    }
-
     addOuttakeEntry(stage, selectedIntakeElement, selectedIntakeLocation, timeElapsed, outtakeLocation) {
         const target = this.data[stage]["outtakeCounts"];
         target.push({
@@ -109,11 +88,6 @@ export default class MatchScoutData {
 
     setClimb(stage, value) {
         this.data[stage]["climb"] = climb[value]; 
-    }
-
-    //do later
-    incrementMissedCount(stage, selectedRow) {
-         
     }
 
     deletePrevious(stage) {
@@ -135,6 +109,7 @@ export default class MatchScoutData {
     getPostData(type) {
         return this.data[MatchStage.POST_MATCH][type]; 
     }
+    
     set(stage, path, value) {
         this.history.push({
             id: ++this.historyCounter,
@@ -145,36 +120,6 @@ export default class MatchScoutData {
         });
         this.data[stage][path] = value;
     }   
-
-    clearIO(stage, index) {
-        this.history.push({
-            id: ++this.historyCounter,
-            stage: stage,
-            path: "io",
-            value: this.data[stage]["io"],
-            time: new Date(),
-        });
-        this.data[stage]["io"][index] = {};
-    }
-
-    setIO(stage, index, type, value) {
-        this.history.push({
-            id: ++this.historyCounter,
-            stage: stage,
-            path: "io",
-            index: index,
-            value: {},
-            time: new Date(),
-        });
-        this.data[stage]["io"][index][type] = value;
-    }
-
-    getIO(stage, index, type) {
-        if (this.data[stage]["io"][index] === undefined) {
-            this.data[stage]["io"][index] = {};
-        }
-        return this.data[stage]["io"][index][type];
-    }
     
     deriveAutoOuttakeMetrics() {
         const autoOuttakeCounts = this.data[MatchStage.AUTO]["outtakeCounts"];

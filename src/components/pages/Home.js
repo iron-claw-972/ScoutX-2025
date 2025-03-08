@@ -76,14 +76,14 @@ export default function Home() {
                 sx={{
                     position: "absolute",
                     top: 260,
-                    left: 200,
+                    left: 205,
                     textAlign: "left",
                     display: "inline-block", 
                     color: "grey", 
                     fontFamily: '"Noto Sans", sans-serif',
                 }}
             >
-                By Iron Claw 972
+                Developed by Iron Claw 972
             </Typography>
 
 

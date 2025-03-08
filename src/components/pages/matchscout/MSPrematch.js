@@ -1,11 +1,8 @@
-import {Scouters} from "../../Scouters";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import {useState} from "react";
-import {CageLocation, MatchStage, StartPosition} from "../../MatchConstants";
-import CustomAutocomplete from "./form_elements/CustomAutocomplete";
+import { MatchStage } from "../../MatchConstants";
 
-import CustomInput from "./form_elements/CustomInput";
-import {Box, Button, TextField, Select, MenuItem, InputLabel, FormControl } from "@mui/material";
+import {Box, TextField, Select, MenuItem, InputLabel, FormControl } from "@mui/material";
 import {useCookies} from "react-cookie";
 
 export default function MSPrematch(props) {
