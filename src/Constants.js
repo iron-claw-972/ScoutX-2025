@@ -1,5 +1,4 @@
 import Home from "./components/pages/Home";
-import HomeTwo from "./components/pages/HomeTwo";
 import MatchScout from "./components/pages/MatchScout";
 import Credits from "./components/pages/Credits";
 import PitScout from "./components/pages/PitScout";
@@ -91,7 +90,7 @@ export const Constants = {
             description: "Again, for giving purpose to this app",
         },
         {
-            name: "Material UI React",
+            name: "Material UI React and React Recharts",
             description: "For making this app look passable",
         },
     ],

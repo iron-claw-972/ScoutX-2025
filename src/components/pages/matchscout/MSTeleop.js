@@ -1,8 +1,6 @@
 import { useState } from "react";
-import { MatchStage, IntakeElement, IntakeLocations } from "../../MatchConstants";
-import CustomRating from "./form_elements/CustomRating";
-import { Collapse, Stack, Select, MenuItem, Button, FormControl, InputLabel } from "@mui/material";
-import InputTable from "./form_elements/InputTable";
+import { MatchStage } from "../../MatchConstants";
+import { Stack, Select, MenuItem, Button, FormControl, InputLabel } from "@mui/material";
 import MapSim from "./form_elements/map/MapSim";
 
 export default function MSTeleop({ data, handleStageChange }) {

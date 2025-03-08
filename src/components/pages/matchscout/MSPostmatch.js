@@ -1,8 +1,7 @@
 import Grid2 from "@mui/material/Unstable_Grid2";
 import { useState } from "react";
 import { MatchStage } from "../../MatchConstants";
-import CustomInput from "./form_elements/CustomInput";
-import { Box, Typography, Stack, Grid, TextField } from "@mui/material";
+import { Box, Typography, Stack, TextField } from "@mui/material";
 import CustomToggleButton from "./form_elements/CustomToggleButton";
 
 export default function MSPostmatch(props) {

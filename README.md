@@ -1,1 +1,1 @@
-# Scouting-App-Fall-Project-2024
+# ScoutX 2025
