@@ -77,9 +77,9 @@ export const CageLocation = Object.freeze({
 })
 
 export const StartPosition = Object.freeze({
-    "RIGHT": 0,
+    "NEAR PROCESSOR SIDE": 0,
     "MIDDLE": 1,
-    "LEFT": 2,
+    "FAR PROCESSOR SIDE": 2,
 })
 
 export const DockPosition = Object.freeze({

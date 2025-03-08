@@ -86,6 +86,8 @@
           else if (data[field] !== undefined) {
             acc[field] += data[field];
           }
+
+          // Fitlers 
           if (field === 'touchItOwnIt') {
             if(data[field] === true || data[field] === 'true') {
               touchItOwnIt = true;

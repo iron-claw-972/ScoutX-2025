@@ -1,22 +1,38 @@
-import { Typography, TextField, IconButton, Stack, Button, Box, Divider } from "@mui/material";
+import { Typography, TextField, IconButton, Stack, Button, Box, Divider, Alert, Collapse } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
+import CloseIcon from "@mui/icons-material/Close";
 import { useState } from "react";
 import { doc, getFirestore, setDoc } from "firebase/firestore";
+import { Constants } from "../../Constants";
 
 const HumanPlayerScout = () => {
+    const [verificationCode, setVerificationCode] = useState(''); 
     const [teamNumber, setTeamNumber] = useState('');
     const [matchNumber, setMatchNumber] = useState('');
     const [hits, setHits] = useState(0);
     const [misses, setMisses] = useState(0);
+    const [alert, setAlert] = useState({open: false, message: "", severity: "success"}); 
 
     const handleSubmit = async () => {
-        const humanPlayerData = { hits, misses };
-        const db = getFirestore();
-        await setDoc(doc(db, "humanPlayerData", teamNumber + '_' + matchNumber), humanPlayerData);
-        window.location.reload();
+        if (teamNumber !== '' && matchNumber !== '' && verificationCode === Constants.verificationCode) {
+            const humanPlayerData = { hits, misses };
+            const db = getFirestore();
+            await setDoc(doc(db, "humanPlayerData", teamNumber + '_' + matchNumber), humanPlayerData);
+            window.location.reload();
+        } else if ((teamNumber === '' || matchNumber === '') && verificationCode !== Constants.verificationCode) {
+            setAlert({open: true, message: "Incomplete Human Player Data Submission and Incorrect Verification Code", severity: "error"})
+        } else if (teamNumber === '' || matchNumber === '') {
+            setAlert({open: true, message: "Incomplete Human Player Data Submission", severity: "error"})
+        } else {
+            setAlert({open: true, message: "Incorrect Verification Code", severity: "error"})
+        }
     };
+
+    const handleVerificationCodeChange = (event) => {
+        setVerificationCode(event.target.value); 
+    }
 
     return (
         <Box
@@ -36,7 +52,36 @@ const HumanPlayerScout = () => {
                         Human Player Scout
                     </Typography>
                     <Divider sx={{ width: "75%", backgroundColor: "#bdbdbd" }} />
+                    {/* Alert is now controlled by React state */}
+                    <Box sx={{ width:"100%" }}>
+                    <Collapse in={alert.open}>
+                    <Alert
+                        sx={{ mb: 0, mt: 2 }}
+                        action={
+                            <IconButton
+                                aria-label="close"
+                                color="inherit"
+                                size="small"
+                                onClick={() => setAlert({ ...alert, open: false })}
+                            >
+                                <CloseIcon fontSize="inherit" />
+                            </IconButton>
+                        }
+                        severity={alert.severity}
+                    >
+                        {alert.message}
+                    </Alert>
+                    </Collapse>
+                    </Box>
                     <TextField
+                        label="User Verification Code"
+                        variant="outlined"
+                        value={verificationCode}
+                        onChange={handleVerificationCodeChange}
+                        fullWidth
+                    />   
+                    <TextField
+                        type="number"
                         label="Team Number"
                         variant="outlined"
                         value={teamNumber}
@@ -44,6 +89,7 @@ const HumanPlayerScout = () => {
                         fullWidth
                     />
                     <TextField
+                        type="number"
                         label="Match Number"
                         variant="outlined"
                         value={matchNumber}

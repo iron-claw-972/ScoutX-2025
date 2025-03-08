@@ -21,13 +21,18 @@ const TeamGraphs = ({ matches }) => {
     const matchData = teamData.matchData;
     
     // Process match data for line chart
-    const lineData = matchData.map((match) => ({
+    const lineData = matchData
+      .filter(match => match.matchNumber !== "Averages") // Exclude "Averages" row
+      .map((match) => ({
       matchNumber: match.matchNumber,
       Points: match.Points,
-    })).sort((a, b) => a.matchNumber - b.matchNumber);
+      }))
+    .sort((a, b) => a.matchNumber - b.matchNumber);
 
     // Process match data for scatter plot
-    const scatterData = matchData.map((match) => {
+    const scatterData = matchData
+      .filter(match => match.matchNumber !== "Averages") // Exclude "Averages" row
+      .map((match) => {
       const algaePoints =
         (match.AutoAlgaeNet || 0) * ElementPointsAuto.ALGAENET +
         (match.AutoAlgaeProcessor || 0) * ElementPointsAuto.ALGAEPROCESSOR +
@@ -47,7 +52,9 @@ const TeamGraphs = ({ matches }) => {
 
     // Calculate averages for radar chart
     const totalMatches = matchData.length;
-    const averages = matchData.reduce((acc, match) => {
+    const averages = matchData
+    // .filter(match => String(match.matchNumber).trim().toLowerCase() !== "averages") // For some reeason when I add this it includes Avareges, but when I do not, it doesn't 
+    .reduce((acc, match) => {
       acc.AveragePoints += match.Points || 0;
       acc.AverageAlgaeCycles += match.AlgaeCycles || 0;
       acc.AverageCoralCycles += match.CoralCycles || 0;

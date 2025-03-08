@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Typography } from '@mui/material';
 import { Constants } from './Constants';
 
@@ -19,6 +19,8 @@ const OrientationWrapper = ({ children }) => {
     };
   }, []);
 
+  const memorizedChildren = useMemo(() => children, [children]);
+
   if (isPortrait) {
     return (
       <div style={styles.overlay}>
@@ -35,7 +37,7 @@ const OrientationWrapper = ({ children }) => {
     );
   }
 
-  return <>{children}</>;
+  return <>{memorizedChildren}</>;
 };
 
 const styles = {

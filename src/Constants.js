@@ -66,18 +66,18 @@ export const Constants = {
     developers: [
         {
             name: "Eric Jacobson",
-            year: "2nd Year",
-            icon: require("./assets/jacob.jpeg"),
+            year: "Scouting App Lead - 2nd Year",
+            icon: require("./assets/field.png"),
         },
         {
             name: "Maxwell Tan",
-            year: "1st Year",
-            icon: require("./assets/jacob.jpeg"),
+            year: "Developer - 1st Year",
+            icon: require("./assets/field.png"),
         },
         {
             name: "William Han",
-            year: "2nd Year",
-            icon: require("./assets/jacob.jpeg"),
+            year: "Developer - 2nd Year",
+            icon: require("./assets/field.png"),
         },
     ],
 
@@ -129,5 +129,8 @@ export const Constants = {
                 "Tyrus Chung"
             ]
         }
-    ]
+    ],
+
+    verificationCode: "!1"
+
 }

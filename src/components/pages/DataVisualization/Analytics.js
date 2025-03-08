@@ -243,6 +243,7 @@ const Analytics = () => {
           onChange={(e) => setUserRequest(e.target.value)}
           fullWidth
           margin="normal"
+          helperText="Specific focuses on robot performance. For example, only focus on coral."
         />
         <Button
           sx={{ mt: 2 }}

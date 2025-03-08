@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { MatchStage, IntakeElement, IntakeLocations } from "../../MatchConstants";
-import CustomToggleButton from "./form_elements/CustomToggleButton";
 import CustomRating from "./form_elements/CustomRating";
 import { Collapse, Stack, Select, MenuItem, Button, FormControl, InputLabel } from "@mui/material";
 import InputTable from "./form_elements/InputTable";
