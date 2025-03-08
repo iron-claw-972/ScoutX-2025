@@ -19,8 +19,8 @@ export default function MSAuto({ data, handleStageChange }) {
             setAlert({ open: true, severity: "info", message: "Remember to switch to Tele Page" });
             setTimeout(() => {
                 setAlert((prev) => ({ ...prev, open: false }));
-            }, 5000);
-        }, 20000);
+            }, 10000);
+        }, 15000);
 
         return () => clearTimeout(alertTimer);
     }, []);
