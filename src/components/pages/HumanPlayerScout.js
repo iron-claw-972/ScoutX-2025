@@ -16,12 +16,12 @@ const HumanPlayerScout = () => {
     const [alert, setAlert] = useState({open: false, message: "", severity: "success"}); 
 
     const handleSubmit = async () => {
-        if (teamNumber !== '' && matchNumber !== '' && verificationCode === Constants.verificationCode) {
+        if (teamNumber !== '' && matchNumber !== '' && verificationCode === process.env.REACT_APP_VERIFICATION_CODE) {
             const humanPlayerData = { hits, misses };
             const db = getFirestore();
             await setDoc(doc(db, "humanPlayerData", teamNumber + '_' + matchNumber), humanPlayerData);
             window.location.reload();
-        } else if ((teamNumber === '' || matchNumber === '') && verificationCode !== Constants.verificationCode) {
+        } else if ((teamNumber === '' || matchNumber === '') && verificationCode !== process.env.REACT_APP_VERIFICATION_CODE) {
             setAlert({open: true, message: "Incomplete Human Player Data Submission and Incorrect Verification Code", severity: "error"})
         } else if (teamNumber === '' || matchNumber === '') {
             setAlert({open: true, message: "Incomplete Human Player Data Submission", severity: "error"})

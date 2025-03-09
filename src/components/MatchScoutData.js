@@ -310,13 +310,13 @@ export default class MatchScoutData {
                             this.data[0]['start_position'] === '' ||
                             this.data[0]['verificationCode'] === ''; 
 
-        if (isIncomplete && this.data[0]['verificationCode'] !== Constants.verificationCode) {
+        if (isIncomplete && this.data[0]['verificationCode'] !== process.env.REACT_APP_VERIFICATION_CODE) {
             this.sendAlert("Incomplete Pre-Match Page and Incorrect Code", "error");
             return false; 
         } else if (isIncomplete) {
             this.sendAlert("Incomplete Pre-Match Page", "error");
             return false; 
-        } else if (this.data[0]['verificationCode'] !== Constants.verificationCode) {
+        } else if (this.data[0]['verificationCode'] !== process.env.REACT_APP_VERIFICATION_CODE) {
             this.sendAlert("Incorrect Verification Code", "error");
             return false; 
         } else {

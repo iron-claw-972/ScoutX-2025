@@ -23,18 +23,9 @@ exports.analyzeTeamData = functions.https.onRequest(async (req, res) => {
         return res.status(400).send({ error: 'No team data provided' });
       }
 
-      // Retrieve OpenAI API key from Secret Manager (does not work but most secure)
-      // const openaiApiKey = await getOpenAIKey();
-      // if (!openaiApiKey) {
-      //   console.error('Failed to retrieve OpenAI API key from Secret Manager.');
-      //   return res.status(500).send({ error: 'Failed to retrieve API key.' });
-      // }
+      const openaiApiKey = process.env.OPENAI_API_KEY
 
-      // Retrieve API KEY using environment variable (resets every time function is deployed, but works when manually set in cloud run)
-      // const openaiApiKey = process.env.OPENAI_API_KEY; 
-
-      // Hard-coded not secure but works everytime
-      const openaiApiKey = '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';
+      console.log("API KEY", process.env.OPENAI_API_KEY); 
 
       const openaiUrl = 'https://api.openai.com/v1/chat/completions';
 

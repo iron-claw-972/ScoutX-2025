@@ -79,13 +79,13 @@ const PitScout = (props) => {
     }
 
     const handleSubmit = async () => {
-        if (teamNumber === '' && verificationCode !== Constants.verificationCode) {    
+        if (teamNumber === '' && verificationCode !== process.env.REACT_APP_VERIFICATION_CODE) {    
             setAlert({open: true, message: "Submit Team Number and Incorrect Verification Code", severity: "error"})
             return;
         } else if (teamNumber === '') {
             setAlert({open: true, message: "Submit Team Number", severity: "error"})
             return;
-        } else if (verificationCode !== Constants.verificationCode) {
+        } else if (verificationCode !== process.env.REACT_APP_VERIFICATION_CODE) {
             setAlert({open: true, message: "Incorrect Verification Code", severity: "error"})
             return;
         } else {
