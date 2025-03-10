@@ -9,13 +9,12 @@ exports.analyzeTeamData = functions.https.onRequest(async (req, res) => {
       const userRequest = req.body.userRequest;
 
       if (!teamData) {
+
         console.error('No team data provided');
         return res.status(400).send({ error: 'No team data provided' });
       }
 
       const openaiApiKey = process.env.OPENAI_API_KEY
-
-      console.log("API KEY", process.env.OPENAI_API_KEY); 
 
       const openaiUrl = 'https://api.openai.com/v1/chat/completions';
 
