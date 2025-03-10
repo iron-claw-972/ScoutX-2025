@@ -178,7 +178,7 @@ const Analytics = () => {
       setLoading(true);
 
       const response = await axios.post(
-        'https://analyzeteamdata-rage5hpe6a-uc.a.run.app',
+        'https://analyzeteamdata-wdg4jgd2qa-uc.a.run.app',
         { teamData: allTeamData, userRequest }
       );
       setAnalysis(response.data.analysis);
