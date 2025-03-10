@@ -1,16 +1,6 @@
 const functions = require('firebase-functions');
 const axios = require('axios');
 const cors = require('cors')({ origin: true });
-// const {SecretManagerServiceClient} = require('@google-cloud/secret-manager');
-// const client = new SecretManagerServiceClient();
-// const projectId = 'scouting-app-fall-project-2024'; 
-// const secretName = 'projects/' + projectId + '/secrets/openai-api-key/versions/latest'; 
-
-// async function getOpenAIKey(){
-//     const [version] = await client.accessSecretVersion({name: secretName});
-//     const openAIKey = version.payload.data.toString();
-//     return openAIKey;
-// }
 
 exports.analyzeTeamData = functions.https.onRequest(async (req, res) => {
   cors(req, res, async () => {

@@ -1,5 +1,13 @@
 {
   "projects": {
-    "default": "scouting-app-fall-project-2024"
-  }
+    "default": "scoutx-2025"
+  },
+  "targets": {
+    "scoutx-2025": {
+      "hosting": {
+        "targetName": "scoutx-2025"
+      }
+    }
+  },
+  "etags": {}
 }
