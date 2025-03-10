@@ -39,8 +39,8 @@ Make sure you have the following installed on your system:
 - Store the key securely in your app's environment variables.
 
 ### Setting Up Environment Variables  
-1. Create a `.env` file in the root of your project.  
-2. Add your Firebase and OpenAI API keys inside the `.env` file:
+1. Create a `.env` file in the root of your project and the functions folder
+2. Add your Firebase config, verification code, and OpenAI API keys inside the `.env` files:
 
 ```sh
 REACT_APP_FIREBASE_API_KEY=your_firebase_api_key
@@ -50,10 +50,11 @@ REACT_APP_FIREBASE_STORAGE_BUCKET=your_storage_bucket
 REACT_APP_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
 REACT_APP_FIREBASE_APP_ID=your_app_id
 
+REACT_APP_VERIFICATION_CODE=your_verification_code
+```
+```sh
 REACT_APP_OPENAI_API_KEY=your_openai_api_key
 ```
-
-3. Save the file. React will automatically use these variables when running the app.
 
 ## Start Up  
 
@@ -91,9 +92,10 @@ firebase init
 - Skip automatic builds if prompted.
 
 ### 3. Deploy to Firebase  
-After initialization, deploy your app with:
+After initialization, create a production build and deploy your app with:
 
 ```sh
+npm run build
 firebase deploy
 ```
 This will upload the built files to Firebase Hosting, making your app live at your Firebase project's domain.
