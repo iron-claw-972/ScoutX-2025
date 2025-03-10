@@ -71,7 +71,7 @@ Change the Firebase Function URL in the Analytics Component to match the one in 
 
 ```sh
 const response = await axios.post(
-        'your_firebase_function_url',
+        your_firebase_function_url,
         { teamData: allTeamData, userRequest }
       );
 ```
