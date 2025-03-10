@@ -66,7 +66,8 @@ npm start
 ```
 This will launch the app in development mode, with hot-reloading enabled.
 
-Change the url to call the firebase function in the Analytics Component to match the one in your project
+### Running Firebase Function
+Change the Firebase Function URL in the Analytics Component to match the one in your project. 
 
 ```sh
 const response = await axios.post(
