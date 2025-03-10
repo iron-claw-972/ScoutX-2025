@@ -66,6 +66,12 @@ npm start
 ```
 This will launch the app in development mode, with hot-reloading enabled.
 
+If you want to update changes made to the firebase function, run:
+
+```sh
+firebase deploy --only functions
+```
+
 ## Deployment  
 
 To deploy the app using Firebase Hosting:
@@ -92,10 +98,9 @@ firebase init
 - Skip automatic builds if prompted.
 
 ### 3. Deploy to Firebase  
-After initialization, create a production build and deploy your app with:
+After initialization, deploy your app with:
 
 ```sh
-npm run build
 firebase deploy
 ```
 This will upload the built files to Firebase Hosting, making your app live at your Firebase project's domain.
