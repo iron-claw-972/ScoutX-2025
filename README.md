@@ -25,6 +25,14 @@ Make sure you have the following installed on your system:
 - [npm](https://www.npmjs.com/) (comes with Node.js)  
 - [Firebase CLI](https://firebase.google.com/docs/cli) (for deployment)  
 
+### Setting Up Firebase 
+Create a new project and add three collections to the real-time database:
+
+1. matchScoutData
+2. humanPlayerData
+3. pitData
+   
+Each will store their specific types of robot data collected in the scout pages. 
 ### Setting Up API Keys  
 
 #### Firebase API Key  
