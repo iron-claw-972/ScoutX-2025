@@ -4,14 +4,9 @@ FRC Scouting App with robot data collection, visualization, and analysis functio
 
 ## Installation 
 
-Steps to clone the repository:
+1. Clone the repo
 
-```sh
-git clone https://github.com/your-username/your-repo.git
-cd your-repo
-```
-
-Install dependencies:
+2. Install dependencies:
 
 ```sh
 npm install
