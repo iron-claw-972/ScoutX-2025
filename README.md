@@ -21,7 +21,7 @@ Make sure you have the following installed on your system:
 - [Firebase CLI](https://firebase.google.com/docs/cli) (for deployment)  
 
 ### Setting Up Firebase 
-Create a new project and add three collections to the Firestore Database:
+Create a new Firebase Project as a web app and add three collections to the Firestore Database:
 
 1. matchScoutData
 2. humanPlayerData
@@ -38,8 +38,6 @@ allow read, write: if true;
 ### Setting Up API Keys  
 
 #### Firebase API Key  
-- Go to the Firebase Console.
-- Create a new project or use an existing one.
 - Navigate to Project Settings → General → Your apps → Config.
 - Copy the `apiKey` and other required credentials.
 - Place them in your app's environment/config file.
