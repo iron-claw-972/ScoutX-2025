@@ -21,13 +21,20 @@ Make sure you have the following installed on your system:
 - [Firebase CLI](https://firebase.google.com/docs/cli) (for deployment)  
 
 ### Setting Up Firebase 
-Create a new project and add three collections to the real-time database:
+Create a new project and add three collections to the Firestore Database:
 
 1. matchScoutData
 2. humanPlayerData
 3. pitData
    
 Each will store their specific types of robot data collected in the scout pages. 
+
+Additionally, make sure to update to the Blaze Billing Plan and set allow read and write rules to true. 
+
+```sh
+allow read, write: if true;
+```
+
 ### Setting Up API Keys  
 
 #### Firebase API Key  
