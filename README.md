@@ -21,15 +21,9 @@ Make sure you have the following installed on your system:
 - [Firebase CLI](https://firebase.google.com/docs/cli) (for deployment)  
 
 ### Setting Up Firebase 
-Create a new Firebase Project as a web app and add three collections to the Firestore Database:
-
-1. matchScoutData
-2. humanPlayerData
-3. pitData
-   
-Each will store their specific types of robot data collected in the scout pages. 
-
-Additionally, make sure to update to the Blaze Billing Plan and set allow read and write rules to true. 
+- Create a new Firebase Project as a web app  
+- Select the Blaze billing plan  
+- Set read and write rules to true
 
 ```sh
 allow read, write: if true;
@@ -37,19 +31,10 @@ allow read, write: if true;
 
 ### Setting Up API Keys  
 
-#### Firebase API Key  
-- Navigate to Project Settings → General → Your apps → Config.
-- Copy the `apiKey` and other required credentials.
-- Place them in your app's environment/config file.
-
-#### OpenAI API Key  
-- Sign up at OpenAI and get your API key from the developer dashboard.
-- Store the key securely in your app's environment variables.
-
 ### Setting Up Environment Variables  
-1. Create a `.env` file in the root of your project and the functions folder
-2. Add your Firebase config, verification code, and OpenAI API keys inside the `.env` files:
+Create two `.env` files:
 
+One in the root of your project to store important Firebase credentials and the verification code (used to verify users in the scout pages)
 ```sh
 REACT_APP_FIREBASE_API_KEY=your_firebase_api_key
 REACT_APP_FIREBASE_AUTH_DOMAIN=your_auth_domain
@@ -61,9 +46,20 @@ REACT_APP_FIREBASE_MEASUREMENT_ID=your_measurement_id
 
 REACT_APP_VERIFICATION_CODE=your_verification_code
 ```
+
+The other one in the functions folder to store your OpenAI API Key
 ```sh
 REACT_APP_OPENAI_API_KEY=your_openai_api_key
 ```
+
+#### Firebase API Key  
+- Navigate to Project Settings → General → Your apps → Config.
+- Copy the `apiKey` and other required credentials.
+- Place them in your app's .env file in the root of your project.
+
+#### OpenAI API Key  
+- Sign up at OpenAI and get your API key from the developer dashboard.
+- Store the key securely in the .env file in the functions folder.
 
 ## Start Up  
 
@@ -111,7 +107,7 @@ firebase login
 firebase init
 ```
 - Select **Hosting**.
-- Choose an existing Firebase project or create a new one.
+- Choose your existing Firebase project.
 - Set `build` as the public directory.
 - Configure as a single-page app (`Yes` for "rewrite all URLs to /index.html").
 - Skip automatic builds if prompted.
