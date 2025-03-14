@@ -17,8 +17,8 @@ export default function Home() {
             overflow: "hidden", 
             alignItems: "center",
             justifyContent: "center",
-            minHeight: isSmallScreen ? "100vh" : isIPadScreen ? "100vh" : isIPadPro ? "100vh" : "100vh",
-            width: isSmallScreen ? "100vw" : isIPadScreen ? "100vw" : isIPadPro ? "100vw" : "100vw",
+            minHeight: isSmallScreen ? "100%" : isIPadScreen ? "100%" : isIPadPro ? "100%" : "100%",
+            minWidth: isSmallScreen ? "100%" : isIPadScreen ? "100%" : isIPadPro ? "100%" : "100%",
             boxSizing: "border-box", 
             backgroundImage: `url(${bgImage})`,
             backgroundSize: "cover", 
@@ -32,7 +32,7 @@ export default function Home() {
                 gutterBottom
                 sx={{
                     position: "absolute",
-                    top: isSmallScreen ? 20 : isIPadScreen ? 20 : isIPadPro ? 30 : 60,
+                    top: isSmallScreen ? "4.5%" : isIPadScreen ? "4.5%" : isIPadPro ? "7%" : 60,
                     left: isSmallScreen ? 70 : isIPadScreen ? 60 : isIPadPro ? 100 : 200,
                     textAlign: "left",
                     display: "inline-block", 
@@ -91,7 +91,7 @@ export default function Home() {
 
           
             <Stack direction="row" spacing={2} sx={{ position: "absolute",
-                     top: isSmallScreen ? 160 : isIPadPro ? 320 : isIPadPro ? 330 : 320,
+                     top: isSmallScreen ? "37%" : isIPadPro ? 320 : isIPadPro ? 330 : 320,
                      left: isSmallScreen ? 70 : isIPadScreen ? 60 : isIPadPro ? 100 : 200,
                     mt: 4 }}>
                 {renderScoutButton('/pitscout', "Pit Scout", isSmallScreen)}
