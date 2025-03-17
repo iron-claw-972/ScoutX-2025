@@ -32,7 +32,7 @@ export default function Home() {
                 gutterBottom
                 sx={{
                     position: "absolute",
-                    top: isSmallScreen ? "4.5%" : isIPadScreen ? "4.5%" : isIPadPro ? "7%" : 60,
+                    top: isSmallScreen ? "10%" : isIPadScreen ? "4.5%" : isIPadPro ? "7%" : 60,
                     left: isSmallScreen ? 70 : isIPadScreen ? 60 : isIPadPro ? 100 : 200,
                     textAlign: "left",
                     display: "inline-block", 
@@ -63,7 +63,7 @@ export default function Home() {
                 variant={isSmallScreen ? "h5" : "h3"}
                 sx={{
                     position: "absolute",
-                    top: isSmallScreen ? 80 : isIPadScreen ? 160 : isIPadPro ? 160 : 180,
+                    top: isSmallScreen ? 90 : isIPadScreen ? 160 : isIPadPro ? 160 : 180,
                     left: isSmallScreen ? 70 : isIPadScreen ? 60 : isIPadPro ? 100 : 200,
                     textAlign: "left",
                     display: "inline-block", 
@@ -91,7 +91,7 @@ export default function Home() {
 
           
             <Stack direction="row" spacing={2} sx={{ position: "absolute",
-                     top: isSmallScreen ? "37%" : isIPadPro ? 320 : isIPadPro ? 330 : 320,
+                     top: isSmallScreen ? "42%" : isIPadPro ? 320 : isIPadPro ? 330 : 320,
                      left: isSmallScreen ? 70 : isIPadScreen ? 60 : isIPadPro ? 100 : 200,
                     mt: 4 }}>
                 {renderScoutButton('/pitscout', "Pit Scout", isSmallScreen)}
