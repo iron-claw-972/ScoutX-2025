@@ -536,6 +536,7 @@
           </TableHead>
           <TableBody>
             {sortedData.map((team, index) => (
+              team.teamNumber !== '972' && (
               <TableRow
                 key={team.teamNumber}
                 sx={{
@@ -552,6 +553,7 @@
                   >
                     <RemoveCircleIcon />
                   </IconButton>
+              
                 </TableCell>
                 <TableCell sx={{ color: '#f57c00' }}>{team.teamNumber}</TableCell>
                 <TableCell sx={{ color: 'white' }}>{team['Average Points']}</TableCell>
@@ -559,6 +561,7 @@
                 <TableCell sx={{ color: 'white' }}>{team['Average Auto Points']}</TableCell>
                 <TableCell sx={{ color: 'white' }}>{team['Average Climb Points']}</TableCell>
               </TableRow>
+              )
             ))}
           </TableBody>
         </Table>
