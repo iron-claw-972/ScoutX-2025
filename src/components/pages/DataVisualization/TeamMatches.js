@@ -84,21 +84,21 @@ const TeamMatches = () => {
       const humanPlayerQuerySnapshot = await getDocs(humanPlayerDataRef);
 
       let teamDocs = [];
-      if (team === '972!1') {
-        teamDocs = querySnapshot.docs.filter((doc) => {
-          const docId = doc.id.split('_')[0]; 
-          return docId === '972';
-        });
-      } else if (team === '972') {
-        setError('Unable to provide data for 972');
-        setTeam("");
-        return;
-      } else {
+      // if (team === '972!1') {
+      //   teamDocs = querySnapshot.docs.filter((doc) => {
+      //     const docId = doc.id.split('_')[0]; 
+      //     return docId === '972';
+      //   });
+      // } else if (team === '972') {
+      //   setError('Unable to provide data for 972');
+      //   setTeam("");
+      //   return;
+      // } else {
         teamDocs = querySnapshot.docs.filter((doc) => {
           const docId = doc.id.split('_')[0]; 
           return docId === team;
         });
-      }
+      // }
 
       console.log("dataaaa: ", teamDocs); 
 

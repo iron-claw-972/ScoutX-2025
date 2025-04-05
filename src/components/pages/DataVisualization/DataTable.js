@@ -536,7 +536,7 @@
           </TableHead>
           <TableBody>
             {sortedData.map((team, index) => (
-              team.teamNumber !== '972' && (
+              // team.teamNumber !== '972' && (
               <TableRow
                 key={team.teamNumber}
                 sx={{
@@ -561,7 +561,7 @@
                 <TableCell sx={{ color: 'white' }}>{team['Average Auto Points']}</TableCell>
                 <TableCell sx={{ color: 'white' }}>{team['Average Climb Points']}</TableCell>
               </TableRow>
-              )
+              // )
             ))}
           </TableBody>
         </Table>
